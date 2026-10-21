@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
 import { Button, Screen, T } from '@/components/ui';
-import { ProfileForm } from '@/features/dog-profiles/ProfileForm';
+import { OnboardingProfile } from '@/features/dog-profiles/OnboardingProfile';
 import { useDogs } from '@/features/dog-profiles/store';
 import { color, radius, type } from '@/theme/tokens';
 
@@ -19,20 +19,22 @@ export default function Onboarding() {
   const router = useRouter();
   const addDog = useDogs((s) => s.addDog);
   const finish = useDogs((s) => s.finishOnboarding);
-  const [step, setStep] = useState(0); // 0-2 intro, 3 profile
+  const [step, setStep] = useState(0); // 0-2 intro, 3 profile steps
 
   if (step === 3) {
     return (
-      <Screen style={{ padding: 24 }}>
-        <ProfileForm
-          submitLabel={t('profile.create')}
-          onSubmit={(d) => {
-            addDog(d);
-            finish();
-            router.replace('/(tabs)');
-          }}
-        />
-      </Screen>
+      <OnboardingProfile
+        onBack={() => setStep(2)}
+        onDone={async (d) => {
+          addDog(d);
+          finish();
+          router.replace('/(tabs)/translate');
+          // Loaded lazily so a build without the native module still opens onboarding.
+          // iOS decides whether the rating prompt actually appears (at most 3 times a year).
+          const StoreReview = await import('expo-store-review').catch(() => null);
+          if (StoreReview && (await StoreReview.isAvailableAsync())) StoreReview.requestReview().catch(() => {});
+        }}
+      />
     );
   }
 

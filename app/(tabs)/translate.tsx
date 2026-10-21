@@ -1,24 +1,27 @@
 import { AudioModule, RecordingPresets, setAudioModeAsync, useAudioRecorder, useAudioRecorderState } from 'expo-audio';
-import * as DocumentPicker from 'expo-document-picker';
+import * as Haptics from 'expo-haptics';
 import { File } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { useRouter } from 'expo-router';
-import { Bookmark, ChevronLeft, FileText, Pause, Play, RotateCcw, Share2, Smile, Square, Upload, X, Info } from 'lucide-react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Bookmark, ChevronLeft, Pause, Play, RotateCcw, Share2, Smile, X, Info } from 'lucide-react-native';
 import { useEffect, useRef, useState, type ComponentRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, Modal, Pressable, Share, Text, View } from 'react-native';
+import { Linking, Pressable, Share, Text, View } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, DogAvatar, MoodBadge, Screen, T } from '@/components/ui';
+import { PHRASES, PHRASE_SOUNDS, type Phrase } from '@/content/sounds';
 import { useActiveDog } from '@/features/dog-profiles/store';
+import { LiveWave, ModeSwap, RecordBackdrop, RecordStage, levelFromDb, type TranslateMode } from '@/features/translate/RecordStage';
 import { useJournal, type Confidence } from '@/features/journal/store';
 import { extractFeatures, type BarkFeatures } from '@/lib/features';
 import { errorKey, isLimit } from '@/lib/errors';
+import { matchPhrase } from '@/lib/phrase';
 import { playAsset, stopPlayback } from '@/lib/playback';
-import { AudioImportError, wavLevels } from '@/lib/wav';
+import { listenOnce } from '@/lib/speech';
 import i18n from '@/localization';
 import { callFn } from '@/services/api';
-import { color, mood as moodTokens, radius, shadow, type, type Mood } from '@/theme/tokens';
+import { color, mood as moodTokens, radius, type, type Mood } from '@/theme/tokens';
 
 const moodColor = Object.fromEntries(Object.entries(moodTokens).map(([k, v]) => [k, v.fg])) as Record<Mood, string>;
 
@@ -68,13 +71,46 @@ export default function Translate() {
   const card = useRef<ComponentRef<typeof View>>(null);
   const [phase, setPhase] = useState<Phase>('idle');
   const [paused, setPaused] = useState(false);
-  const [sheet, setSheet] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [errKey, setErrKey] = useState('');
   const [limit, setLimit] = useState(false);
   const [saved, setSaved] = useState(false);
   const [feedback, setFeedback] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [mode, setMode] = useState<TranslateMode>('bark');
+  // The home cards open this tab in a given direction (?mode=bark|human).
+  const { mode: modeParam } = useLocalSearchParams<{ mode?: string }>();
+  useEffect(() => { if (modeParam === 'bark' || modeParam === 'human') setMode(modeParam); }, [modeParam]);
+  // Human → Dog: what we heard, the phrase it matched and any message for the user.
+  const [heard, setHeard] = useState('');
+  const [phrase, setPhrase] = useState<Phrase>();
+  const [note, setNote] = useState('');
+  const phraseSound = phrase && PHRASE_SOUNDS[phrase]?.[dog?.voice ?? 'medium'];
+  const clearHuman = () => { setHeard(''); setPhrase(undefined); setNote(''); };
+
+  /** Turns the user's recording into a phrase and plays it back as a bark. */
+  async function translateHuman(uri: string | null) {
+    setPhase('analyzing');
+    try {
+      const text = uri ? await listenOnce(i18n.language, uri) : '';
+      setHeard(text);
+      // Match against the current language and English, so either works.
+      const labels = Object.fromEntries(PHRASES.map((p) => [p, [t(`talk.phrases.${p}`), i18n.t(`talk.phrases.${p}`, { lng: 'en' })]])) as Record<Phrase, string[]>;
+      const m = matchPhrase(text, labels);
+      if (!m) setNote(t('talk.noMatch'));
+      else {
+        setPhrase(m);
+        const src = PHRASE_SOUNDS[m]?.[dog?.voice ?? 'medium'];
+        if (src) void playAsset(src, 0.5);
+        else setNote(t('talk.noPack'));
+      }
+    } catch {
+      setNote(t('talk.voiceUnavailable'));
+    } finally {
+      try { if (uri) new File(uri).delete(); } catch {} // the voice recording is never kept
+      setPhase('idle');
+    }
+  }
 
   const dropRecording = () => {
     try { if (lastUri.current) new File(lastUri.current).delete(); } catch {}
@@ -98,6 +134,7 @@ export default function Translate() {
     setSaved(false);
     setFeedback(false);
     setPaused(false);
+    clearHuman();
     await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
     await rec.prepareToRecordAsync();
     rec.record();
@@ -119,8 +156,9 @@ export default function Translate() {
 
   async function finish() {
     await rec.stop().catch(() => {});
-    lastUri.current = rec.uri; // kept on-device only so the user can replay it; deleted on reset or leaving
     await setAudioModeAsync({ allowsRecording: false }).catch(() => {});
+    if (mode === 'human') return translateHuman(rec.uri);
+    lastUri.current = rec.uri; // kept on-device only so the user can replay it; deleted on reset or leaving
     await analyze(extractFeatures(samples.current, TICK));
   }
 
@@ -138,27 +176,6 @@ export default function Translate() {
       setPhase('error');
     }
   }
-
-  const importWav = async () => {
-    setSheet(false);
-    const r = await DocumentPicker.getDocumentAsync({ type: 'audio/*', copyToCacheDirectory: true });
-    if (r.canceled) return;
-    try {
-      const file = new File(r.assets[0].uri);
-      if (file.size > 12_000_000) throw new AudioImportError('audio_too_long');
-      const levels = wavLevels(await file.arrayBuffer());
-      samples.current = levels;
-      dropRecording();
-      setSaved(false);
-      setFeedback(false);
-      await analyze(extractFeatures(levels, 100));
-      try { file.delete(); } catch {}
-    } catch (e) {
-      setErrKey(e instanceof AudioImportError ? `errors.${e.code}` : 'errors.unsupported_audio');
-      setLimit(false);
-      setPhase('error');
-    }
-  };
 
   const replay = async () => {
     if (!lastUri.current) return;
@@ -291,7 +308,7 @@ export default function Translate() {
           </Card>
         </Screen>
 
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, flexDirection: 'row', gap: 12, padding: 16, paddingBottom: 28, backgroundColor: color.surface }}>
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, flexDirection: 'row', gap: 12, padding: 16, backgroundColor: color.surface }}>
           <View style={{ flex: 1 }}><Button variant="secondary" label={t('common.share')} onPress={shareText} /></View>
           <View style={{ flex: 1 }}><Button label={saved ? t('translate.saved') : t('common.save')} disabled={saved} onPress={save} /></View>
         </View>
@@ -302,57 +319,57 @@ export default function Translate() {
   // ---- dark record canvas (D1 ready / D2 recording / D3 processing) -------------------------------------------
   const recording = phase === 'recording';
   const busy = phase === 'analyzing';
+  const human = mode === 'human';
   const sec = Math.floor(state.durationMillis / 1000);
-  const circle = { width: 48, height: 48, borderRadius: 24, backgroundColor: 'rgba(255,255,255,0.12)', alignItems: 'center' as const, justifyContent: 'center' as const };
+  const level = recording && !paused && typeof state.metering === 'number' ? levelFromDb(state.metering) : 0;
+  const circle = { width: 52, height: 52, borderRadius: 26, backgroundColor: 'rgba(255,255,255,0.12)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)', alignItems: 'center' as const, justifyContent: 'center' as const };
+  const glass = { backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)' };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.brandDeep }} edges={['top', 'bottom']}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 52, paddingHorizontal: 16 }}>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('common.back')} onPress={() => router.navigate('/(tabs)')} style={[circle, { position: 'absolute', left: 16 }]}>
-          <ChevronLeft size={22} color={color.onBrand} />
-        </Pressable>
-        <Text style={[type.headline, { color: color.onBrand }]}>{t('home.barkToHuman')}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color.brandDeep }} edges={['top']}>
+      <RecordBackdrop recording={recording} />
+      <View style={{ alignItems: 'center', paddingTop: 8, paddingHorizontal: 24, gap: 14 }}>
+        <View style={[{ flexDirection: 'row', alignItems: 'center', gap: 8, paddingRight: 14, paddingLeft: 4, height: 40, borderRadius: radius.full }, glass]}>
+          <DogAvatar name={name || '?'} uri={dog?.photoUri} size={32} selected />
+          <Text style={[type.subheadStrong, { color: color.onBrand }]}>{t('translate.listeningFor', { name })}</Text>
+        </View>
+        {recording ? (
+          <View style={{ alignItems: 'center', gap: 4 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, height: 28, borderRadius: radius.full, backgroundColor: 'rgba(214,69,53,0.25)' }}>
+              <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: paused ? color.onBrandMuted : color.danger }} />
+              <Text style={[type.caption, { color: color.onBrand }]}>{paused ? t('translate.pause') : t('translate.recordingBadge')}</Text>
+            </View>
+            <Text style={[type.numeric, { color: color.onBrand, fontVariant: ['tabular-nums'] }]}>0:{String(sec).padStart(2, '0')}</Text>
+            <Text style={[type.caption, { color: color.onBrandMuted }]}>{t('translate.ofMax')}</Text>
+          </View>
+        ) : (
+          <View style={{ alignItems: 'center', gap: 8 }}>
+            <Text style={[type.title1, { color: color.onBrand, textAlign: 'center' }]}>
+              {busy ? t('translate.analyzing') : t('translate.tapMic')}
+            </Text>
+            <Text style={[type.subhead, { color: color.onBrandMuted, textAlign: 'center' }]}>{human ? t('translate.humanSub', { name }) : t('translate.sub')}</Text>
+          </View>
+        )}
       </View>
 
-      <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 24, gap: 16, paddingTop: 8 }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <RecordStage
+          state={recording ? 'recording' : busy ? 'analyzing' : 'idle'}
+          level={level}
+          progress={state.durationMillis / MAX_MS}
+          label={recording ? t('translate.stop') : t('home.record')}
+          onPress={() => {
+            Haptics.impactAsync(recording ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+            void (recording ? finish() : start());
+          }}
+        />
+      </View>
+
+      <View style={{ alignItems: 'center', paddingHorizontal: 24, paddingBottom: 64, gap: 16 }}>
         {recording ? (
           <>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, height: 32, borderRadius: radius.full, backgroundColor: 'rgba(214,69,53,0.25)' }}>
-              <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: color.danger }} />
-              <Text style={[type.subheadStrong, { color: color.onBrand }]}>{t('translate.recordingBadge')}</Text>
-            </View>
-            <Text style={[type.numeric, { color: color.onBrand }]}>0:{String(sec).padStart(2, '0')}</Text>
-            <Text style={[type.caption, { color: color.onBrandMuted }]}>{t('translate.ofMax')}</Text>
-            <View style={{ alignSelf: 'stretch', marginVertical: 8 }}><Wave samples={samples.current.slice(-60)} count={44} h={56} active="#AEB8D4" dim="rgba(174,184,212,0.35)" /></View>
-          </>
-        ) : (
-          <>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, paddingRight: 14, paddingLeft: 4, height: 40, borderRadius: radius.full, backgroundColor: 'rgba(255,255,255,0.12)' }}>
-              <DogAvatar name={name || '?'} uri={dog?.photoUri} size={32} />
-              <Text style={[type.subheadStrong, { color: color.onBrand }]}>{t('translate.listeningFor', { name })}</Text>
-            </View>
-            <Text style={[type.title1, { color: color.onBrand, textAlign: 'center', marginTop: 12 }]}>{t('translate.heading', { name })}</Text>
-            <Text style={[type.subhead, { color: color.onBrandMuted, textAlign: 'center' }]}>{t('translate.sub')}</Text>
-          </>
-        )}
-
-        <View style={{ width: 184, height: 184, borderRadius: 92, backgroundColor: 'rgba(255,255,255,0.06)', alignItems: 'center', justifyContent: 'center', marginTop: 8 }}>
-          <View style={{ width: 152, height: 152, borderRadius: 76, backgroundColor: recording ? 'rgba(214,69,53,0.30)' : 'rgba(255,255,255,0.08)', alignItems: 'center', justifyContent: 'center' }}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={recording ? t('translate.stop') : t('home.record')}
-              disabled={busy}
-              onPress={recording ? finish : start}
-              style={[{ width: 120, height: 120, borderRadius: 60, alignItems: 'center', justifyContent: 'center', backgroundColor: recording ? color.surface : busy ? color.disabled : color.primary }, recording ? null : shadow.glow]}
-            >
-              {recording ? <Square size={44} color={color.danger} fill={color.danger} /> : busy ? <Text style={[type.footnote, { color: color.brandStrong }]}>{t('translate.analyzing')}</Text> : <Text style={{ fontSize: 44 }}>🎙</Text>}
-            </Pressable>
-          </View>
-        </View>
-
-        {recording ? (
-          <>
-            <View style={{ flexDirection: 'row', gap: 80, marginTop: 8 }}>
+            <LiveWave levels={samples.current.map(levelFromDb)} />
+            <View style={{ flexDirection: 'row', gap: 72 }}>
               <Pressable accessibilityRole="button" accessibilityLabel={paused ? t('translate.resume') : t('translate.pause')} onPress={togglePause} style={{ alignItems: 'center', gap: 6 }}>
                 <View style={circle}>{paused ? <Play size={20} color={color.onBrand} /> : <Pause size={20} color={color.onBrand} />}</View>
                 <Text style={[type.caption, { color: color.onBrandMuted }]}>{paused ? t('translate.resume') : t('translate.pause')}</Text>
@@ -362,41 +379,40 @@ export default function Translate() {
                 <Text style={[type.caption, { color: color.onBrandMuted }]}>{t('common.cancel')}</Text>
               </Pressable>
             </View>
-            <Text style={[type.subhead, { color: color.onBrandMuted }]}>{t('translate.tapStop', { name })}</Text>
+            <Text style={[type.subhead, { color: color.onBrandMuted }]}>{human ? t('translate.tapStopHuman') : t('translate.tapStop', { name })}</Text>
           </>
-        ) : (
+        ) : busy ? null : (
           <>
-            <Pressable accessibilityRole="button" disabled={busy} onPress={() => setSheet(true)} style={{ flexDirection: 'row', gap: 8, alignItems: 'center', paddingHorizontal: 20, height: 48, borderRadius: radius.full, backgroundColor: 'rgba(255,255,255,0.12)', marginTop: 8 }}>
-              <Upload size={18} color={color.onBrand} />
-              <Text style={[type.subheadStrong, { color: color.onBrand }]}>{t('translate.upload')}</Text>
-            </Pressable>
-            <View style={{ flexDirection: 'row', gap: 10, padding: 14, borderRadius: radius.md, backgroundColor: 'rgba(255,255,255,0.08)', marginTop: 'auto' }}>
-              <Info size={18} color={color.onBrandMuted} />
-              <View style={{ flex: 1, gap: 6 }}>
-                <Text style={[type.subhead, { color: color.onBrandMuted }]}>{t('translate.tip')}</Text>
-                <Text style={[type.footnote, { color: color.onBrandMuted }]}>{t('translate.privacy')}</Text>
+            {human && (heard || note) ? (
+              <View style={[{ alignSelf: 'stretch', gap: 10, padding: 14, borderRadius: radius.lg }, glass]}>
+                {heard ? <Text style={[type.headline, { color: color.onBrand }]}>“{heard}”</Text> : null}
+                {phrase ? (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                    <Text style={[type.subheadStrong, { color: color.highlight, flex: 1 }]}>🐶 {t(`talk.phrases.${phrase}`)}</Text>
+                    {phraseSound ? (
+                      <Pressable accessibilityRole="button" accessibilityLabel={t('talk.play')} onPress={() => void playAsset(phraseSound, 0.5)} style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: color.primary, alignItems: 'center', justifyContent: 'center' }}>
+                        <Play size={18} color={color.onPrimary} fill={color.onPrimary} />
+                      </Pressable>
+                    ) : null}
+                  </View>
+                ) : null}
+                {note ? <Text style={[type.footnote, { color: color.onBrandMuted }]}>{note}</Text> : null}
               </View>
-            </View>
+            ) : null}
+            <ModeSwap
+              value={mode}
+              labels={{ bark: t('home.barkToHuman'), human: t('home.humanToDog') }}
+              onChange={(m) => {
+                Haptics.selectionAsync().catch(() => {});
+                stopPlayback();
+                clearHuman();
+                setMode(m);
+              }}
+            />
           </>
         )}
       </View>
 
-      <Modal visible={sheet} transparent animationType="slide" onRequestClose={() => setSheet(false)}>
-        <Pressable accessibilityLabel={t('common.cancel')} onPress={() => setSheet(false)} style={{ flex: 1, backgroundColor: 'rgba(21,29,56,0.6)', justifyContent: 'flex-end' }}>
-          <Pressable onPress={() => {}} style={{ backgroundColor: color.surface, borderTopLeftRadius: radius.xl, borderTopRightRadius: radius.xl, padding: 24, paddingBottom: 40, gap: 12 }}>
-            <View style={{ alignSelf: 'center', width: 40, height: 4, borderRadius: 2, backgroundColor: color.border }} />
-            <Text style={[type.title2, { color: color.text }]}>{t('translate.uploadTitle')}</Text>
-            <T.Body>{t('translate.uploadBody')}</T.Body>
-            <Pressable accessibilityRole="button" onPress={importWav} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: radius.md, backgroundColor: color.canvas }}>
-              <View style={{ width: 40, height: 40, borderRadius: radius.sm, backgroundColor: color.brandSoft, alignItems: 'center', justifyContent: 'center' }}><FileText size={20} color={color.brandStrong} /></View>
-              <View style={{ flex: 1 }}>
-                <T.Head>{t('translate.chooseFiles')}</T.Head>
-                <T.Body>{t('translate.formats')}</T.Body>
-              </View>
-            </Pressable>
-          </Pressable>
-        </Pressable>
-      </Modal>
     </SafeAreaView>
   );
 }

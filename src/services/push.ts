@@ -34,7 +34,7 @@ async function registerToken(token: string) {
   });
 }
 
-/** Deep links: notification payload `{ route: "/(tabs)/training" }` opens that screen. */
+/** Deep links: notification payload `{ route: "/training" }` opens that screen. */
 export function wireNotificationRouting() {
   const m = messaging();
   if (!m) return;

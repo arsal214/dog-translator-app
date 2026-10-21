@@ -1,7 +1,7 @@
 import * as ImageManipulator from 'expo-image-manipulator';
 import i18n from '@/localization';
 import * as ImagePicker from 'expo-image-picker';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image } from 'react-native';
@@ -66,7 +66,7 @@ export default function Scanner() {
 
   return (
     <Screen>
-      <Stack.Screen options={{ headerShown: true, title: t('scanner.title') }} />
+      <T.Title>{t('scanner.title')}</T.Title>
       <T.Body>{t('scanner.disclaimer')}</T.Body>
       {uri ? <Image source={{ uri }} style={{ height: 260, borderRadius: 24 }} accessibilityLabel={t('scanner.photo')} /> : null}
       <Button variant="secondary" label={t('scanner.camera')} onPress={() => pick(true)} />

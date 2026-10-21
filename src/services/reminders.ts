@@ -20,7 +20,7 @@ export async function setDailyReminder(enabled: boolean, dogName: string): Promi
     content: {
       title: i18n.t('reminder.title'),
       body: i18n.t('reminder.body', { name: dogName }),
-      data: { route: '/(tabs)/training' },
+      data: { route: '/training' },
     },
     trigger: { type: Notifications.SchedulableTriggerInputTypes.DAILY, hour: 18, minute: 0 },
   });

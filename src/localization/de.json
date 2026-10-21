@@ -12,8 +12,10 @@
   "tabs": {
     "home": "Start",
     "history": "Verlauf",
+    "sounds": "Sounds",
     "translate": "Übersetzen",
     "training": "Training",
+    "scanner": "KI-Scan",
     "more": "Mehr"
   },
   "onboarding": {
@@ -23,6 +25,7 @@
     "s2Body": "Tippe oder sprich einen Satz und spiele ihn als lustiges Bellen mit der Stimme eines kleinen, mittleren oder großen Hundes ab.",
     "s3Title": "Spielen, trainieren und Spaß teilen",
     "s3Body": "Spiele für Hunde, Training Schritt für Schritt, Stimmungstagebuch und KI-Porträts. Mach aus jedem Moment etwas zum Teilen.",
+    "step": "Schritt {{n}} von {{total}}",
     "getStarted": "Los geht’s"
   },
   "profile": {
@@ -31,7 +34,25 @@
     "namePlaceholder": "z. B. Biscuit",
     "breed": "Rasse (optional)",
     "breedPlaceholder": "Golden Retriever, Mischling, weiß nicht…",
+    "breedTitle": "Welche Rasse ist {{name}}?",
+    "breedHint": "Eintippen oder unten auswählen. Du kannst das überspringen.",
+    "breedMixed": "Mischling",
+    "moreTitle": "Noch ein bisschen über {{name}}",
+    "sex": "Rüde oder Hündin?",
+    "sexOptions": {
+      "male": "Rüde",
+      "female": "Hündin"
+    },
     "age": "Alter",
+    "ageTitle": "Wie alt ist {{name}}?",
+    "ageHint": "Wähle den passenden Bereich.",
+    "ageRanges": {
+      "under1": "Unter 1 Jahr",
+      "1to2": "1–2 Jahre",
+      "3to6": "3–6 Jahre",
+      "7to10": "7–10 Jahre",
+      "11plus": "11+ Jahre"
+    },
     "ageOptions": {
       "puppy": "Welpe",
       "adult": "Erwachsen",
@@ -152,6 +173,9 @@
     "intensityLabel": "Intensität",
     "heading": "Tippe auf das Mikro und lass {{name}} bellen",
     "sub": "Nimm bis zu 10 Sekunden auf. Wir schlagen vor, was das Bellen bedeuten könnte.",
+    "humanSub": "Tippe aufs Mikro und sag z. B. „Komm her“. Wir spielen es als Bellen ab.",
+    "tapStopHuman": "Tippe auf Stopp, wenn du fertig bist",
+    "tapMic": "Tippe aufs Mikro",
     "listeningFor": "Höre {{name}} zu",
     "upload": "Audio hochladen",
     "tip": "Beste Ergebnisse: ruhiger Raum, Handy 1–2 m entfernt, nur ein Hund bellt.",
@@ -205,11 +229,18 @@
     "humane": "Halte die Einheiten kurz und positiv. Bestrafe oder erschrecke deinen Hund nie."
   },
   "sounds": {
-    "title": "Geräuschebibliothek",
+    "title": "Tiergeräusche",
     "emptyTitle": "Geräuschpakete sind noch nicht installiert",
     "emptyBody": "Die Bibliothek lädt lizenzierte Geräusche aus dem Geräuschpaket der App. Füge die Audiodateien hinzu und trage sie im Katalog ein, um sie zu aktivieren.",
     "search": "Geräusche suchen",
+    "all": "Alle",
+    "noFavorites": "Noch keine Favoriten. Halte einen Sound gedrückt, um ihn hinzuzufügen.",
+    "longPressHint": "Gedrückt halten, um Favorit hinzuzufügen oder zu entfernen",
     "favorites": "Favoriten",
+    "groups": {
+      "barks": "Bellen",
+      "squeakers": "Quietscher"
+    },
     "cats": {
       "barks": "Bellen",
       "whines": "Winseln",
@@ -333,6 +364,8 @@
   "more": {
     "dogs": "Deine Hunde",
     "links": {
+      "training": "Training",
+      "history": "Verlauf",
       "mood": "Stimmungstagebuch",
       "quiz": "Tägliches Quiz",
       "sounds": "Geräuschebibliothek",

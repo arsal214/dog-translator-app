@@ -12,8 +12,10 @@
   "tabs": {
     "home": "Início",
     "history": "Histórico",
+    "sounds": "Sons",
     "translate": "Traduzir",
     "training": "Treino",
+    "scanner": "Scanner IA",
     "more": "Mais"
   },
   "onboarding": {
@@ -23,6 +25,7 @@
     "s2Body": "Digite ou fale uma frase e reproduza como um latido divertido com voz de cão pequeno, médio ou grande.",
     "s3Title": "Brinque, treine e compartilhe a diversão",
     "s3Body": "Jogos para cães, treino passo a passo, diário de humor e retratos com IA. Transforme qualquer momento em algo para compartilhar.",
+    "step": "Passo {{n}} de {{total}}",
     "getStarted": "Começar"
   },
   "profile": {
@@ -31,7 +34,25 @@
     "namePlaceholder": "ex.: Biscuit",
     "breed": "Raça (opcional)",
     "breedPlaceholder": "Golden Retriever, vira-lata, não sei…",
+    "breedTitle": "Qual é a raça de {{name}}?",
+    "breedHint": "Digite ou escolha uma abaixo. Você pode pular.",
+    "breedMixed": "Sem raça definida",
+    "moreTitle": "Um pouco mais sobre {{name}}",
+    "sex": "Macho ou fêmea?",
+    "sexOptions": {
+      "male": "Macho",
+      "female": "Fêmea"
+    },
     "age": "Idade",
+    "ageTitle": "Quantos anos tem {{name}}?",
+    "ageHint": "Escolha a faixa mais próxima.",
+    "ageRanges": {
+      "under1": "Menos de 1 ano",
+      "1to2": "1–2 anos",
+      "3to6": "3–6 anos",
+      "7to10": "7–10 anos",
+      "11plus": "11+ anos"
+    },
     "ageOptions": {
       "puppy": "Filhote",
       "adult": "Adulto",
@@ -152,6 +173,9 @@
     "intensityLabel": "Intensidade",
     "heading": "Toque no microfone e deixe {{name}} latir",
     "sub": "Grave até 10 segundos. Vamos sugerir o que o latido pode significar.",
+    "humanSub": "Toque no microfone e diga uma frase como “Vem cá”. Vamos tocá-la como um latido.",
+    "tapStopHuman": "Toque em parar quando terminar",
+    "tapMic": "Toque no microfone",
     "listeningFor": "Ouvindo {{name}}",
     "upload": "Enviar áudio",
     "tip": "Melhores resultados: sala silenciosa, celular a 1–2 m, um cão latindo por vez.",
@@ -205,11 +229,18 @@
     "humane": "Mantenha as sessões curtas e positivas. Nunca castigue nem assuste seu cão."
   },
   "sounds": {
-    "title": "Biblioteca de sons",
+    "title": "Sons de pets",
     "emptyTitle": "Os pacotes de sons ainda não estão instalados",
     "emptyBody": "A biblioteca carrega sons licenciados do pacote de sons do app. Adicione os arquivos de áudio e liste-os no catálogo para ativá-la.",
     "search": "Buscar sons",
+    "all": "Todos",
+    "noFavorites": "Ainda sem favoritos. Toque e segure um som para adicionar.",
+    "longPressHint": "Toque e segure para adicionar ou remover dos favoritos",
     "favorites": "Favoritos",
+    "groups": {
+      "barks": "Latidos",
+      "squeakers": "Apitos"
+    },
     "cats": {
       "barks": "Latidos",
       "whines": "Choramingos",
@@ -333,6 +364,8 @@
   "more": {
     "dogs": "Seus cães",
     "links": {
+      "training": "Treino",
+      "history": "Histórico",
       "mood": "Diário de humor",
       "quiz": "Quiz diário",
       "sounds": "Biblioteca de sons",

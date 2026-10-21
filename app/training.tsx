@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { Check, Flame, Lock } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
@@ -20,7 +20,7 @@ export default function Training() {
 
   return (
     <Screen>
-      <T.Title>{t('tabs.training')}</T.Title>
+      <Stack.Screen options={{ headerShown: true, title: t('tabs.training') }} />
       <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
         <Flame size={24} color={color.textHighlight} />
         <View>

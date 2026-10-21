@@ -12,8 +12,10 @@
   "tabs": {
     "home": "Accueil",
     "history": "Historique",
+    "sounds": "Sons",
     "translate": "Traduire",
     "training": "Éducation",
+    "scanner": "Scan IA",
     "more": "Plus"
   },
   "onboarding": {
@@ -23,6 +25,7 @@
     "s2Body": "Tapez ou dites une phrase et écoutez-la sous forme d’aboiement amusant, avec une voix de petit, moyen ou grand chien.",
     "s3Title": "Jouez, éduquez et partagez le plaisir",
     "s3Body": "Jeux pour chiens, éducation pas à pas, journal d’humeur et portraits IA. Transformez chaque moment en souvenir à partager.",
+    "step": "Étape {{n}} sur {{total}}",
     "getStarted": "Commencer"
   },
   "profile": {
@@ -31,7 +34,25 @@
     "namePlaceholder": "p. ex. Biscuit",
     "breed": "Race (facultatif)",
     "breedPlaceholder": "Golden Retriever, croisé, je ne sais pas…",
+    "breedTitle": "Quelle est la race de {{name}} ?",
+    "breedHint": "Saisissez-la ou choisissez-en une. Étape facultative.",
+    "breedMixed": "Croisé",
+    "moreTitle": "Encore un peu sur {{name}}",
+    "sex": "Mâle ou femelle ?",
+    "sexOptions": {
+      "male": "Mâle",
+      "female": "Femelle"
+    },
     "age": "Âge",
+    "ageTitle": "Quel âge a {{name}} ?",
+    "ageHint": "Choisissez la tranche la plus proche.",
+    "ageRanges": {
+      "under1": "Moins d’1 an",
+      "1to2": "1–2 ans",
+      "3to6": "3–6 ans",
+      "7to10": "7–10 ans",
+      "11plus": "11 ans et +"
+    },
     "ageOptions": {
       "puppy": "Chiot",
       "adult": "Adulte",
@@ -152,6 +173,9 @@
     "intensityLabel": "Intensité",
     "heading": "Touchez le micro et laissez {{name}} aboyer",
     "sub": "Enregistrez jusqu’à 10 secondes. Nous suggérerons ce que l’aboiement peut signifier.",
+    "humanSub": "Touchez le micro et dites une phrase comme « Viens ici ». Nous la rejouerons en aboiement.",
+    "tapStopHuman": "Touchez stop quand vous avez fini",
+    "tapMic": "Touchez le micro",
     "listeningFor": "À l’écoute de {{name}}",
     "upload": "Importer un audio",
     "tip": "Meilleurs résultats : pièce calme, téléphone à 1–2 m, un seul chien qui aboie.",
@@ -205,11 +229,18 @@
     "humane": "Gardez des séances courtes et positives. Ne punissez ni n’effrayez jamais votre chien."
   },
   "sounds": {
-    "title": "Bibliothèque de sons",
+    "title": "Sons d’animaux",
     "emptyTitle": "Les packs de sons ne sont pas encore installés",
     "emptyBody": "La bibliothèque charge des sons sous licence depuis le pack de sons de l’app. Ajoutez les fichiers audio et listez-les dans le catalogue pour l’activer.",
     "search": "Rechercher des sons",
+    "all": "Tous",
+    "noFavorites": "Pas encore de favoris. Appui long sur un son pour l’ajouter.",
+    "longPressHint": "Appui long pour ajouter ou retirer des favoris",
     "favorites": "Favoris",
+    "groups": {
+      "barks": "Aboiements",
+      "squeakers": "Couineurs"
+    },
     "cats": {
       "barks": "Aboiements",
       "whines": "Gémissements",
@@ -333,6 +364,8 @@
   "more": {
     "dogs": "Vos chiens",
     "links": {
+      "training": "Éducation",
+      "history": "Historique",
       "mood": "Journal d’humeur",
       "quiz": "Quiz du jour",
       "sounds": "Bibliothèque de sons",

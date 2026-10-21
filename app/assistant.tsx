@@ -28,7 +28,7 @@ export default function Assistant() {
     try {
       const { reply } = await callFn<{ reply: string }>('assistant', {
         messages: history.filter((m) => !m.error).map(({ role, content }) => ({ role, content })),
-        dog: dog ? { name: dog.name, breed: dog.breed, age: dog.age, size: dog.voice, personality: dog.traits } : undefined,
+        dog: dog ? { name: dog.name, breed: dog.breed, sex: dog.sex, age: dog.age, size: dog.voice, personality: dog.traits } : undefined,
         language: i18n.language,
       });
       setMsgs([...history, { id: ++id.current, role: 'assistant', content: reply }]);

@@ -1,10 +1,10 @@
 export class SpeechUnavailable extends Error {}
 
 /**
- * Listens once and resolves with the transcript. Rejects with SpeechUnavailable when the native module is
+ * Listens once (or transcribes `fileUri`) and resolves with the transcript. Rejects with SpeechUnavailable when the native module is
  * missing (Expo Go), recognition isn't available, or permission was denied.
  */
-export async function listenOnce(lang: string): Promise<string> {
+export async function listenOnce(lang: string, fileUri?: string): Promise<string> {
   let mod: typeof import('expo-speech-recognition').ExpoSpeechRecognitionModule;
   try {
     mod = require('expo-speech-recognition').ExpoSpeechRecognitionModule;
@@ -23,6 +23,7 @@ export async function listenOnce(lang: string): Promise<string> {
       mod.addListener('end', () => { done(); resolve(text); }),
     ];
     const done = () => subs.forEach((s) => s.remove());
-    mod.start({ lang, interimResults: false, continuous: false });
+    // With a file URI the recogniser transcribes that recording instead of the live microphone.
+    mod.start({ lang, interimResults: false, continuous: false, ...(fileUri ? { audioSource: { uri: fileUri } } : {}) });
   });
 }

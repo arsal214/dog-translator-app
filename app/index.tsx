@@ -8,5 +8,5 @@ export default function Index() {
   useEffect(() => useDogs.persist.onFinishHydration(() => setReady(true)), []);
   const onboarded = useDogs((s) => s.onboarded && s.dogs.length > 0);
   if (!ready) return null;
-  return <Redirect href={onboarded ? '/(tabs)' : '/onboarding'} />;
+  return <Redirect href={onboarded ? '/(tabs)/translate' : '/onboarding'} />;
 }

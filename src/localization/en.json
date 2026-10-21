@@ -12,8 +12,10 @@
   "tabs": {
     "home": "Home",
     "history": "History",
+    "sounds": "Sounds",
     "translate": "Translate",
     "training": "Training",
+    "scanner": "AI Scan",
     "more": "More"
   },
   "onboarding": {
@@ -23,6 +25,7 @@
     "s2Body": "Type or say a phrase and play it back as a fun bark in a small, medium or big dog voice.",
     "s3Title": "Play, train and share the fun",
     "s3Body": "Games for dogs, step-by-step training, mood diary and AI portraits. Turn any moment into a shareable video.",
+    "step": "Step {{n}} of {{total}}",
     "getStarted": "Get started"
   },
   "profile": {
@@ -31,7 +34,25 @@
     "namePlaceholder": "e.g. Biscuit",
     "breed": "Breed (optional)",
     "breedPlaceholder": "Golden Retriever, mixed, not sure…",
+    "breedTitle": "What breed is {{name}}?",
+    "breedHint": "Type it or pick one below. You can skip this.",
+    "breedMixed": "Mixed breed",
+    "moreTitle": "A little more about {{name}}",
+    "sex": "Boy or girl?",
+    "sexOptions": {
+      "male": "Boy",
+      "female": "Girl"
+    },
     "age": "Age",
+    "ageTitle": "How old is {{name}}?",
+    "ageHint": "Pick the closest range.",
+    "ageRanges": {
+      "under1": "Under 1 year",
+      "1to2": "1–2 years",
+      "3to6": "3–6 years",
+      "7to10": "7–10 years",
+      "11plus": "11+ years"
+    },
     "ageOptions": {
       "puppy": "Puppy",
       "adult": "Adult",
@@ -152,6 +173,9 @@
     "intensityLabel": "Intensity",
     "heading": "Tap the mic, then let {{name}} bark",
     "sub": "Record up to 10 seconds. We’ll suggest what the bark might mean.",
+    "humanSub": "Tap the mic and say a phrase like “Come here”. We’ll play it back as a bark.",
+    "tapStopHuman": "Tap stop when you’re done",
+    "tapMic": "Tap the mic",
     "listeningFor": "Listening for {{name}}",
     "upload": "Upload audio",
     "tip": "Best results: quiet room, phone 1–2 m away, one dog barking at a time.",
@@ -205,11 +229,18 @@
     "humane": "Keep sessions short and positive. Never punish or scare your dog."
   },
   "sounds": {
-    "title": "Sound library",
+    "title": "Pet Sounds",
     "emptyTitle": "Sound packs aren't installed yet",
     "emptyBody": "The library loads licensed sounds from the app's sound pack. Add the audio files and list them in the sound catalogue to enable it.",
     "search": "Search sounds",
+    "all": "All",
+    "noFavorites": "No favorites yet. Long-press a sound to add it.",
+    "longPressHint": "Long-press to add or remove from favorites",
     "favorites": "Favorites",
+    "groups": {
+      "barks": "Barks",
+      "squeakers": "Squeakers"
+    },
     "cats": {
       "barks": "Barks",
       "whines": "Whines",
@@ -333,6 +364,8 @@
   "more": {
     "dogs": "Your dogs",
     "links": {
+      "training": "Training",
+      "history": "History",
       "mood": "Mood diary",
       "quiz": "Daily quiz",
       "sounds": "Sound library",

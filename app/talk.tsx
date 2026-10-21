@@ -116,7 +116,7 @@ export default function Talk() {
           <View style={{ flex: 1, gap: 6 }}>
             <Text style={[type.subhead, { color: color.textHighlight }]}>{t('talk.disclaimer')}</Text>
             <Text style={[type.subheadStrong, { color: color.textHighlight }]}>{t('talk.welfare')}</Text>
-            <Pressable accessibilityRole="link" onPress={() => router.push('/(tabs)/training')}>
+            <Pressable accessibilityRole="link" onPress={() => router.push('/training')}>
               <Text style={[type.subheadStrong, { color: color.textHighlight }]}>{t('talk.tryTraining')} ›</Text>
             </Pressable>
           </View>

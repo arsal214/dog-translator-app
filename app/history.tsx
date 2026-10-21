@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import i18n from '@/localization';
 import { Trash2 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,7 @@ export default function History() {
 
   return (
     <Screen>
-      <T.Title>{t('tabs.history')}</T.Title>
+      <Stack.Screen options={{ headerShown: true, title: t('tabs.history') }} />
       <Button variant="secondary" label={t('history.openDiary')} onPress={() => router.push('/mood')} />
       {entries.length === 0 ? <T.Body>{t('history.empty', { name: dog?.name })}</T.Body> : null}
       {entries.map((e) => (

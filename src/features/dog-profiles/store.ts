@@ -4,12 +4,20 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type DogSize = 'small' | 'medium' | 'big';
 export type AgeGroup = 'puppy' | 'adult' | 'senior';
+export type DogSex = 'male' | 'female';
+export type AgeRange = 'under1' | '1to2' | '3to6' | '7to10' | '11plus';
+
+export const AGE_RANGES: AgeRange[] = ['under1', '1to2', '3to6', '7to10', '11plus'];
+// The coarse age group is still what the assistant and the database schema use.
+export const ageGroupFor = (r: AgeRange): AgeGroup => (r === 'under1' ? 'puppy' : r === '1to2' || r === '3to6' ? 'adult' : 'senior');
 
 export type Dog = {
   id: string;
   name: string;
   breed?: string;
+  sex?: DogSex;
   age?: AgeGroup;
+  ageRange?: AgeRange;
   voice: DogSize;
   photoUri?: string;
   traits: string[];

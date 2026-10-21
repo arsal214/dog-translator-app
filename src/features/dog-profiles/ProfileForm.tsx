@@ -6,33 +6,39 @@ import { useTranslation } from 'react-i18next';
 import { Image, Pressable, Text, View } from 'react-native';
 import { Button, Chip, Segmented, T, TextField } from '@/components/ui';
 import { color, radius, type } from '@/theme/tokens';
-import type { AgeGroup, Dog, DogSize } from './store';
+import { AGE_RANGES, ageGroupFor, type AgeRange, type Dog, type DogSex, type DogSize } from './store';
 
-const TRAITS = ['playful', 'vocal', 'cuddly', 'curious', 'shy', 'energetic', 'calm', 'protective'] as const;
+export const TRAITS = ['playful', 'vocal', 'cuddly', 'curious', 'shy', 'energetic', 'calm', 'protective'] as const;
+
+export async function pickDogPhoto(): Promise<string | undefined> {
+  const r = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], allowsEditing: true, aspect: [1, 1], quality: 0.7 });
+  if (r.canceled) return;
+  // The picker returns a cache URI that can be purged, so keep a copy in app storage.
+  const dest = new File(Paths.document, `dog-${Date.now()}.jpg`);
+  new File(r.assets[0].uri).copy(dest);
+  return dest.uri;
+}
 
 export function ProfileForm({ onSubmit, submitLabel }: { onSubmit: (d: Omit<Dog, 'id' | 'createdAt'>) => void; submitLabel: string }) {
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [breed, setBreed] = useState('');
-  const [age, setAge] = useState<AgeGroup>('adult');
+  const [sex, setSex] = useState<DogSex>();
+  const [ageRange, setAgeRange] = useState<AgeRange>();
   const [voice, setVoice] = useState<DogSize>('medium');
   const [traits, setTraits] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [photoUri, setPhotoUri] = useState<string>();
 
   const pickPhoto = async () => {
-    const r = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], allowsEditing: true, aspect: [1, 1], quality: 0.7 });
-    if (r.canceled) return;
-    // The picker returns a cache URI that can be purged, so keep a copy in app storage.
-    const dest = new File(Paths.document, `dog-${Date.now()}.jpg`);
-    new File(r.assets[0].uri).copy(dest);
-    setPhotoUri(dest.uri);
+    const uri = await pickDogPhoto();
+    if (uri) setPhotoUri(uri);
   };
 
   const toggle = (x: string) => setTraits((p) => (p.includes(x) ? p.filter((y) => y !== x) : p.length < 4 ? [...p, x] : p));
   const submit = () => {
     if (!name.trim()) return setError(t('profile.nameRequired'));
-    onSubmit({ name: name.trim(), breed: breed.trim() || undefined, age, voice, traits, photoUri });
+    onSubmit({ name: name.trim(), breed: breed.trim() || undefined, sex, ageRange, age: ageRange && ageGroupFor(ageRange), voice, traits, photoUri });
   };
 
   return (
@@ -50,8 +56,15 @@ export function ProfileForm({ onSubmit, submitLabel }: { onSubmit: (d: Omit<Dog,
       <TextField label={t('profile.name')} placeholder={t('profile.namePlaceholder')} value={name} onChangeText={(v) => { setName(v); setError(''); }} error={error} maxLength={30} />
       <TextField label={t('profile.breed')} placeholder={t('profile.breedPlaceholder')} value={breed} onChangeText={setBreed} maxLength={40} />
       <View style={{ gap: 6 }}>
+        <T.Head>{t('profile.sex')}</T.Head>
+        {/* No default: nothing is highlighted until the user picks one. */}
+        <Segmented value={sex as DogSex} onChange={setSex} options={(['male', 'female'] as const).map((k) => ({ key: k, label: t(`profile.sexOptions.${k}`) }))} />
+      </View>
+      <View style={{ gap: 6 }}>
         <T.Head>{t('profile.age')}</T.Head>
-        <Segmented value={age} onChange={setAge} options={(['puppy', 'adult', 'senior'] as const).map((k) => ({ key: k, label: t(`profile.ageOptions.${k}`) }))} />
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          {AGE_RANGES.map((r) => <Chip key={r} label={t(`profile.ageRanges.${r}`)} selected={ageRange === r} onPress={() => setAgeRange(r)} />)}
+        </View>
       </View>
       <View style={{ gap: 6 }}>
         <T.Head>{t('profile.traits')}</T.Head>

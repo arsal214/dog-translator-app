@@ -12,8 +12,10 @@
   "tabs": {
     "home": "Inicio",
     "history": "Historial",
+    "sounds": "Sonidos",
     "translate": "Traducir",
     "training": "Entrenar",
+    "scanner": "Escáner IA",
     "more": "Más"
   },
   "onboarding": {
@@ -23,6 +25,7 @@
     "s2Body": "Escribe o di una frase y reprodúcela como un ladrido divertido con voz de perro pequeño, mediano o grande.",
     "s3Title": "Juega, entrena y comparte la diversión",
     "s3Body": "Juegos para perros, entrenamiento paso a paso, diario de ánimo y retratos con IA. Convierte cualquier momento en algo para compartir.",
+    "step": "Paso {{n}} de {{total}}",
     "getStarted": "Empezar"
   },
   "profile": {
@@ -31,7 +34,25 @@
     "namePlaceholder": "p. ej. Biscuit",
     "breed": "Raza (opcional)",
     "breedPlaceholder": "Golden Retriever, mestizo, no estoy seguro…",
+    "breedTitle": "¿De qué raza es {{name}}?",
+    "breedHint": "Escríbela o elige una. Puedes omitir este paso.",
+    "breedMixed": "Mestizo",
+    "moreTitle": "Un poco más sobre {{name}}",
+    "sex": "¿Macho o hembra?",
+    "sexOptions": {
+      "male": "Macho",
+      "female": "Hembra"
+    },
     "age": "Edad",
+    "ageTitle": "¿Qué edad tiene {{name}}?",
+    "ageHint": "Elige el rango más cercano.",
+    "ageRanges": {
+      "under1": "Menos de 1 año",
+      "1to2": "1–2 años",
+      "3to6": "3–6 años",
+      "7to10": "7–10 años",
+      "11plus": "11+ años"
+    },
     "ageOptions": {
       "puppy": "Cachorro",
       "adult": "Adulto",
@@ -152,6 +173,9 @@
     "intensityLabel": "Intensidad",
     "heading": "Toca el micro y deja que {{name}} ladre",
     "sub": "Graba hasta 10 segundos. Te sugeriremos qué podría significar el ladrido.",
+    "humanSub": "Toca el micrófono y di una frase como “Ven aquí”. La reproduciremos como un ladrido.",
+    "tapStopHuman": "Toca detener cuando termines",
+    "tapMic": "Toca el micrófono",
     "listeningFor": "Escuchando a {{name}}",
     "upload": "Subir audio",
     "tip": "Mejores resultados: sala silenciosa, móvil a 1–2 m, un solo perro ladrando.",
@@ -205,11 +229,18 @@
     "humane": "Mantén las sesiones cortas y positivas. Nunca castigues ni asustes a tu perro."
   },
   "sounds": {
-    "title": "Biblioteca de sonidos",
+    "title": "Sonidos de mascotas",
     "emptyTitle": "Los paquetes de sonidos aún no están instalados",
     "emptyBody": "La biblioteca carga sonidos con licencia desde el paquete de sonidos de la app. Añade los archivos de audio y regístralos en el catálogo para activarla.",
     "search": "Buscar sonidos",
+    "all": "Todos",
+    "noFavorites": "Aún no hay favoritos. Mantén pulsado un sonido para añadirlo.",
+    "longPressHint": "Mantén pulsado para añadir o quitar de favoritos",
     "favorites": "Favoritos",
+    "groups": {
+      "barks": "Ladridos",
+      "squeakers": "Chirriadores"
+    },
     "cats": {
       "barks": "Ladridos",
       "whines": "Gemidos",
@@ -333,6 +364,8 @@
   "more": {
     "dogs": "Tus perros",
     "links": {
+      "training": "Entrenar",
+      "history": "Historial",
       "mood": "Diario de ánimo",
       "quiz": "Quiz diario",
       "sounds": "Biblioteca de sonidos",

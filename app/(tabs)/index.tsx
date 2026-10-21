@@ -1,5 +1,5 @@
 import { useRouter, type Href } from 'expo-router';
-import { AudioLines, Bell, Flame, Gamepad2, GraduationCap, Lightbulb, MessageCircle, Mic, MousePointerClick, Music, Palette, Plus, ScanFace, Volume2, type LucideIcon } from 'lucide-react-native';
+import { ArrowRight, AudioLines, ChevronRight, Flame, Gamepad2, GraduationCap, Lightbulb, MessageCircle, Mic, MousePointerClick, Music, Palette, Plus, ScanFace, type LucideIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { DonutRing } from '@/components/DonutRing';
@@ -9,15 +9,15 @@ import { dayKey, streak, useJournal } from '@/features/journal/store';
 import i18n from '@/localization';
 import { color, mood as moodTokens, radius, shadow, type, type Mood } from '@/theme/tokens';
 
-const SHORTCUTS: { key: string; Icon: LucideIcon; href: Href }[] = [
-  { key: 'sounds', Icon: Music, href: '/sounds' },
-  { key: 'whistle', Icon: AudioLines, href: '/whistle' },
-  { key: 'clicker', Icon: MousePointerClick, href: '/clicker' },
-  { key: 'scanner', Icon: ScanFace, href: '/scanner' },
-  { key: 'games', Icon: Gamepad2, href: '/games/bee' },
-  { key: 'training', Icon: GraduationCap, href: '/(tabs)/training' },
-  { key: 'assistant', Icon: MessageCircle, href: '/assistant' },
-  { key: 'portraits', Icon: Palette, href: '/portraits' },
+const SHORTCUTS: { key: string; Icon: LucideIcon; href: Href; tint: { bg: string; fg: string } }[] = [
+  { key: 'sounds', Icon: Music, href: '/sounds', tint: { bg: '#FFF1CC', fg: '#B07800' } },
+  { key: 'whistle', Icon: AudioLines, href: '/whistle', tint: { bg: '#E3EDFF', fg: '#2F5BD3' } },
+  { key: 'clicker', Icon: MousePointerClick, href: '/clicker', tint: { bg: '#DFF5E8', fg: '#1E8A4C' } },
+  { key: 'scanner', Icon: ScanFace, href: '/scanner', tint: { bg: '#EFE5FF', fg: '#6B3FD4' } },
+  { key: 'games', Icon: Gamepad2, href: '/games/bee', tint: { bg: '#FFE3EC', fg: '#C22E63' } },
+  { key: 'training', Icon: GraduationCap, href: '/training', tint: { bg: '#DDF4F4', fg: '#127C7C' } },
+  { key: 'assistant', Icon: MessageCircle, href: '/assistant', tint: { bg: '#E6E8FF', fg: '#3F48C9' } },
+  { key: 'portraits', Icon: Palette, href: '/portraits', tint: { bg: '#FFE9DC', fg: '#C2531B' } },
 ];
 
 export default function Home() {
@@ -41,75 +41,68 @@ export default function Home() {
   const greeting = hour < 12 ? 'home.greetingMorning' : hour < 18 ? 'home.greetingAfternoon' : 'home.greetingEvening';
 
   return (
-    <Screen>
-      <Text style={[type.overline, { color: color.textSecondary }]}>{new Date().toLocaleDateString(i18n.language, { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase()}</Text>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <View style={{ flex: 1 }}><T.Title>{t(greeting, { name })}</T.Title></View>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('more.notifications')} onPress={() => router.push('/(tabs)/more')} style={[{ width: 44, height: 44, borderRadius: 22, backgroundColor: color.surface, alignItems: 'center', justifyContent: 'center' }, shadow.card]}>
-          <Bell size={20} color={color.text} />
+    <Screen style={{ gap: 20, paddingBottom: 40 }}>
+      {/* Hero: greeting, today's mood and the active dog */}
+      <View style={[{ borderRadius: radius.xl, overflow: 'hidden', backgroundColor: color.brandStrong, padding: 20, gap: 16 }, shadow.raised]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+          <View style={{ flex: 1, gap: 4 }}>
+            <Text style={[type.overline, { color: color.onBrandMuted }]}>{new Date().toLocaleDateString(i18n.language, { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase()}</Text>
+            <Text style={[type.title2, { color: color.onBrand }]}>{t(greeting, { name })}</Text>
+          </View>
+          <DonutRing size={84} segments={ranked.map((m) => ({ value: counts[m], color: moodTokens[m].fg }))}>
+            <DogAvatar name={name} uri={dog?.photoUri} size={64} />
+          </DonutRing>
+        </View>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/mood')} style={{ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12, borderRadius: radius.md, backgroundColor: 'rgba(255,255,255,0.1)' }}>
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text style={[type.caption, { color: color.onBrandMuted }]}>{t('home.todaysMood').toUpperCase()}</Text>
+            <Text style={[type.headline, { color: color.onBrand }]}>{top ? t(`moods.${top}`) : t('home.noMood')}</Text>
+          </View>
+          {top ? <MoodBadge mood={top} label={t(`moods.${top}`)} /> : null}
+          <ChevronRight size={20} color={color.onBrandMuted} />
         </Pressable>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 16, paddingVertical: 4 }}>
-        {dogs.map((d) => (
-          <Pressable key={d.id} accessibilityRole="button" accessibilityState={{ selected: d.id === dog?.id }} onPress={() => setActive(d.id)} style={{ alignItems: 'center', gap: 4 }}>
-            <DogAvatar name={d.name} uri={d.photoUri} size={56} selected={d.id === dog?.id} />
-            <Text style={[type.caption, { color: d.id === dog?.id ? color.brandStrong : color.textSecondary }]}>{d.name}</Text>
-          </Pressable>
-        ))}
-        <Pressable accessibilityRole="button" accessibilityLabel={t('home.addDog')} onPress={() => router.push('/dog/new')} style={{ alignItems: 'center', gap: 4 }}>
-          <View style={{ width: 56, height: 56, borderRadius: 28, borderWidth: 1.5, borderStyle: 'dashed', borderColor: color.textTertiary, alignItems: 'center', justifyContent: 'center' }}>
-            <Plus size={22} color={color.textSecondary} />
-          </View>
-          <Text style={[type.caption, { color: color.textSecondary }]}>{t('home.addDog')}</Text>
-        </Pressable>
-      </ScrollView>
-
-      <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-        <View style={{ flex: 1, gap: 6 }}>
-          <T.Overline>{t('home.todaysMood')}</T.Overline>
-          <Text style={[type.title2, { color: color.text }]}>{top ? t(`moods.${top}`) : t('home.noMood')}</Text>
-          {ranked.length ? (
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
-              {ranked.slice(0, 2).map((m) => <MoodBadge key={m} mood={m} label={t(`moods.${m}`)} />)}
+      {/* Dog switcher only when there's something to switch between */}
+      {dogs.length > 1 ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 14 }}>
+          {dogs.map((d) => (
+            <Pressable key={d.id} accessibilityRole="button" accessibilityState={{ selected: d.id === dog?.id }} onPress={() => setActive(d.id)} style={{ alignItems: 'center', gap: 4 }}>
+              <DogAvatar name={d.name} uri={d.photoUri} size={52} selected={d.id === dog?.id} />
+              <Text style={[type.caption, { color: d.id === dog?.id ? color.brandStrong : color.textSecondary }]}>{d.name}</Text>
+            </Pressable>
+          ))}
+          <Pressable accessibilityRole="button" accessibilityLabel={t('home.addDog')} onPress={() => router.push('/dog/new')} style={{ alignItems: 'center', gap: 4 }}>
+            <View style={{ width: 52, height: 52, borderRadius: 26, borderWidth: 1.5, borderStyle: 'dashed', borderColor: color.textTertiary, alignItems: 'center', justifyContent: 'center' }}>
+              <Plus size={20} color={color.textSecondary} />
             </View>
-          ) : <T.Body>{t('home.noMoodBody', { name })}</T.Body>}
-          {latest ? <T.Body>{t('home.latest', { text: latest.text })}</T.Body> : null}
-          <Pressable accessibilityRole="button" onPress={() => router.push('/mood')}>
-            <Text style={[type.subheadStrong, { color: color.brandStrong }]}>{t('home.viewDetails')} ›</Text>
+            <Text style={[type.caption, { color: color.textSecondary }]}>{t('home.addDog')}</Text>
           </Pressable>
-        </View>
-        <DonutRing size={104} segments={ranked.map((m) => ({ value: counts[m], color: moodTokens[m].fg }))}>
-          <DogAvatar name={name} uri={dog?.photoUri} size={76} />
-        </DonutRing>
-      </Card>
+        </ScrollView>
+      ) : null}
 
       <View style={{ flexDirection: 'row', gap: 12 }}>
-        <BigCard dark Icon={Mic} title={t('home.barkToHuman')} body={t('home.barkToHumanBody', { name })} cta={t('home.record')} onPress={() => router.push('/(tabs)/translate')} />
-        <BigCard Icon={Volume2} title={t('home.humanToDog')} body={t('home.humanToDogBody')} cta={t('home.speakOrType')} onPress={() => router.push('/talk')} />
+        <ModeCard dark from="🐶" to="🗣️" title={t('home.barkToHuman')} body={t('home.barkToHumanBody', { name })} onPress={() => router.push('/(tabs)/translate?mode=bark')} />
+        <ModeCard from="🗣️" to="🐶" title={t('home.humanToDog')} body={t('home.humanToDogBody')} onPress={() => router.push('/(tabs)/translate?mode=human')} />
       </View>
 
-      <T.Head>{t('home.tools')}</T.Head>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
-        {SHORTCUTS.map(({ key, Icon, href }) => (
-          <Pressable
-            key={key}
-            accessibilityRole="button"
-            accessibilityLabel={t(`shortcuts.${key}`)}
-            onPress={() => router.push(href)}
-            style={{ width: '22%', flexGrow: 1, alignItems: 'center', gap: 6 }}
-          >
-            <View style={[{ width: 56, height: 56, borderRadius: radius.md, backgroundColor: color.surface, alignItems: 'center', justifyContent: 'center' }, shadow.card]}>
-              <Icon size={24} color={color.brandStrong} />
-            </View>
-            <Text style={[type.caption, { color: color.text }]}>{t(`shortcuts.${key}`)}</Text>
-          </Pressable>
-        ))}
+      <View style={{ gap: 12 }}>
+        <T.Head>{t('home.tools')}</T.Head>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', rowGap: 16 }}>
+          {SHORTCUTS.map(({ key, Icon, href, tint }) => (
+            <Pressable key={key} accessibilityRole="button" accessibilityLabel={t(`shortcuts.${key}`)} onPress={() => router.push(href)} style={({ pressed }) => ({ width: '25%', alignItems: 'center', gap: 6, opacity: pressed ? 0.7 : 1 })}>
+              <View style={{ width: 58, height: 58, borderRadius: 18, backgroundColor: tint.bg, alignItems: 'center', justifyContent: 'center' }}>
+                <Icon size={26} color={tint.fg} />
+              </View>
+              <Text numberOfLines={1} style={[type.caption, { color: color.text }]}>{t(`shortcuts.${key}`)}</Text>
+            </Pressable>
+          ))}
+        </View>
       </View>
 
       <Pressable accessibilityRole="button" onPress={() => router.push('/quiz')}>
-        <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: color.brandSoft }}>
-          <View style={{ width: 44, height: 44, borderRadius: radius.sm, backgroundColor: color.highlight, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, borderRadius: radius.lg, backgroundColor: color.brandSoft }}>
+          <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: color.highlight, alignItems: 'center', justifyContent: 'center' }}>
             <Lightbulb size={22} color={color.textHighlight} />
           </View>
           <View style={{ flex: 1 }}>
@@ -120,40 +113,50 @@ export default function Home() {
             <Flame size={14} color="#F59A4A" />
             <Text style={[type.caption, { color: color.text }]}>{t('quiz.streak', { count: streak(Object.keys(quiz).map((d) => new Date(d).getTime())) })}</Text>
           </View>
-        </Card>
+        </View>
       </Pressable>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <T.Head>{t('home.recent')}</T.Head>
-        <Pressable accessibilityRole="button" onPress={() => router.push('/(tabs)/history')}><Text style={[type.subheadStrong, { color: color.textAccent }]}>{t('home.seeAll')}</Text></Pressable>
-      </View>
-      {entries.length === 0 ? <T.Body>{t('home.noRecent')}</T.Body> : entries.slice(0, 3).map((e) => (
-        <Card key={e.id} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <DogAvatar name={name} uri={dog?.photoUri} size={40} />
-          <View style={{ flex: 1, gap: 6 }}>
-            <Text numberOfLines={1} style={[type.headline, { color: color.text }]}>“{e.text}”</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <MoodBadge mood={e.mood} label={t(`moods.${e.mood}`)} />
-              <Text style={[type.footnote, { color: color.textSecondary }]}>{name} · {new Date(e.at).toLocaleString(i18n.language, { dateStyle: 'short', timeStyle: 'short' })}</Text>
-            </View>
+      {entries.length > 0 ? (
+        <View style={{ gap: 10 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <T.Head>{t('home.recent')}</T.Head>
+            <Pressable accessibilityRole="button" onPress={() => router.push('/history')}><Text style={[type.subheadStrong, { color: color.textAccent }]}>{t('home.seeAll')}</Text></Pressable>
           </View>
-        </Card>
-      ))}
+          {entries.slice(0, 3).map((e) => (
+            <Card key={e.id} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+              <View style={{ width: 6, alignSelf: 'stretch', borderRadius: 3, backgroundColor: moodTokens[e.mood].fg }} />
+              <View style={{ flex: 1, gap: 6 }}>
+                <Text numberOfLines={1} style={[type.headline, { color: color.text }]}>“{e.text}”</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <MoodBadge mood={e.mood} label={t(`moods.${e.mood}`)} />
+                  <Text style={[type.footnote, { color: color.textSecondary }]}>{new Date(e.at).toLocaleString(i18n.language, { dateStyle: 'short', timeStyle: 'short' })}</Text>
+                </View>
+              </View>
+            </Card>
+          ))}
+        </View>
+      ) : null}
     </Screen>
   );
 }
 
-function BigCard({ Icon, title, body, cta, onPress, dark }: { Icon: LucideIcon; title: string; body: string; cta: string; onPress: () => void; dark?: boolean }) {
+/** Big entry card for a translation direction, with the same 🐶 → 🗣️ badges as the record screen. */
+function ModeCard({ from, to, title, body, onPress, dark }: { from: string; to: string; title: string; body: string; onPress: () => void; dark?: boolean }) {
   const fg = dark ? color.onBrand : color.text;
   return (
-    <Pressable accessibilityRole="button" onPress={onPress} style={{ flex: 1 }}>
-      <View style={[{ borderRadius: radius.lg, padding: 16, gap: 8, minHeight: 176, backgroundColor: dark ? color.brandStrong : color.brandSoft }, shadow.card]}>
-        <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: dark ? color.primary : color.surface, alignItems: 'center', justifyContent: 'center' }}>
-          <Icon size={20} color={dark ? color.onPrimary : color.brandStrong} />
+    <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => ({ flex: 1, transform: [{ scale: pressed ? 0.97 : 1 }] })}>
+      <View style={[{ borderRadius: radius.lg, padding: 16, gap: 10, minHeight: 172, overflow: 'hidden', backgroundColor: dark ? color.brandStrong : color.brandSoft }, shadow.card]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+          <Text style={{ fontSize: 26 }}>{from}</Text>
+          <ArrowRight size={16} color={dark ? color.primary : color.textAccent} strokeWidth={3} />
+          <Text style={{ fontSize: 26 }}>{to}</Text>
         </View>
         <Text style={[type.title3, { color: fg }]}>{title}</Text>
-        <Text style={[type.footnote, { color: dark ? color.onBrandMuted : color.textSecondary }]}>{body}</Text>
-        <Text style={[type.subheadStrong, { color: fg, marginTop: 'auto' }]}>{cta} ›</Text>
+        <Text numberOfLines={3} style={[type.footnote, { color: dark ? color.onBrandMuted : color.textSecondary }]}>{body}</Text>
+        <View style={{ marginTop: 'auto', alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, height: 32, borderRadius: radius.full, backgroundColor: dark ? color.primary : color.surface }}>
+          <Mic size={14} color={dark ? color.onPrimary : color.brandStrong} />
+          <Text style={[type.caption, { color: dark ? color.onPrimary : color.brandStrong, fontWeight: '700' }]}>{title}</Text>
+        </View>
       </View>
     </Pressable>
   );

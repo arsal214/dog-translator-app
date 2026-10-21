@@ -15,10 +15,10 @@ import { color, type } from '@/theme/tokens';
 const LINKS: { key: string; href: Href }[] = [
   { key: 'mood', href: '/mood' },
   { key: 'quiz', href: '/quiz' },
-  { key: 'sounds', href: '/sounds' },
+  { key: 'history', href: '/history' },
   { key: 'talk', href: '/talk' },
   { key: 'assistant', href: '/assistant' },
-  { key: 'scanner', href: '/scanner' },
+  { key: 'training', href: '/training' },
   { key: 'portraits', href: '/portraits' },
   { key: 'bee', href: '/games/bee' },
   { key: 'laser', href: '/games/laser' },

@@ -1,0 +1,387 @@
+{
+  "common": {
+    "continue": "Weiter",
+    "skip": "Überspringen",
+    "back": "Zurück",
+    "save": "Speichern",
+    "share": "Teilen",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "retry": "Erneut versuchen"
+  },
+  "tabs": {
+    "home": "Start",
+    "history": "Verlauf",
+    "translate": "Übersetzen",
+    "training": "Training",
+    "more": "Mehr"
+  },
+  "onboarding": {
+    "s1Title": "Erfahre, was jedes Bellen bedeuten könnte",
+    "s1Body": "Nimm ein Bellen auf und erhalte eine spielerische, KI-gestützte Einschätzung der wahrscheinlichen Stimmung und Absicht deines Hundes – mit ehrlichen Vertrauensstufen.",
+    "s2Title": "Antworte mit Hundegeräuschen",
+    "s2Body": "Tippe oder sprich einen Satz und spiele ihn als lustiges Bellen mit der Stimme eines kleinen, mittleren oder großen Hundes ab.",
+    "s3Title": "Spielen, trainieren und Spaß teilen",
+    "s3Body": "Spiele für Hunde, Training Schritt für Schritt, Stimmungstagebuch und KI-Porträts. Mach aus jedem Moment etwas zum Teilen.",
+    "getStarted": "Los geht’s"
+  },
+  "profile": {
+    "createTitle": "Erzähl uns von deinem Hund",
+    "name": "Name des Hundes",
+    "namePlaceholder": "z. B. Biscuit",
+    "breed": "Rasse (optional)",
+    "breedPlaceholder": "Golden Retriever, Mischling, weiß nicht…",
+    "age": "Alter",
+    "ageOptions": {
+      "puppy": "Welpe",
+      "adult": "Erwachsen",
+      "senior": "Senior"
+    },
+    "traits": "Persönlichkeit (bis zu 4)",
+    "traitOptions": {
+      "playful": "Verspielt",
+      "vocal": "Gesprächig",
+      "cuddly": "Verschmust",
+      "curious": "Neugierig",
+      "shy": "Schüchtern",
+      "energetic": "Energiegeladen",
+      "calm": "Ruhig",
+      "protective": "Beschützend"
+    },
+    "voice": "Standardstimme zum Antworten",
+    "voiceOptions": {
+      "small": "Klein",
+      "medium": "Mittel",
+      "big": "Groß"
+    },
+    "nameRequired": "Bitte gib den Namen deines Hundes ein",
+    "create": "Profil erstellen",
+    "addDog": "Hund hinzufügen",
+    "addPhoto": "Foto hinzufügen",
+    "photoHint": "Wird für das Profil, den KI-Scanner und Porträts verwendet. Du kannst es jederzeit ändern.",
+    "voiceHints": {
+      "small": "Höher",
+      "medium": "Ausgewogen",
+      "big": "Tief & warm"
+    }
+  },
+  "moods": {
+    "happy": "Glücklich",
+    "excited": "Aufgeregt",
+    "calm": "Ruhig",
+    "anxious": "Ängstlich",
+    "playful": "Verspielt",
+    "alert": "Wachsam"
+  },
+  "errors": {
+    "not_configured": "Der Online-Dienst ist noch nicht eingerichtet. Lokale Werkzeuge funktionieren weiterhin.",
+    "offline": "Du scheinst offline zu sein. Prüfe deine Verbindung und versuche es erneut.",
+    "unauthorized": "Wir konnten keine Sitzung starten. Bitte versuche es erneut.",
+    "free_limit_reached": "Du hast die kostenlosen Analysen für heute aufgebraucht. Mit Pro bekommst du mehr.",
+    "daily_limit_reached": "Du hast das heutige Limit erreicht. Komm morgen wieder.",
+    "audio_too_quiet_or_short": "Die Aufnahme war zu kurz oder zu leise. Versuche es näher an deinem Hund.",
+    "image_too_large": "Dieses Foto ist zu groß. Versuche ein anderes.",
+    "unsupported_image": "Dieses Bildformat wird nicht unterstützt. Verwende ein JPEG-, PNG- oder WebP-Foto.",
+    "ai_not_configured": "Der KI-Dienst ist noch nicht eingerichtet.",
+    "portrait_provider_not_configured": "Porträts sind noch nicht verfügbar.",
+    "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "unsupported_audio": "Derzeit können nur WAV-Dateien importiert werden. Nimm direkt auf oder konvertiere deine Datei in WAV.",
+    "audio_too_long": "Diese Datei ist länger als 30 Sekunden. Kürze sie und versuche es erneut."
+  },
+  "home": {
+    "greetingMorning": "Guten Morgen, {{name}}",
+    "greetingAfternoon": "Guten Tag, {{name}}",
+    "greetingEvening": "Guten Abend, {{name}}",
+    "todaysMood": "Stimmung heute",
+    "noMood": "Noch keine Stimmungen",
+    "noMoodBody": "Nimm ein Bellen auf, um das Stimmungstagebuch von {{name}} zu starten.",
+    "barkToHuman": "Bellen → Mensch",
+    "barkToHumanBody": "Finde heraus, was {{name}} sagen könnte",
+    "record": "Aufnehmen",
+    "humanToDog": "Mensch → Hund",
+    "humanToDogBody": "Antworte mit einer Hundestimme",
+    "speakOrType": "Satz wählen",
+    "shortcuts": "Kurzbefehle",
+    "recent": "Letzte Übersetzungen",
+    "noRecent": "Noch nichts da",
+    "dailyQuiz": "Tägliches Hunde-Quiz",
+    "dailyQuizBody": "3 Fragen · 1 Min.",
+    "tools": "Tools & Spaß",
+    "addDog": "Hund hinzufügen",
+    "viewDetails": "Details ansehen",
+    "latest": "Zuletzt: {{text}}",
+    "seeAll": "Alle ansehen"
+  },
+  "shortcuts": {
+    "sounds": "Geräusche",
+    "whistle": "Pfeife",
+    "clicker": "Clicker",
+    "scanner": "Scanner",
+    "games": "Spiele",
+    "training": "Training",
+    "assistant": "Assistent",
+    "portraits": "Porträts"
+  },
+  "translate": {
+    "title": "Was sagt {{name}}?",
+    "hint": "Tippe, um ein Bellen aufzunehmen (bis zu 10 Sekunden).",
+    "listening": "Ich höre zu … tippe zum Beenden.",
+    "stop": "Aufnahme beenden",
+    "analyzing": "Wird analysiert …",
+    "privacy": "Deine Aufnahme bleibt auf deinem Telefon und wird direkt danach gelöscht. Nur einfache Messwerte (Lautstärke und Timing) werden zur Analyse gesendet.",
+    "micTitle": "Mikrofonzugriff erforderlich",
+    "micBody": "Erlaube in den Einstellungen den Mikrofonzugriff, um deinen Hund aufzunehmen.",
+    "openSettings": "Einstellungen öffnen",
+    "resultTitle": "{{name}} könnte sagen …",
+    "intensity": "Intensität {{n}}/5",
+    "confidence": {
+      "low": "Geringe Sicherheit",
+      "medium": "Mittlere Sicherheit",
+      "high": "Hohe Sicherheit"
+    },
+    "disclaimer": "Experimentell und nur zum Spaß. Dies ist eine KI-gestützte Vermutung auf Basis einfacher Klangmessungen, keine wissenschaftlich geprüfte Übersetzung. Achte auch auf die Körpersprache deines Hundes.",
+    "saved": "Gespeichert",
+    "shareText": "{{name}} könnte sagen: „{{text}}“ (Dog Translator)",
+    "again": "Erneut aufnehmen",
+    "errorTitle": "Übersetzung nicht möglich",
+    "import": "WAV-Datei importieren",
+    "shareImage": "Als Bild teilen",
+    "possibleEmotions": "Mögliche Emotionen",
+    "estimated": "Geschätzt",
+    "replay": "Wiederholen",
+    "intensityLabel": "Intensität",
+    "heading": "Tippe auf das Mikro und lass {{name}} bellen",
+    "sub": "Nimm bis zu 10 Sekunden auf. Wir schlagen vor, was das Bellen bedeuten könnte.",
+    "listeningFor": "Höre {{name}} zu",
+    "upload": "Audio hochladen",
+    "tip": "Beste Ergebnisse: ruhiger Raum, Handy 1–2 m entfernt, nur ein Hund bellt.",
+    "recordingBadge": "Aufnahme",
+    "ofMax": "von 0:10 max.",
+    "pause": "Pause",
+    "resume": "Fortsetzen",
+    "tapStop": "Tippe auf Stopp, wenn {{name}} fertig ist",
+    "uploadTitle": "Bellen hochladen",
+    "uploadBody": "Nutze einen Clip von bis zu 30 Sekunden. Wir messen das Bellen automatisch.",
+    "chooseFiles": "Aus Dateien wählen",
+    "formats": "Vorerst nur WAV",
+    "feedbackQ": "Fühlt sich das richtig an?",
+    "yes": "Ja",
+    "notReally": "Nicht wirklich",
+    "thanks": "Danke für dein Feedback!",
+    "justNow": "Gerade eben · {{s}} s Bellen",
+    "levelLow": "Niedrig",
+    "levelMedium": "Mittel",
+    "levelHigh": "Hoch"
+  },
+  "history": {
+    "empty": "Noch keine gespeicherten Ergebnisse für {{name}}.",
+    "openDiary": "Stimmungstagebuch öffnen",
+    "clear": "Verlauf löschen",
+    "clearTitle": "Verlauf löschen?",
+    "clearBody": "Damit werden alle gespeicherten Ergebnisse dieses Hundes von diesem Telefon gelöscht.",
+    "kind": {
+      "bark": "KI-gestützte Bell-Interpretation",
+      "scan": "KI-Fotobeobachtung",
+      "user": "Deine Beobachtung"
+    }
+  },
+  "mood": {
+    "title": "Stimmungstagebuch",
+    "disclaimer": "Das sind KI-gestützte oder selbst erfasste Beobachtungen, keine objektiven Messungen der Gefühle deines Hundes.",
+    "week": "Diese Woche",
+    "weekEmpty": "Diese Woche noch keine Einträge.",
+    "addTitle": "Wie geht es {{name}} heute?",
+    "note": "Notiz (optional)",
+    "noNote": "Keine Notiz"
+  },
+  "training": {
+    "streak_one": "{{count}} Tag in Folge",
+    "streak_other": "{{count}} Tage in Folge",
+    "progress": "{{done}} von {{total}} Lektionen abgeschlossen",
+    "notFound": "Lektion nicht gefunden.",
+    "proOnly": "Diese Lektion ist Teil von Pro.",
+    "openClicker": "Clicker öffnen",
+    "markDone": "Lektion als abgeschlossen markieren",
+    "humane": "Halte die Einheiten kurz und positiv. Bestrafe oder erschrecke deinen Hund nie."
+  },
+  "sounds": {
+    "title": "Geräuschebibliothek",
+    "emptyTitle": "Geräuschpakete sind noch nicht installiert",
+    "emptyBody": "Die Bibliothek lädt lizenzierte Geräusche aus dem Geräuschpaket der App. Füge die Audiodateien hinzu und trage sie im Katalog ein, um sie zu aktivieren.",
+    "search": "Geräusche suchen",
+    "favorites": "Favoriten",
+    "cats": {
+      "barks": "Bellen",
+      "whines": "Winseln",
+      "growls": "Knurren",
+      "howls": "Heulen",
+      "playful": "Verspielt",
+      "attention": "Aufmerksamkeit",
+      "squeaky": "Quietschspielzeug",
+      "doorbell": "Türklingel",
+      "training": "Training"
+    }
+  },
+  "talk": {
+    "title": "Mensch → Hund",
+    "disclaimer": "Diese Geräusche sind spielerisch und vermitteln deinem Hund möglicherweise keinen Satz. Beobachte seine Reaktion.",
+    "phrases": {
+      "come": "Komm her",
+      "sit": "Sitz",
+      "stay": "Bleib",
+      "goodDog": "Braver Hund",
+      "play": "Lass uns spielen",
+      "outside": "Komm raus"
+    },
+    "volume": "Lautstärke {{pct}} %",
+    "welfare": "Halte die Lautstärke niedrig, spiele Geräusche nur kurz ab und höre auf, wenn dein Hund gestresst wirkt.",
+    "play": "Abspielen",
+    "noPack": "Das Hundegeräusch-Paket ist noch nicht installiert, daher hat dieser Satz keinen Ton.",
+    "type": "Tippe oder sprich einen Satz",
+    "placeholder": "z. B. komm her",
+    "speak": "Sprechen",
+    "listening": "Ich höre zu …",
+    "noMatch": "Diesen Satz habe ich nicht erkannt. Wähle unten einen aus.",
+    "voiceUnavailable": "Spracherkennung ist nicht verfügbar oder die Berechtigung wurde verweigert.",
+    "speakTab": "Sprechen",
+    "typeTab": "Tippen",
+    "playAs": "Abspielen · Stimme: {{voice}}",
+    "tryTraining": "Für echte Signale probiere das Training"
+  },
+  "games": {
+    "bee": "Jage die Biene",
+    "laser": "Laser",
+    "mouse": "Quietschmaus",
+    "safety": "Beaufsichtige das Spiel. Nicht jeder Hund mag Bildschirmspiele – beende es, wenn dein Hund gestresst ist, und lass ihn nicht in den Bildschirm beißen oder kratzen.",
+    "target": "Bewegtes Ziel",
+    "start": "Start",
+    "pause": "Pause",
+    "restart": "Neustart"
+  },
+  "quiz": {
+    "title": "Tägliches Quiz",
+    "fact": "Fakt des Tages",
+    "streak_one": "{{count}} Tag in Folge",
+    "streak_other": "{{count}} Tage in Folge",
+    "question": "Frage {{n}} von {{total}}",
+    "correct": "Richtig!",
+    "incorrect": "Nicht ganz.",
+    "done": "Du hast heute {{score}} von {{total}} erreicht. Komm morgen wieder!"
+  },
+  "assistant": {
+    "title": "Hunde-Assistent",
+    "clear": "Leeren",
+    "disclaimer": "Nur allgemeine Tipps zu Pflege und Training. Ich bin kein Tierarzt. Bei dringenden Symptomen wende dich sofort an einen Tierarzt.",
+    "typing": "Denke nach …",
+    "placeholder": "Frag etwas zu {{name}} …",
+    "send": "Senden"
+  },
+  "scanner": {
+    "title": "KI-Scanner",
+    "disclaimer": "Rassen sind Schätzungen, und ein Foto kann nicht zeigen, wie sich ein Hund fühlt. Kein tierärztlicher Rat.",
+    "photo": "Ausgewähltes Hundefoto",
+    "camera": "Foto aufnehmen",
+    "library": "Aus Mediathek wählen",
+    "permission": "Fotozugriff ist erforderlich. Aktiviere ihn in den Einstellungen.",
+    "consent": "Wenn du auf Analysieren tippst, wird dieses Foto sicher zur Analyse gesendet, einmal verwendet und nicht gespeichert.",
+    "agree": "Verstanden",
+    "analyze": "Foto analysieren",
+    "notDog": "Auf diesem Foto war kein Hund zu sehen. Versuche ein anderes.",
+    "breeds": "Mögliche Rassen",
+    "likelihood": {
+      "low": "weniger wahrscheinlich",
+      "medium": "möglich",
+      "high": "wahrscheinlich"
+    },
+    "traits": "Sichtbare Merkmale",
+    "cues": "Sichtbare Signale (keine Stimmungsdiagnose)",
+    "care": "Allgemeine Pflege",
+    "followUps": "Fragen zum Weiterforschen"
+  },
+  "portraits": {
+    "title": "KI-Porträts",
+    "body": "Verwandle das Foto deines Hundes in ein stilisiertes Porträt. Pro-Funktion.",
+    "styles": {
+      "sticker": "Sticker",
+      "cartoon": "Cartoon",
+      "royal": "Königlich"
+    },
+    "pick": "Foto wählen",
+    "generate": "Erstellen",
+    "result": "Erstelltes Porträt"
+  },
+  "paywall": {
+    "title": "Alles, was dein Hund liebt, an einem Ort",
+    "body": "Hol dir Pro für das ganze Rudel.",
+    "benefits": {
+      "dogs": "Mehrere Hundeprofile",
+      "sounds": "Komplette Geräuschebibliothek",
+      "ai": "Mehr KI-Übersetzungen, Scans und Chats",
+      "training": "Mittleres und fortgeschrittenes Training",
+      "portraits": "Premium-Porträts"
+    },
+    "seePro": "Pro ansehen",
+    "subscribe": "Weiter",
+    "restore": "Käufe wiederherstellen",
+    "failed": "Der Kauf wurde nicht abgeschlossen. Dir wurde nichts berechnet.",
+    "restored": "Käufe wiederhergestellt.",
+    "nothingToRestore": "Keine aktiven Käufe gefunden.",
+    "youArePro": "Du bist Pro. Danke!",
+    "unavailable": "Die Tarife können gerade nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.",
+    "disclosure": "Die Zahlung wird deinem Store-Konto belastet. Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ablauf des Zeitraums gekündigt werden. Verwalten oder kündigen kannst du jederzeit in den Kontoeinstellungen deines Stores."
+  },
+  "more": {
+    "dogs": "Deine Hunde",
+    "links": {
+      "mood": "Stimmungstagebuch",
+      "quiz": "Tägliches Quiz",
+      "sounds": "Geräuschebibliothek",
+      "talk": "Mensch → Hund",
+      "assistant": "Hunde-Assistent",
+      "scanner": "KI-Scanner",
+      "portraits": "KI-Porträts",
+      "bee": "Spiel: Jage die Biene",
+      "laser": "Spiel: Laser",
+      "mouse": "Spiel: Quietschmaus"
+    },
+    "notifications": "Trainingserinnerungen",
+    "terms": "Bedingungen",
+    "privacy": "Datenschutz",
+    "privacyNote": "Deine Aufnahmen und Fotos werden nie gespeichert. Der Verlauf bleibt auf diesem Telefon.",
+    "deleteAccount": "Meine Daten löschen",
+    "deleteAccountBody": "Damit werden deine Hunde, dein Verlauf und alle Online-Kontodaten von diesem Telefon und unseren Servern entfernt.",
+    "language": "Sprache",
+    "reminderLabel": "Tägliche Trainingserinnerung (18 Uhr)",
+    "notificationsDenied": "Benachrichtigungen sind ausgeschaltet. Aktiviere sie in den Einstellungen."
+  },
+  "reminder": {
+    "title": "Zeit fürs Training!",
+    "body": "Eine kurze, lustige Einheit mit {{name}} hält die Fähigkeiten frisch."
+  },
+  "clicker": {
+    "title": "Clicker",
+    "hint": "Tippe zum Klicken. Markiere genau den Moment, in dem dein Hund etwas richtig macht, und belohne dann.",
+    "tone": "Klickton",
+    "tones": {
+      "soft": "Weich",
+      "classic": "Klassisch",
+      "sharp": "Scharf"
+    },
+    "sound": "Ton",
+    "haptics": "Haptik"
+  },
+  "whistle": {
+    "title": "Hundepfeife",
+    "frequency": "Frequenz",
+    "presets": {
+      "sit": "Sitz",
+      "stay": "Bleib",
+      "come": "Komm",
+      "recall": "Abruf"
+    },
+    "play": "Abspielen",
+    "stop": "Stopp",
+    "limitations": "Handylautsprecher geben sehr hohe Frequenzen möglicherweise nicht zuverlässig wieder. Hunde hören höher als Menschen: Halte die Lautstärke niedrig, die Einheiten kurz und höre auf, wenn sich dein Hund unwohl fühlt.",
+    "autoStop": "Die Wiedergabe stoppt automatisch nach {{seconds}} Sekunden."
+  }
+}

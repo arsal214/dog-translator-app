@@ -1,0 +1,124 @@
+{
+  "expo": {
+    "name": "Dog Translator",
+    "slug": "dog-translator",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "dogtranslator",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.aidog.translator",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Dog Translator uses the microphone to hear the phrase you want to play.",
+        "NSPhotoLibraryUsageDescription": "Dog Translator uses your photos for your dog's profile, the breed scanner and portraits.",
+        "NSCameraUsageDescription": "Dog Translator uses the camera to photograph your dog.",
+        "NSSpeechRecognitionUsageDescription": "Dog Translator uses speech recognition to turn your spoken phrase into text."
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
+    "android": {
+      "package": "com.aidog.translator",
+      "permissions": [
+        "RECORD_AUDIO",
+        "CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ],
+      "predictiveBackGestureEnabled": false,
+      "googleServicesFile": "./google-services.json"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-audio",
+      "expo-localization",
+      "expo-secure-store",
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "expo-widgets",
+        {
+          "bundleIdentifier": "com.aidog.translator.widgets",
+          "groupIdentifier": "group.com.aidog.translator",
+          "widgets": [
+            {
+              "name": "MoodWidget",
+              "displayName": "Today’s mood",
+              "description": "Your dog’s mood today",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "accessoryRectangular"
+                ],
+                "initialLayout": "./widgets/MoodWidget.tsx"
+              }
+            },
+            {
+              "name": "RecordWidget",
+              "displayName": "Quick record",
+              "description": "Jump straight into the app to record a bark",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "accessoryCircular"
+                ],
+                "initialLayout": "./widgets/RecordWidget.tsx"
+              }
+            }
+          ]
+        }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Dog Translator uses the microphone to hear the phrase you want to play.",
+          "speechRecognitionPermission": "Dog Translator uses speech recognition to turn your spoken phrase into text."
+        }
+      ],
+      "expo-sharing",
+      "expo-notifications",
+      "./plugins/withShortNativeBuildDir"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "ExpoWidgetsTarget",
+                  "bundleIdentifier": "com.aidog.translator.widgets",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.aidog.translator"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "projectId": "8dba6d75-5430-449c-8855-1987069fef52"
+      },
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,387 @@
+{
+  "common": {
+    "continue": "Continuar",
+    "skip": "Omitir",
+    "back": "Atrás",
+    "save": "Guardar",
+    "share": "Compartir",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "retry": "Reintentar"
+  },
+  "tabs": {
+    "home": "Inicio",
+    "history": "Historial",
+    "translate": "Traducir",
+    "training": "Entrenar",
+    "more": "Más"
+  },
+  "onboarding": {
+    "s1Title": "Descubre qué podría significar cada ladrido",
+    "s1Body": "Graba un ladrido y obtén una interpretación divertida, con ayuda de IA, del posible estado de ánimo e intención de tu perro, con niveles de confianza honestos.",
+    "s2Title": "Responde con sonidos de perro",
+    "s2Body": "Escribe o di una frase y reprodúcela como un ladrido divertido con voz de perro pequeño, mediano o grande.",
+    "s3Title": "Juega, entrena y comparte la diversión",
+    "s3Body": "Juegos para perros, entrenamiento paso a paso, diario de ánimo y retratos con IA. Convierte cualquier momento en algo para compartir.",
+    "getStarted": "Empezar"
+  },
+  "profile": {
+    "createTitle": "Cuéntanos sobre tu perro",
+    "name": "Nombre del perro",
+    "namePlaceholder": "p. ej. Biscuit",
+    "breed": "Raza (opcional)",
+    "breedPlaceholder": "Golden Retriever, mestizo, no estoy seguro…",
+    "age": "Edad",
+    "ageOptions": {
+      "puppy": "Cachorro",
+      "adult": "Adulto",
+      "senior": "Senior"
+    },
+    "traits": "Personalidad (elige hasta 4)",
+    "traitOptions": {
+      "playful": "Juguetón",
+      "vocal": "Ladrador",
+      "cuddly": "Cariñoso",
+      "curious": "Curioso",
+      "shy": "Tímido",
+      "energetic": "Enérgico",
+      "calm": "Tranquilo",
+      "protective": "Protector"
+    },
+    "voice": "Voz predeterminada para responder",
+    "voiceOptions": {
+      "small": "Pequeña",
+      "medium": "Mediana",
+      "big": "Grande"
+    },
+    "nameRequired": "Introduce el nombre de tu perro",
+    "create": "Crear perfil",
+    "addDog": "Añadir un perro",
+    "addPhoto": "Añadir una foto",
+    "photoHint": "Se usa para el perfil, el escáner con IA y los retratos. Puedes cambiarla cuando quieras.",
+    "voiceHints": {
+      "small": "Más agudo",
+      "medium": "Equilibrado",
+      "big": "Grave y cálido"
+    }
+  },
+  "moods": {
+    "happy": "Feliz",
+    "excited": "Emocionado",
+    "calm": "Tranquilo",
+    "anxious": "Ansioso",
+    "playful": "Juguetón",
+    "alert": "Alerta"
+  },
+  "errors": {
+    "not_configured": "El servicio en línea aún no está configurado. Las herramientas locales siguen funcionando.",
+    "offline": "Parece que no tienes conexión. Revisa tu conexión e inténtalo de nuevo.",
+    "unauthorized": "No pudimos iniciar la sesión. Inténtalo de nuevo.",
+    "free_limit_reached": "Has usado los análisis gratuitos de hoy. Pásate a Pro para tener más.",
+    "daily_limit_reached": "Has alcanzado el límite de hoy. Vuelve mañana.",
+    "audio_too_quiet_or_short": "La grabación fue demasiado corta o silenciosa. Inténtalo de nuevo más cerca de tu perro.",
+    "image_too_large": "Esa foto es demasiado grande. Prueba con otra.",
+    "unsupported_image": "Ese formato de imagen no es compatible. Usa una foto JPEG, PNG o WebP.",
+    "ai_not_configured": "El servicio de IA aún no está configurado.",
+    "portrait_provider_not_configured": "Los retratos todavía no están disponibles.",
+    "unknown": "Algo salió mal. Inténtalo de nuevo.",
+    "unsupported_audio": "Por ahora solo se pueden importar archivos WAV. Graba directamente o convierte tu archivo a WAV.",
+    "audio_too_long": "Ese archivo dura más de 30 segundos. Recórtalo e inténtalo de nuevo."
+  },
+  "home": {
+    "greetingMorning": "Buenos días, {{name}}",
+    "greetingAfternoon": "Buenas tardes, {{name}}",
+    "greetingEvening": "Buenas noches, {{name}}",
+    "todaysMood": "Ánimo de hoy",
+    "noMood": "Aún no hay estados de ánimo",
+    "noMoodBody": "Graba un ladrido para iniciar el diario de ánimo de {{name}}.",
+    "barkToHuman": "Ladrido → Humano",
+    "barkToHumanBody": "Descubre qué podría decir {{name}}",
+    "record": "Grabar",
+    "humanToDog": "Humano → Perro",
+    "humanToDogBody": "Responde con una voz de perro",
+    "speakOrType": "Elige una frase",
+    "shortcuts": "Accesos directos",
+    "recent": "Traducciones recientes",
+    "noRecent": "Aún no hay nada aquí",
+    "dailyQuiz": "Quiz diario de perros",
+    "dailyQuizBody": "3 preguntas · 1 min",
+    "tools": "Herramientas y diversión",
+    "addDog": "Añadir perro",
+    "viewDetails": "Ver detalles",
+    "latest": "Último: {{text}}",
+    "seeAll": "Ver todo"
+  },
+  "shortcuts": {
+    "sounds": "Sonidos",
+    "whistle": "Silbato",
+    "clicker": "Clicker",
+    "scanner": "Escáner",
+    "games": "Juegos",
+    "training": "Entrenar",
+    "assistant": "Asistente",
+    "portraits": "Retratos"
+  },
+  "translate": {
+    "title": "¿Qué dice {{name}}?",
+    "hint": "Toca para grabar un ladrido (hasta 10 segundos).",
+    "listening": "Escuchando… toca para detener.",
+    "stop": "Detener grabación",
+    "analyzing": "Analizando…",
+    "privacy": "Tu grabación se queda en tu teléfono y se borra justo después. Solo se envían mediciones simples (volumen y tiempos) para el análisis.",
+    "micTitle": "Se necesita acceso al micrófono",
+    "micBody": "Permite el acceso al micrófono en Ajustes para grabar a tu perro.",
+    "openSettings": "Abrir Ajustes",
+    "resultTitle": "{{name}} podría estar diciendo…",
+    "intensity": "Intensidad {{n}}/5",
+    "confidence": {
+      "low": "Confianza baja",
+      "medium": "Confianza media",
+      "high": "Confianza alta"
+    },
+    "disclaimer": "Experimental y solo por diversión. Es una suposición asistida por IA a partir de mediciones sencillas del sonido, no una traducción validada científicamente. Observa también el lenguaje corporal de tu perro.",
+    "saved": "Guardado",
+    "shareText": "{{name}} podría estar diciendo: “{{text}}” (Dog Translator)",
+    "again": "Grabar de nuevo",
+    "errorTitle": "No se pudo traducir",
+    "import": "Importar un archivo WAV",
+    "shareImage": "Compartir como imagen",
+    "possibleEmotions": "Emociones posibles",
+    "estimated": "Estimado",
+    "replay": "Repetir",
+    "intensityLabel": "Intensidad",
+    "heading": "Toca el micro y deja que {{name}} ladre",
+    "sub": "Graba hasta 10 segundos. Te sugeriremos qué podría significar el ladrido.",
+    "listeningFor": "Escuchando a {{name}}",
+    "upload": "Subir audio",
+    "tip": "Mejores resultados: sala silenciosa, móvil a 1–2 m, un solo perro ladrando.",
+    "recordingBadge": "Grabando",
+    "ofMax": "de 0:10 máx.",
+    "pause": "Pausa",
+    "resume": "Reanudar",
+    "tapStop": "Toca detener cuando {{name}} termine",
+    "uploadTitle": "Sube un ladrido",
+    "uploadBody": "Usa un clip de hasta 30 segundos. Mediremos el ladrido automáticamente.",
+    "chooseFiles": "Elegir de Archivos",
+    "formats": "Solo WAV por ahora",
+    "feedbackQ": "¿Te pareció acertado?",
+    "yes": "Sí",
+    "notReally": "No mucho",
+    "thanks": "¡Gracias por tu opinión!",
+    "justNow": "Ahora mismo · ladrido de {{s}} s",
+    "levelLow": "Baja",
+    "levelMedium": "Media",
+    "levelHigh": "Alta"
+  },
+  "history": {
+    "empty": "Aún no hay resultados guardados de {{name}}.",
+    "openDiary": "Abrir diario de ánimo",
+    "clear": "Borrar historial",
+    "clearTitle": "¿Borrar historial?",
+    "clearBody": "Esto elimina de este teléfono todos los resultados guardados de este perro.",
+    "kind": {
+      "bark": "Interpretación de ladrido asistida por IA",
+      "scan": "Observación de foto con IA",
+      "user": "Tu observación"
+    }
+  },
+  "mood": {
+    "title": "Diario de ánimo",
+    "disclaimer": "Son observaciones asistidas por IA o registradas por ti, no mediciones objetivas de lo que siente tu perro.",
+    "week": "Esta semana",
+    "weekEmpty": "Aún no hay entradas esta semana.",
+    "addTitle": "¿Cómo está {{name}} hoy?",
+    "note": "Nota (opcional)",
+    "noNote": "Sin nota"
+  },
+  "training": {
+    "streak_one": "Racha de {{count}} día",
+    "streak_other": "Racha de {{count}} días",
+    "progress": "{{done}} de {{total}} lecciones completadas",
+    "notFound": "Lección no encontrada.",
+    "proOnly": "Esta lección forma parte de Pro.",
+    "openClicker": "Abrir el clicker",
+    "markDone": "Marcar lección como completada",
+    "humane": "Mantén las sesiones cortas y positivas. Nunca castigues ni asustes a tu perro."
+  },
+  "sounds": {
+    "title": "Biblioteca de sonidos",
+    "emptyTitle": "Los paquetes de sonidos aún no están instalados",
+    "emptyBody": "La biblioteca carga sonidos con licencia desde el paquete de sonidos de la app. Añade los archivos de audio y regístralos en el catálogo para activarla.",
+    "search": "Buscar sonidos",
+    "favorites": "Favoritos",
+    "cats": {
+      "barks": "Ladridos",
+      "whines": "Gemidos",
+      "growls": "Gruñidos",
+      "howls": "Aullidos",
+      "playful": "Juguetones",
+      "attention": "Atención",
+      "squeaky": "Juguetes chillones",
+      "doorbell": "Timbre",
+      "training": "Entrenamiento"
+    }
+  },
+  "talk": {
+    "title": "Humano → Perro",
+    "disclaimer": "Estos sonidos son divertidos y puede que no comuniquen una frase a tu perro. Observa cómo reacciona.",
+    "phrases": {
+      "come": "Ven aquí",
+      "sit": "Siéntate",
+      "stay": "Quieto",
+      "goodDog": "Buen perro",
+      "play": "Vamos a jugar",
+      "outside": "Ven afuera"
+    },
+    "volume": "Volumen {{pct}} %",
+    "welfare": "Mantén el volumen bajo, reproduce los sonidos brevemente y para si tu perro parece estresado.",
+    "play": "Reproducir",
+    "noPack": "El paquete de sonidos de perro aún no está instalado, así que esta frase no tiene sonido.",
+    "type": "Escribe o di una frase",
+    "placeholder": "p. ej. ven aquí",
+    "speak": "Hablar",
+    "listening": "Escuchando…",
+    "noMatch": "No reconocí esa frase. Elige una abajo.",
+    "voiceUnavailable": "El reconocimiento de voz no está disponible o se denegó el permiso.",
+    "speakTab": "Hablar",
+    "typeTab": "Escribir",
+    "playAs": "Reproducir · voz {{voice}}",
+    "tryTraining": "Para señales reales, prueba Entrenar"
+  },
+  "games": {
+    "bee": "Persigue la abeja",
+    "laser": "Láser",
+    "mouse": "Ratón chillón",
+    "safety": "Supervisa el juego. No a todos los perros les gustan los juegos en pantalla: para si tu perro se estresa y no dejes que muerda ni arañe la pantalla.",
+    "target": "Objetivo en movimiento",
+    "start": "Iniciar",
+    "pause": "Pausar",
+    "restart": "Reiniciar"
+  },
+  "quiz": {
+    "title": "Quiz diario",
+    "fact": "Dato del día",
+    "streak_one": "Racha de {{count}} día",
+    "streak_other": "Racha de {{count}} días",
+    "question": "Pregunta {{n}} de {{total}}",
+    "correct": "¡Correcto!",
+    "incorrect": "No exactamente.",
+    "done": "Hoy has acertado {{score}} de {{total}}. ¡Vuelve mañana!"
+  },
+  "assistant": {
+    "title": "Asistente canino",
+    "clear": "Borrar",
+    "disclaimer": "Solo consejos generales de cuidado y entrenamiento. No soy veterinario. Ante síntomas urgentes, contacta con un veterinario de inmediato.",
+    "typing": "Pensando…",
+    "placeholder": "Pregunta sobre {{name}}…",
+    "send": "Enviar"
+  },
+  "scanner": {
+    "title": "Escáner con IA",
+    "disclaimer": "Las razas son estimaciones, y una foto no puede mostrar cómo se siente un perro. No es consejo veterinario.",
+    "photo": "Foto del perro seleccionada",
+    "camera": "Hacer una foto",
+    "library": "Elegir de la galería",
+    "permission": "Se necesita acceso a las fotos. Actívalo en Ajustes.",
+    "consent": "Al tocar Analizar, esta foto se envía de forma segura para su análisis, se usa una sola vez y no se almacena.",
+    "agree": "Lo entiendo",
+    "analyze": "Analizar foto",
+    "notDog": "No pudimos ver un perro en esta foto. Prueba con otra.",
+    "breeds": "Razas posibles",
+    "likelihood": {
+      "low": "menos probable",
+      "medium": "posible",
+      "high": "probable"
+    },
+    "traits": "Rasgos visibles",
+    "cues": "Señales visibles (no es un diagnóstico del ánimo)",
+    "care": "Cuidados generales",
+    "followUps": "Preguntas para explorar"
+  },
+  "portraits": {
+    "title": "Retratos con IA",
+    "body": "Convierte la foto de tu perro en un retrato estilizado. Función Pro.",
+    "styles": {
+      "sticker": "Sticker",
+      "cartoon": "Dibujo animado",
+      "royal": "Realeza"
+    },
+    "pick": "Elegir una foto",
+    "generate": "Generar",
+    "result": "Retrato generado"
+  },
+  "paywall": {
+    "title": "Todo lo que ama tu perro, en un solo lugar",
+    "body": "Hazte Pro y disfruta de todo.",
+    "benefits": {
+      "dogs": "Varios perfiles de perro",
+      "sounds": "Biblioteca de sonidos completa",
+      "ai": "Más traducciones, escaneos y chats con IA",
+      "training": "Entrenamiento intermedio y avanzado",
+      "portraits": "Retratos premium"
+    },
+    "seePro": "Ver Pro",
+    "subscribe": "Continuar",
+    "restore": "Restaurar compras",
+    "failed": "La compra no se completó. No se te ha cobrado.",
+    "restored": "Compras restauradas.",
+    "nothingToRestore": "No se encontraron compras activas.",
+    "youArePro": "Eres Pro. ¡Gracias!",
+    "unavailable": "No se pueden cargar los planes ahora. Revisa tu conexión e inténtalo de nuevo.",
+    "disclosure": "El pago se carga a tu cuenta de la tienda. Las suscripciones se renuevan automáticamente salvo que las canceles al menos 24 horas antes de que termine el periodo. Gestiona o cancela cuando quieras en los ajustes de tu cuenta de la tienda."
+  },
+  "more": {
+    "dogs": "Tus perros",
+    "links": {
+      "mood": "Diario de ánimo",
+      "quiz": "Quiz diario",
+      "sounds": "Biblioteca de sonidos",
+      "talk": "Humano → Perro",
+      "assistant": "Asistente canino",
+      "scanner": "Escáner con IA",
+      "portraits": "Retratos con IA",
+      "bee": "Juego: Persigue la abeja",
+      "laser": "Juego: Láser",
+      "mouse": "Juego: Ratón chillón"
+    },
+    "notifications": "Recordatorios de entrenamiento",
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "privacyNote": "Tus grabaciones y fotos nunca se guardan. El historial se queda en este teléfono.",
+    "deleteAccount": "Eliminar mis datos",
+    "deleteAccountBody": "Esto elimina tus perros, historial y cualquier dato de cuenta en línea de este teléfono y de nuestros servidores.",
+    "language": "Idioma",
+    "reminderLabel": "Recordatorio diario de entrenamiento (18:00)",
+    "notificationsDenied": "Las notificaciones están desactivadas. Actívalas en Ajustes."
+  },
+  "reminder": {
+    "title": "¡Hora de entrenar!",
+    "body": "Una sesión corta y divertida con {{name}} mantiene las habilidades afiladas."
+  },
+  "clicker": {
+    "title": "Clicker",
+    "hint": "Toca para hacer clic. Marca el momento exacto en que tu perro hace lo correcto y luego prémialo.",
+    "tone": "Tono del clic",
+    "tones": {
+      "soft": "Suave",
+      "classic": "Clásico",
+      "sharp": "Agudo"
+    },
+    "sound": "Sonido",
+    "haptics": "Vibración"
+  },
+  "whistle": {
+    "title": "Silbato para perros",
+    "frequency": "Frecuencia",
+    "presets": {
+      "sit": "Sentado",
+      "stay": "Quieto",
+      "come": "Ven",
+      "recall": "Llamada"
+    },
+    "play": "Reproducir",
+    "stop": "Detener",
+    "limitations": "Los altavoces de los teléfonos pueden no reproducir con fiabilidad frecuencias muy altas. Los perros oyen más agudo que las personas: mantén el volumen bajo, las sesiones cortas y detente si tu perro parece incómodo.",
+    "autoStop": "La reproducción se detiene automáticamente tras {{seconds}} segundos."
+  }
+}

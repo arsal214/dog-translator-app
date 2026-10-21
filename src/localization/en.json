@@ -1,0 +1,387 @@
+{
+  "common": {
+    "continue": "Continue",
+    "skip": "Skip",
+    "back": "Back",
+    "save": "Save",
+    "share": "Share",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "retry": "Try again"
+  },
+  "tabs": {
+    "home": "Home",
+    "history": "History",
+    "translate": "Translate",
+    "training": "Training",
+    "more": "More"
+  },
+  "onboarding": {
+    "s1Title": "Hear what each bark might mean",
+    "s1Body": "Record a bark and get a playful, AI-assisted read on your dog's likely mood and intent — with honest confidence levels.",
+    "s2Title": "Talk back with dog-style sounds",
+    "s2Body": "Type or say a phrase and play it back as a fun bark in a small, medium or big dog voice.",
+    "s3Title": "Play, train and share the fun",
+    "s3Body": "Games for dogs, step-by-step training, mood diary and AI portraits. Turn any moment into a shareable video.",
+    "getStarted": "Get started"
+  },
+  "profile": {
+    "createTitle": "Tell us about your dog",
+    "name": "Dog's name",
+    "namePlaceholder": "e.g. Biscuit",
+    "breed": "Breed (optional)",
+    "breedPlaceholder": "Golden Retriever, mixed, not sure…",
+    "age": "Age",
+    "ageOptions": {
+      "puppy": "Puppy",
+      "adult": "Adult",
+      "senior": "Senior"
+    },
+    "traits": "Personality (pick up to 4)",
+    "traitOptions": {
+      "playful": "Playful",
+      "vocal": "Vocal",
+      "cuddly": "Cuddly",
+      "curious": "Curious",
+      "shy": "Shy",
+      "energetic": "Energetic",
+      "calm": "Calm",
+      "protective": "Protective"
+    },
+    "voice": "Default “talk back” voice",
+    "voiceOptions": {
+      "small": "Small",
+      "medium": "Medium",
+      "big": "Big"
+    },
+    "nameRequired": "Please enter your dog's name",
+    "create": "Create profile",
+    "addDog": "Add a dog",
+    "addPhoto": "Add a photo",
+    "photoHint": "Used for the profile, AI scanner and portraits. You can change it anytime.",
+    "voiceHints": {
+      "small": "Higher pitch",
+      "medium": "Balanced",
+      "big": "Deep & warm"
+    }
+  },
+  "moods": {
+    "happy": "Happy",
+    "excited": "Excited",
+    "calm": "Calm",
+    "anxious": "Anxious",
+    "playful": "Playful",
+    "alert": "Alert"
+  },
+  "errors": {
+    "not_configured": "The online service isn't set up yet. Local tools still work.",
+    "offline": "You seem to be offline. Check your connection and try again.",
+    "unauthorized": "We couldn't start a session. Please try again.",
+    "free_limit_reached": "You've used today's free analyses. Go Pro for more.",
+    "daily_limit_reached": "You've reached today's limit. Please come back tomorrow.",
+    "audio_too_quiet_or_short": "That recording was too short or too quiet. Try again closer to your dog.",
+    "image_too_large": "That photo is too large. Try a different one.",
+    "unsupported_image": "That image format isn't supported. Use a JPEG, PNG or WebP photo.",
+    "ai_not_configured": "The AI service isn't set up yet.",
+    "portrait_provider_not_configured": "Portraits aren't available yet.",
+    "unknown": "Something went wrong. Please try again.",
+    "unsupported_audio": "Only WAV files can be imported for now. Record directly, or convert your file to WAV.",
+    "audio_too_long": "That file is longer than 30 seconds. Trim it and try again."
+  },
+  "home": {
+    "greetingMorning": "Good morning, {{name}}",
+    "greetingAfternoon": "Good afternoon, {{name}}",
+    "greetingEvening": "Good evening, {{name}}",
+    "todaysMood": "Today's mood",
+    "noMood": "No moods yet",
+    "noMoodBody": "Record a bark to start {{name}}'s mood diary.",
+    "barkToHuman": "Bark → Human",
+    "barkToHumanBody": "Hear what {{name}} might mean",
+    "record": "Record",
+    "humanToDog": "Human → Dog",
+    "humanToDogBody": "Talk back in a dog-style voice",
+    "speakOrType": "Pick a phrase",
+    "shortcuts": "Shortcuts",
+    "recent": "Recent translations",
+    "noRecent": "Nothing here yet",
+    "dailyQuiz": "Daily dog quiz",
+    "dailyQuizBody": "3 questions · 1 min",
+    "tools": "Tools & fun",
+    "addDog": "Add dog",
+    "viewDetails": "View details",
+    "latest": "Latest: {{text}}",
+    "seeAll": "See all"
+  },
+  "shortcuts": {
+    "sounds": "Sounds",
+    "whistle": "Whistle",
+    "clicker": "Clicker",
+    "scanner": "Scanner",
+    "games": "Games",
+    "training": "Training",
+    "assistant": "Assistant",
+    "portraits": "Portraits"
+  },
+  "translate": {
+    "title": "What is {{name}} saying?",
+    "hint": "Tap to record a bark (up to 10 seconds).",
+    "listening": "Listening… tap to stop.",
+    "stop": "Stop recording",
+    "analyzing": "Analyzing…",
+    "privacy": "Your recording stays on your phone and is deleted right after. Only simple measurements (loudness and timing) are sent for analysis.",
+    "micTitle": "Microphone access needed",
+    "micBody": "Allow microphone access in Settings to record your dog.",
+    "openSettings": "Open Settings",
+    "resultTitle": "{{name}} might be saying…",
+    "intensity": "Intensity {{n}}/5",
+    "confidence": {
+      "low": "Low confidence",
+      "medium": "Medium confidence",
+      "high": "High confidence"
+    },
+    "disclaimer": "Experimental and just for fun. This is an AI-assisted guess from simple sound measurements, not a scientifically validated translation. Watch your dog's body language too.",
+    "saved": "Saved",
+    "shareText": "{{name}} might be saying: “{{text}}” (Dog Translator)",
+    "again": "Record again",
+    "errorTitle": "Couldn't translate",
+    "import": "Import a WAV file",
+    "shareImage": "Share as image",
+    "possibleEmotions": "Possible emotions",
+    "estimated": "Estimated",
+    "replay": "Replay",
+    "intensityLabel": "Intensity",
+    "heading": "Tap the mic, then let {{name}} bark",
+    "sub": "Record up to 10 seconds. We’ll suggest what the bark might mean.",
+    "listeningFor": "Listening for {{name}}",
+    "upload": "Upload audio",
+    "tip": "Best results: quiet room, phone 1–2 m away, one dog barking at a time.",
+    "recordingBadge": "Recording",
+    "ofMax": "of 0:10 max",
+    "pause": "Pause",
+    "resume": "Resume",
+    "tapStop": "Tap stop when {{name}} is done",
+    "uploadTitle": "Upload a bark",
+    "uploadBody": "Use a clip of up to 30 seconds. We’ll measure the bark automatically.",
+    "chooseFiles": "Choose from Files",
+    "formats": "WAV only for now",
+    "feedbackQ": "Did this feel right?",
+    "yes": "Yes",
+    "notReally": "Not really",
+    "thanks": "Thanks for the feedback!",
+    "justNow": "Just now · {{s}}s bark",
+    "levelLow": "Low",
+    "levelMedium": "Medium",
+    "levelHigh": "High"
+  },
+  "history": {
+    "empty": "No saved results for {{name}} yet.",
+    "openDiary": "Open mood diary",
+    "clear": "Clear history",
+    "clearTitle": "Clear history?",
+    "clearBody": "This deletes all saved results for this dog from this phone.",
+    "kind": {
+      "bark": "AI-assisted bark interpretation",
+      "scan": "AI photo observation",
+      "user": "Your observation"
+    }
+  },
+  "mood": {
+    "title": "Mood diary",
+    "disclaimer": "These are AI-assisted or self-recorded observations, not objective measurements of your dog's feelings.",
+    "week": "This week",
+    "weekEmpty": "No entries this week yet.",
+    "addTitle": "How is {{name}} today?",
+    "note": "Note (optional)",
+    "noNote": "No note"
+  },
+  "training": {
+    "streak_one": "{{count}}-day streak",
+    "streak_other": "{{count}}-day streak",
+    "progress": "{{done}} of {{total}} lessons complete",
+    "notFound": "Lesson not found.",
+    "proOnly": "This lesson is part of Pro.",
+    "openClicker": "Open the clicker",
+    "markDone": "Mark lesson complete",
+    "humane": "Keep sessions short and positive. Never punish or scare your dog."
+  },
+  "sounds": {
+    "title": "Sound library",
+    "emptyTitle": "Sound packs aren't installed yet",
+    "emptyBody": "The library loads licensed sounds from the app's sound pack. Add the audio files and list them in the sound catalogue to enable it.",
+    "search": "Search sounds",
+    "favorites": "Favorites",
+    "cats": {
+      "barks": "Barks",
+      "whines": "Whines",
+      "growls": "Growls",
+      "howls": "Howls",
+      "playful": "Playful",
+      "attention": "Attention",
+      "squeaky": "Squeaky toys",
+      "doorbell": "Doorbell",
+      "training": "Training"
+    }
+  },
+  "talk": {
+    "title": "Human → Dog",
+    "disclaimer": "These sounds are playful and may not communicate a phrase to your dog. Watch how your dog reacts.",
+    "phrases": {
+      "come": "Come here",
+      "sit": "Sit",
+      "stay": "Stay",
+      "goodDog": "Good dog",
+      "play": "Let's play",
+      "outside": "Come outside"
+    },
+    "volume": "Volume {{pct}}%",
+    "welfare": "Keep volume low, play sounds briefly, and stop if your dog seems stressed.",
+    "play": "Play",
+    "noPack": "The dog-sound pack isn't installed yet, so this phrase has no sound.",
+    "type": "Type or say a phrase",
+    "placeholder": "e.g. come here",
+    "speak": "Speak",
+    "listening": "Listening…",
+    "noMatch": "I didn’t recognise that phrase. Pick one below.",
+    "voiceUnavailable": "Speech recognition isn’t available, or permission was denied.",
+    "speakTab": "Speak",
+    "typeTab": "Type",
+    "playAs": "Play as {{voice}} dog",
+    "tryTraining": "For real cues, try Training"
+  },
+  "games": {
+    "bee": "Chase the Bee",
+    "laser": "Laser",
+    "mouse": "Squeaky Mouse",
+    "safety": "Supervise play. Not every dog enjoys screen games — stop if your dog is stressed, and don't let them bite or scratch the screen.",
+    "target": "Moving target",
+    "start": "Start",
+    "pause": "Pause",
+    "restart": "Restart"
+  },
+  "quiz": {
+    "title": "Daily quiz",
+    "fact": "Daily fact",
+    "streak_one": "{{count}}-day streak",
+    "streak_other": "{{count}}-day streak",
+    "question": "Question {{n}} of {{total}}",
+    "correct": "Correct!",
+    "incorrect": "Not quite.",
+    "done": "You scored {{score}} of {{total}} today. Come back tomorrow!"
+  },
+  "assistant": {
+    "title": "Dog assistant",
+    "clear": "Clear",
+    "disclaimer": "General dog-care and training tips only. I'm not a veterinarian. For urgent symptoms, contact a vet right away.",
+    "typing": "Thinking…",
+    "placeholder": "Ask about {{name}}…",
+    "send": "Send"
+  },
+  "scanner": {
+    "title": "AI scanner",
+    "disclaimer": "Breed guesses are estimates, and a photo can't show how a dog feels. Not veterinary advice.",
+    "photo": "Selected dog photo",
+    "camera": "Take a photo",
+    "library": "Choose from library",
+    "permission": "Photo access is needed. Enable it in Settings.",
+    "consent": "When you tap Analyze, this photo is sent securely for analysis, used once and not stored.",
+    "agree": "I understand",
+    "analyze": "Analyze photo",
+    "notDog": "We couldn't see a dog in this photo. Try another.",
+    "breeds": "Possible breeds",
+    "likelihood": {
+      "low": "less likely",
+      "medium": "possible",
+      "high": "likely"
+    },
+    "traits": "Visible traits",
+    "cues": "Visible cues (not a mood diagnosis)",
+    "care": "General care",
+    "followUps": "Questions to explore"
+  },
+  "portraits": {
+    "title": "AI portraits",
+    "body": "Turn your dog's photo into a stylised portrait. Pro feature.",
+    "styles": {
+      "sticker": "Sticker",
+      "cartoon": "Cartoon",
+      "royal": "Royal"
+    },
+    "pick": "Choose a photo",
+    "generate": "Generate",
+    "result": "Generated portrait"
+  },
+  "paywall": {
+    "title": "Everything your dog loves, all in one place",
+    "body": "Go Pro for the whole pack.",
+    "benefits": {
+      "dogs": "Multiple dog profiles",
+      "sounds": "Full sound library",
+      "ai": "Expanded AI translations, scans and chats",
+      "training": "Intermediate and advanced training",
+      "portraits": "Premium portraits"
+    },
+    "seePro": "See Pro",
+    "subscribe": "Continue",
+    "restore": "Restore purchases",
+    "failed": "The purchase didn't complete. You haven't been charged.",
+    "restored": "Purchases restored.",
+    "nothingToRestore": "No active purchases found.",
+    "youArePro": "You're on Pro. Thank you!",
+    "unavailable": "Plans can't be loaded right now. Check your connection and try again.",
+    "disclosure": "Payment is charged to your store account. Subscriptions renew automatically unless cancelled at least 24 hours before the period ends. Manage or cancel any time in your store account settings."
+  },
+  "more": {
+    "dogs": "Your dogs",
+    "links": {
+      "mood": "Mood diary",
+      "quiz": "Daily quiz",
+      "sounds": "Sound library",
+      "talk": "Human → Dog",
+      "assistant": "Dog assistant",
+      "scanner": "AI scanner",
+      "portraits": "AI portraits",
+      "bee": "Game: Chase the Bee",
+      "laser": "Game: Laser",
+      "mouse": "Game: Squeaky Mouse"
+    },
+    "notifications": "Training reminders",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "privacyNote": "Your recordings and photos are never kept. History stays on this phone.",
+    "deleteAccount": "Delete my data",
+    "deleteAccountBody": "This removes your dogs, history and any online account data from this phone and our servers.",
+    "language": "Language",
+    "reminderLabel": "Daily training reminder (6 PM)",
+    "notificationsDenied": "Notifications are turned off. Enable them in Settings."
+  },
+  "clicker": {
+    "title": "Clicker",
+    "hint": "Tap to click. Mark the exact moment your dog does the right thing, then reward.",
+    "tone": "Click tone",
+    "tones": {
+      "soft": "Soft",
+      "classic": "Classic",
+      "sharp": "Sharp"
+    },
+    "sound": "Sound",
+    "haptics": "Haptics"
+  },
+  "whistle": {
+    "title": "Dog whistle",
+    "frequency": "Frequency",
+    "presets": {
+      "sit": "Sit",
+      "stay": "Stay",
+      "come": "Come",
+      "recall": "Recall"
+    },
+    "play": "Play",
+    "stop": "Stop",
+    "limitations": "Phone speakers may not reproduce very high frequencies reliably. Dogs hear higher than people, so keep volume low, keep sessions short and stop if your dog seems uncomfortable.",
+    "autoStop": "Playback stops automatically after {{seconds}} seconds."
+  },
+  "reminder": {
+    "title": "Time to train!",
+    "body": "A short, fun session with {{name}} keeps skills sharp."
+  }
+}

@@ -1,0 +1,387 @@
+{
+  "common": {
+    "continue": "Continuer",
+    "skip": "Passer",
+    "back": "Retour",
+    "save": "Enregistrer",
+    "share": "Partager",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "retry": "Réessayer"
+  },
+  "tabs": {
+    "home": "Accueil",
+    "history": "Historique",
+    "translate": "Traduire",
+    "training": "Éducation",
+    "more": "Plus"
+  },
+  "onboarding": {
+    "s1Title": "Découvrez ce que chaque aboiement pourrait signifier",
+    "s1Body": "Enregistrez un aboiement et obtenez une lecture ludique, assistée par IA, de l’humeur et de l’intention probables de votre chien, avec des niveaux de confiance honnêtes.",
+    "s2Title": "Répondez avec des sons de chien",
+    "s2Body": "Tapez ou dites une phrase et écoutez-la sous forme d’aboiement amusant, avec une voix de petit, moyen ou grand chien.",
+    "s3Title": "Jouez, éduquez et partagez le plaisir",
+    "s3Body": "Jeux pour chiens, éducation pas à pas, journal d’humeur et portraits IA. Transformez chaque moment en souvenir à partager.",
+    "getStarted": "Commencer"
+  },
+  "profile": {
+    "createTitle": "Parlez-nous de votre chien",
+    "name": "Nom du chien",
+    "namePlaceholder": "p. ex. Biscuit",
+    "breed": "Race (facultatif)",
+    "breedPlaceholder": "Golden Retriever, croisé, je ne sais pas…",
+    "age": "Âge",
+    "ageOptions": {
+      "puppy": "Chiot",
+      "adult": "Adulte",
+      "senior": "Senior"
+    },
+    "traits": "Personnalité (jusqu’à 4)",
+    "traitOptions": {
+      "playful": "Joueur",
+      "vocal": "Bavard",
+      "cuddly": "Câlin",
+      "curious": "Curieux",
+      "shy": "Timide",
+      "energetic": "Énergique",
+      "calm": "Calme",
+      "protective": "Protecteur"
+    },
+    "voice": "Voix de réponse par défaut",
+    "voiceOptions": {
+      "small": "Petite",
+      "medium": "Moyenne",
+      "big": "Grande"
+    },
+    "nameRequired": "Saisissez le nom de votre chien",
+    "create": "Créer le profil",
+    "addDog": "Ajouter un chien",
+    "addPhoto": "Ajouter une photo",
+    "photoHint": "Utilisée pour le profil, le scanner IA et les portraits. Vous pouvez la changer à tout moment.",
+    "voiceHints": {
+      "small": "Plus aigu",
+      "medium": "Équilibré",
+      "big": "Grave et chaleureux"
+    }
+  },
+  "moods": {
+    "happy": "Content",
+    "excited": "Excité",
+    "calm": "Calme",
+    "anxious": "Anxieux",
+    "playful": "Joueur",
+    "alert": "En alerte"
+  },
+  "errors": {
+    "not_configured": "Le service en ligne n’est pas encore configuré. Les outils locaux fonctionnent toujours.",
+    "offline": "Vous semblez hors ligne. Vérifiez votre connexion et réessayez.",
+    "unauthorized": "Impossible de démarrer une session. Réessayez.",
+    "free_limit_reached": "Vous avez utilisé les analyses gratuites du jour. Passez à Pro pour en avoir plus.",
+    "daily_limit_reached": "Vous avez atteint la limite du jour. Revenez demain.",
+    "audio_too_quiet_or_short": "L’enregistrement était trop court ou trop faible. Réessayez plus près de votre chien.",
+    "image_too_large": "Cette photo est trop volumineuse. Essayez-en une autre.",
+    "unsupported_image": "Ce format d’image n’est pas pris en charge. Utilisez une photo JPEG, PNG ou WebP.",
+    "ai_not_configured": "Le service d’IA n’est pas encore configuré.",
+    "portrait_provider_not_configured": "Les portraits ne sont pas encore disponibles.",
+    "unknown": "Une erreur s’est produite. Réessayez.",
+    "unsupported_audio": "Seuls les fichiers WAV peuvent être importés pour le moment. Enregistrez directement ou convertissez votre fichier en WAV.",
+    "audio_too_long": "Ce fichier dure plus de 30 secondes. Raccourcissez-le et réessayez."
+  },
+  "home": {
+    "greetingMorning": "Bonjour, {{name}}",
+    "greetingAfternoon": "Bon après-midi, {{name}}",
+    "greetingEvening": "Bonsoir, {{name}}",
+    "todaysMood": "Humeur du jour",
+    "noMood": "Pas encore d’humeur",
+    "noMoodBody": "Enregistrez un aboiement pour démarrer le journal d’humeur de {{name}}.",
+    "barkToHuman": "Aboiement → Humain",
+    "barkToHumanBody": "Découvrez ce que {{name}} pourrait dire",
+    "record": "Enregistrer",
+    "humanToDog": "Humain → Chien",
+    "humanToDogBody": "Répondez avec une voix de chien",
+    "speakOrType": "Choisir une phrase",
+    "shortcuts": "Raccourcis",
+    "recent": "Traductions récentes",
+    "noRecent": "Rien pour l’instant",
+    "dailyQuiz": "Quiz canin du jour",
+    "dailyQuizBody": "3 questions · 1 min",
+    "tools": "Outils et jeux",
+    "addDog": "Ajouter un chien",
+    "viewDetails": "Voir les détails",
+    "latest": "Dernier : {{text}}",
+    "seeAll": "Tout voir"
+  },
+  "shortcuts": {
+    "sounds": "Sons",
+    "whistle": "Sifflet",
+    "clicker": "Clicker",
+    "scanner": "Scanner",
+    "games": "Jeux",
+    "training": "Éducation",
+    "assistant": "Assistant",
+    "portraits": "Portraits"
+  },
+  "translate": {
+    "title": "Que dit {{name}} ?",
+    "hint": "Touchez pour enregistrer un aboiement (jusqu’à 10 secondes).",
+    "listening": "J’écoute… touchez pour arrêter.",
+    "stop": "Arrêter l’enregistrement",
+    "analyzing": "Analyse en cours…",
+    "privacy": "Votre enregistrement reste sur votre téléphone et est supprimé juste après. Seules de simples mesures (volume et rythme) sont envoyées pour l’analyse.",
+    "micTitle": "Accès au micro requis",
+    "micBody": "Autorisez l’accès au micro dans les Réglages pour enregistrer votre chien.",
+    "openSettings": "Ouvrir les Réglages",
+    "resultTitle": "{{name}} pourrait dire…",
+    "intensity": "Intensité {{n}}/5",
+    "confidence": {
+      "low": "Confiance faible",
+      "medium": "Confiance moyenne",
+      "high": "Confiance élevée"
+    },
+    "disclaimer": "Expérimental et juste pour s’amuser. C’est une supposition assistée par IA à partir de simples mesures sonores, pas une traduction validée scientifiquement. Observez aussi le langage corporel de votre chien.",
+    "saved": "Enregistré",
+    "shareText": "{{name}} pourrait dire : « {{text}} » (Dog Translator)",
+    "again": "Réenregistrer",
+    "errorTitle": "Traduction impossible",
+    "import": "Importer un fichier WAV",
+    "shareImage": "Partager en image",
+    "possibleEmotions": "Émotions possibles",
+    "estimated": "Estimé",
+    "replay": "Réécouter",
+    "intensityLabel": "Intensité",
+    "heading": "Touchez le micro et laissez {{name}} aboyer",
+    "sub": "Enregistrez jusqu’à 10 secondes. Nous suggérerons ce que l’aboiement peut signifier.",
+    "listeningFor": "À l’écoute de {{name}}",
+    "upload": "Importer un audio",
+    "tip": "Meilleurs résultats : pièce calme, téléphone à 1–2 m, un seul chien qui aboie.",
+    "recordingBadge": "Enregistrement",
+    "ofMax": "sur 0:10 max",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "tapStop": "Touchez stop quand {{name}} a fini",
+    "uploadTitle": "Importer un aboiement",
+    "uploadBody": "Utilisez un clip de 30 secondes maximum. Nous mesurerons l’aboiement automatiquement.",
+    "chooseFiles": "Choisir dans Fichiers",
+    "formats": "WAV uniquement pour l’instant",
+    "feedbackQ": "Cela vous semble juste ?",
+    "yes": "Oui",
+    "notReally": "Pas vraiment",
+    "thanks": "Merci pour votre avis !",
+    "justNow": "À l’instant · aboiement de {{s}} s",
+    "levelLow": "Faible",
+    "levelMedium": "Moyenne",
+    "levelHigh": "Élevée"
+  },
+  "history": {
+    "empty": "Aucun résultat enregistré pour {{name}}.",
+    "openDiary": "Ouvrir le journal d’humeur",
+    "clear": "Effacer l’historique",
+    "clearTitle": "Effacer l’historique ?",
+    "clearBody": "Cela supprime de ce téléphone tous les résultats enregistrés pour ce chien.",
+    "kind": {
+      "bark": "Interprétation d’aboiement assistée par IA",
+      "scan": "Observation de photo par IA",
+      "user": "Votre observation"
+    }
+  },
+  "mood": {
+    "title": "Journal d’humeur",
+    "disclaimer": "Ce sont des observations assistées par IA ou saisies par vous, pas des mesures objectives de ce que ressent votre chien.",
+    "week": "Cette semaine",
+    "weekEmpty": "Aucune entrée cette semaine.",
+    "addTitle": "Comment va {{name}} aujourd’hui ?",
+    "note": "Note (facultatif)",
+    "noNote": "Pas de note"
+  },
+  "training": {
+    "streak_one": "Série de {{count}} jour",
+    "streak_other": "Série de {{count}} jours",
+    "progress": "{{done}} leçons sur {{total}} terminées",
+    "notFound": "Leçon introuvable.",
+    "proOnly": "Cette leçon fait partie de Pro.",
+    "openClicker": "Ouvrir le clicker",
+    "markDone": "Marquer la leçon comme terminée",
+    "humane": "Gardez des séances courtes et positives. Ne punissez ni n’effrayez jamais votre chien."
+  },
+  "sounds": {
+    "title": "Bibliothèque de sons",
+    "emptyTitle": "Les packs de sons ne sont pas encore installés",
+    "emptyBody": "La bibliothèque charge des sons sous licence depuis le pack de sons de l’app. Ajoutez les fichiers audio et listez-les dans le catalogue pour l’activer.",
+    "search": "Rechercher des sons",
+    "favorites": "Favoris",
+    "cats": {
+      "barks": "Aboiements",
+      "whines": "Gémissements",
+      "growls": "Grognements",
+      "howls": "Hurlements",
+      "playful": "Jeu",
+      "attention": "Attention",
+      "squeaky": "Jouets couineurs",
+      "doorbell": "Sonnette",
+      "training": "Éducation"
+    }
+  },
+  "talk": {
+    "title": "Humain → Chien",
+    "disclaimer": "Ces sons sont ludiques et ne transmettent pas forcément une phrase à votre chien. Observez sa réaction.",
+    "phrases": {
+      "come": "Viens ici",
+      "sit": "Assis",
+      "stay": "Pas bouger",
+      "goodDog": "Bon chien",
+      "play": "On joue",
+      "outside": "Viens dehors"
+    },
+    "volume": "Volume {{pct}} %",
+    "welfare": "Gardez le volume bas, jouez les sons brièvement et arrêtez si votre chien semble stressé.",
+    "play": "Lire",
+    "noPack": "Le pack de sons de chien n’est pas encore installé : cette phrase n’a donc pas de son.",
+    "type": "Tapez ou dites une phrase",
+    "placeholder": "p. ex. viens ici",
+    "speak": "Parler",
+    "listening": "J’écoute…",
+    "noMatch": "Je n’ai pas reconnu cette phrase. Choisissez-en une ci-dessous.",
+    "voiceUnavailable": "La reconnaissance vocale n’est pas disponible ou l’autorisation a été refusée.",
+    "speakTab": "Parler",
+    "typeTab": "Écrire",
+    "playAs": "Lire · voix {{voice}}",
+    "tryTraining": "Pour de vrais signaux, essayez l’Éducation"
+  },
+  "games": {
+    "bee": "Attrape l’abeille",
+    "laser": "Laser",
+    "mouse": "Souris couineuse",
+    "safety": "Surveillez le jeu. Tous les chiens n’aiment pas les jeux sur écran : arrêtez si votre chien est stressé et ne le laissez pas mordre ni gratter l’écran.",
+    "target": "Cible en mouvement",
+    "start": "Démarrer",
+    "pause": "Pause",
+    "restart": "Recommencer"
+  },
+  "quiz": {
+    "title": "Quiz du jour",
+    "fact": "Le saviez-vous",
+    "streak_one": "Série de {{count}} jour",
+    "streak_other": "Série de {{count}} jours",
+    "question": "Question {{n}} sur {{total}}",
+    "correct": "Bravo !",
+    "incorrect": "Pas tout à fait.",
+    "done": "Vous avez obtenu {{score}} sur {{total}} aujourd’hui. À demain !"
+  },
+  "assistant": {
+    "title": "Assistant canin",
+    "clear": "Effacer",
+    "disclaimer": "Conseils généraux de soins et d’éducation uniquement. Je ne suis pas vétérinaire. En cas de symptômes urgents, contactez immédiatement un vétérinaire.",
+    "typing": "Réflexion…",
+    "placeholder": "Posez une question sur {{name}}…",
+    "send": "Envoyer"
+  },
+  "scanner": {
+    "title": "Scanner IA",
+    "disclaimer": "Les races sont des estimations, et une photo ne peut pas montrer ce que ressent un chien. Ce n’est pas un avis vétérinaire.",
+    "photo": "Photo du chien sélectionnée",
+    "camera": "Prendre une photo",
+    "library": "Choisir dans la photothèque",
+    "permission": "L’accès aux photos est nécessaire. Activez-le dans les Réglages.",
+    "consent": "Quand vous touchez Analyser, cette photo est envoyée de façon sécurisée pour analyse, utilisée une seule fois et non conservée.",
+    "agree": "J’ai compris",
+    "analyze": "Analyser la photo",
+    "notDog": "Nous n’avons pas vu de chien sur cette photo. Essayez-en une autre.",
+    "breeds": "Races possibles",
+    "likelihood": {
+      "low": "peu probable",
+      "medium": "possible",
+      "high": "probable"
+    },
+    "traits": "Traits visibles",
+    "cues": "Signes visibles (pas un diagnostic d’humeur)",
+    "care": "Soins généraux",
+    "followUps": "Questions à explorer"
+  },
+  "portraits": {
+    "title": "Portraits IA",
+    "body": "Transformez la photo de votre chien en portrait stylisé. Fonction Pro.",
+    "styles": {
+      "sticker": "Sticker",
+      "cartoon": "Dessin animé",
+      "royal": "Royal"
+    },
+    "pick": "Choisir une photo",
+    "generate": "Générer",
+    "result": "Portrait généré"
+  },
+  "paywall": {
+    "title": "Tout ce que votre chien adore, au même endroit",
+    "body": "Passez à Pro pour toute la meute.",
+    "benefits": {
+      "dogs": "Plusieurs profils de chien",
+      "sounds": "Bibliothèque de sons complète",
+      "ai": "Plus de traductions, scans et discussions IA",
+      "training": "Éducation intermédiaire et avancée",
+      "portraits": "Portraits premium"
+    },
+    "seePro": "Découvrir Pro",
+    "subscribe": "Continuer",
+    "restore": "Restaurer les achats",
+    "failed": "L’achat n’a pas abouti. Vous n’avez pas été débité.",
+    "restored": "Achats restaurés.",
+    "nothingToRestore": "Aucun achat actif trouvé.",
+    "youArePro": "Vous êtes Pro. Merci !",
+    "unavailable": "Impossible de charger les offres pour le moment. Vérifiez votre connexion et réessayez.",
+    "disclosure": "Le paiement est débité sur votre compte de la boutique. Les abonnements se renouvellent automatiquement sauf annulation au moins 24 heures avant la fin de la période. Gérez ou annulez à tout moment dans les réglages de votre compte."
+  },
+  "more": {
+    "dogs": "Vos chiens",
+    "links": {
+      "mood": "Journal d’humeur",
+      "quiz": "Quiz du jour",
+      "sounds": "Bibliothèque de sons",
+      "talk": "Humain → Chien",
+      "assistant": "Assistant canin",
+      "scanner": "Scanner IA",
+      "portraits": "Portraits IA",
+      "bee": "Jeu : Attrape l’abeille",
+      "laser": "Jeu : Laser",
+      "mouse": "Jeu : Souris couineuse"
+    },
+    "notifications": "Rappels d’éducation",
+    "terms": "Conditions",
+    "privacy": "Confidentialité",
+    "privacyNote": "Vos enregistrements et photos ne sont jamais conservés. L’historique reste sur ce téléphone.",
+    "deleteAccount": "Supprimer mes données",
+    "deleteAccountBody": "Cela supprime vos chiens, votre historique et toute donnée de compte en ligne de ce téléphone et de nos serveurs.",
+    "language": "Langue",
+    "reminderLabel": "Rappel d’éducation quotidien (18 h)",
+    "notificationsDenied": "Les notifications sont désactivées. Activez-les dans les Réglages."
+  },
+  "reminder": {
+    "title": "C’est l’heure de s’entraîner !",
+    "body": "Une courte séance ludique avec {{name}} entretient les acquis."
+  },
+  "clicker": {
+    "title": "Clicker",
+    "hint": "Touchez pour cliquer. Marquez l’instant exact où votre chien fait ce qu’il faut, puis récompensez.",
+    "tone": "Tonalité du clic",
+    "tones": {
+      "soft": "Doux",
+      "classic": "Classique",
+      "sharp": "Aigu"
+    },
+    "sound": "Son",
+    "haptics": "Vibrations"
+  },
+  "whistle": {
+    "title": "Sifflet pour chien",
+    "frequency": "Fréquence",
+    "presets": {
+      "sit": "Assis",
+      "stay": "Pas bouger",
+      "come": "Viens",
+      "recall": "Rappel"
+    },
+    "play": "Lire",
+    "stop": "Arrêter",
+    "limitations": "Les haut-parleurs de téléphone peuvent ne pas reproduire correctement les fréquences très élevées. Les chiens entendent plus aigu que nous : gardez le volume bas, les séances courtes et arrêtez si votre chien semble mal à l’aise.",
+    "autoStop": "La lecture s’arrête automatiquement après {{seconds}} secondes."
+  }
+}

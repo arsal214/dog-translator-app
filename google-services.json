@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39727907302",
+    "project_id": "dog-translator-app-88a4e",
+    "storage_bucket": "dog-translator-app-88a4e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39727907302:android:40c4ff4d50eff4a369d627",
+        "android_client_info": {
+          "package_name": "com.aidog.translator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCELSnHBEay3gHCk_TPyYhGuK9aJeUCZKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

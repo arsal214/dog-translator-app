@@ -3,6 +3,7 @@ import { Crown, Heart, Pause, Play } from 'lucide-react-native';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Animated, Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { AppHeader, TAB_BAR_SPACE, TAB_BG } from '@/components/AppHeader';
 import { Card, T } from '@/components/ui';
 import { SOUND_ART, SOUNDS, type Sound, type SoundCategory } from '@/content/sounds';
 import { useJournal } from '@/features/journal/store';
@@ -14,7 +15,6 @@ import { color, radius, shadow, type } from '@/theme/tokens';
 // Two main groups (the big toggle) over the catalogue's categories (the small pills).
 // Every dog voice is a bark; toys and attention-getters (doorbell, training whistles/clicker) are squeakers.
 type Group = 'barks' | 'squeakers';
-type Filter = 'all' | 'favorites' | SoundCategory;
 const GROUPS: Record<Group, SoundCategory[]> = {
   barks: ['barks', 'whines', 'growls', 'howls', 'playful', 'attention'],
   squeakers: ['squeaky', 'doorbell', 'training'],
@@ -53,18 +53,9 @@ function GroupToggle({ value, onChange, labels }: { value: Group; onChange: (g: 
   );
 }
 
-// Each category gets an emoji and a few background shades that cycle, so the grid stays colourful.
-const LOOK: Record<SoundCategory, { emoji: string; bg: string[] }> = {
-  barks: { emoji: '🐶', bg: ['#FFE2C2', '#FFD3A8', '#FCE7D2'] },
-  whines: { emoji: '🥺', bg: ['#DCE7FF', '#E8E2FF', '#D6ECFF'] },
-  growls: { emoji: '🐺', bg: ['#FFD9D6', '#F6DDE8'] },
-  howls: { emoji: '🌕', bg: ['#2A3B78', '#3A2F6B'] },
-  playful: { emoji: '🎾', bg: ['#DDF5E4', '#E9F7C9'] },
-  attention: { emoji: '🐕', bg: ['#FFF1CC', '#FFE9A8'] },
-  squeaky: { emoji: '🧸', bg: ['#FFE0EC', '#FFD6E0', '#FBE3F4'] },
-  doorbell: { emoji: '🔔', bg: ['#D9F2FF', '#E0F0FA'] },
-  training: { emoji: '🦮', bg: ['#D7F3F1', '#E2F5EE'] },
-};
+// Cards cycle through bold colours so neighbours never match; emoji stands in for sounds without artwork.
+const CARD_BG = ['#F07A2A', '#4C8DDB', '#3CCB7F', '#A26BE8', '#F27A9B', '#E8A400'];
+const EMOJI: Record<SoundCategory, string> = { barks: '🐶', whines: '🥺', growls: '🐺', howls: '🌕', playful: '🎾', attention: '🐕', squeaky: '🧸', doorbell: '🔔', training: '🦮' };
 
 export default function Sounds() {
   const { t } = useTranslation();
@@ -73,21 +64,18 @@ export default function Sounds() {
   const favs = useJournal((s) => s.favorites);
   const toggleFav = useJournal((s) => s.toggleFavorite);
   const [group, setGroup] = useState<Group>('barks');
-  const [cat, setCat] = useState<Filter>('all');
   const [playing, setPlaying] = useState<string>();
 
   // Tabs stay mounted, so stop the sound when the user switches away.
   useFocusEffect(useCallback(() => () => { stopPlayback(); setPlaying(undefined); }, []));
 
-  const list = useMemo(
-    () => SOUNDS.filter((s) => GROUPS[group].includes(s.category) && (cat === 'all' || (cat === 'favorites' ? favs.includes(s.id) : s.category === cat))),
-    [group, cat, favs],
-  );
-  // Index within its category, so neighbouring circles of the same kind get different shades.
-  const shade = useMemo(() => {
-    const seen: Partial<Record<SoundCategory, number>> = {};
-    return Object.fromEntries(SOUNDS.map((s) => [s.id, (seen[s.category] = (seen[s.category] ?? -1) + 1)]));
-  }, []);
+  // One titled section per category, favourites first when there are any.
+  const sections = useMemo(() => {
+    const inGroup = SOUNDS.filter((s) => GROUPS[group].includes(s.category));
+    const fav = inGroup.filter((s) => favs.includes(s.id));
+    const byCat = GROUPS[group].map((c) => ({ key: c as string, title: t(`sounds.cats.${c}`), items: inGroup.filter((s) => s.category === c) })).filter((x) => x.items.length);
+    return fav.length ? [{ key: 'favorites', title: `❤️ ${t('sounds.favorites')}`, items: fav }, ...byCat] : byCat;
+  }, [group, favs, t]);
 
   const press = (s: Sound) => {
     if (s.pro && !isPro) return router.push('/paywall?reason=sounds');
@@ -99,23 +87,9 @@ export default function Sounds() {
     void playAsset(s.source, 0.6, () => setPlaying((p) => (p === s.id ? undefined : p)));
   };
 
-  const pills: { key: Filter; label: string }[] = [
-    { key: 'all', label: t('sounds.all') },
-    ...GROUPS[group].filter((c) => SOUNDS.some((s) => s.category === c)).map((c) => ({ key: c as Filter, label: t(`sounds.cats.${c}`) })),
-    { key: 'favorites', label: `♥ ${t('sounds.favorites')}` },
-  ];
-
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.canvas }} edges={['top']}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 }}>
-        <T.Title style={{ flex: 1 }}>{t('sounds.title')}</T.Title>
-        {!isPro ? (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('paywall.seePro')} onPress={() => router.push('/paywall?reason=sounds')} style={[{ width: 44, height: 44, borderRadius: 22, backgroundColor: color.brandSoft, alignItems: 'center', justifyContent: 'center' }, shadow.card]}>
-            <Crown size={22} color={color.textAccent} />
-          </Pressable>
-        ) : null}
-      </View>
-
+    <SafeAreaView style={{ flex: 1, backgroundColor: TAB_BG }} edges={['top']}>
+      <AppHeader title={t('tabs.sounds')} />
       {SOUNDS.length === 0 ? (
         <Card style={{ gap: 8, margin: 16 }}>
           <T.Head>{t('sounds.emptyTitle')}</T.Head>
@@ -123,63 +97,53 @@ export default function Sounds() {
         </Card>
       ) : (
         <>
-          <View style={{ paddingHorizontal: 20, paddingBottom: 6 }}>
-            <GroupToggle value={group} onChange={(g) => { setGroup(g); setCat('all'); }} labels={{ barks: t('sounds.groups.barks'), squeakers: t('sounds.groups.squeakers') }} />
+          <View style={{ paddingHorizontal: 16, paddingTop: 4, paddingBottom: 8 }}>
+            <GroupToggle value={group} onChange={setGroup} labels={{ barks: t('sounds.groups.barks'), squeakers: t('sounds.groups.squeakers') }} />
           </View>
-          <View style={{ height: 56 }}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ gap: 8, paddingHorizontal: 20, alignItems: 'center', height: 52 }}>
-              {pills.map((p) => {
-                const on = cat === p.key;
-                return (
-                  <Pressable key={p.key} accessibilityRole="tab" accessibilityState={{ selected: on }} onPress={() => setCat(p.key)} style={{ height: 36, paddingHorizontal: 16, borderRadius: radius.full, justifyContent: 'center', backgroundColor: on ? color.primary : color.surface, borderWidth: 1, borderColor: on ? color.primary : color.border }}>
-                    <Text style={[type.subheadStrong, { color: on ? color.onPrimary : color.text }]}>{p.label}</Text>
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
-          </View>
-
-          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 10, paddingTop: 8, paddingBottom: 40, rowGap: 22 }}>
-            {list.length === 0 ? <T.Body style={{ padding: 10 }}>{t('sounds.noFavorites')}</T.Body> : null}
-            {list.map((s) => {
-              const look = LOOK[s.category];
-              const bg = look.bg[shade[s.id] % look.bg.length];
-              const locked = s.pro && !isPro;
-              const on = playing === s.id;
-              const fav = favs.includes(s.id);
-              return (
-                <Pressable
-                  key={s.id}
-                  accessibilityRole="button"
-                  accessibilityLabel={s.title}
-                  accessibilityHint={t('sounds.longPressHint')}
-                  onPress={() => press(s)}
-                  onLongPress={() => toggleFav(s.id)}
-                  style={({ pressed }) => ({ width: '33.33%', alignItems: 'center', gap: 8, transform: [{ scale: pressed ? 0.95 : 1 }] })}
-                >
-                  <View style={[{ width: 104, height: 104, borderRadius: 52, backgroundColor: bg, alignItems: 'center', justifyContent: 'center', borderWidth: on ? 4 : 3, borderColor: on ? color.primary : color.surface }, shadow.card]}>
-                    {SOUND_ART[s.id] ? (
-                      <Image source={SOUND_ART[s.id]} style={{ width: '100%', height: '100%', borderRadius: 52 }} resizeMode="cover" accessibilityIgnoresInvertColors />
-                    ) : (
-                      <Text style={{ fontSize: 52, lineHeight: 60 }}>{look.emoji}</Text>
-                    )}
-                    {/* play / pause / Pro badge, like a sticker on the circle */}
-                    <View style={{ position: 'absolute', bottom: -6, height: 26, minWidth: 36, paddingHorizontal: 8, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: locked ? color.brandStrong : on ? color.danger : color.primary, borderWidth: 2, borderColor: color.surface }}>
-                      {locked ? <Crown size={13} color={color.highlight} fill={color.highlight} /> : on ? <Pause size={12} color={color.onBrand} fill={color.onBrand} /> : <Play size={12} color={color.onPrimary} fill={color.onPrimary} />}
-                    </View>
-                    {fav ? (
-                      <View style={{ position: 'absolute', top: 2, right: 2, width: 24, height: 24, borderRadius: 12, backgroundColor: color.surface, alignItems: 'center', justifyContent: 'center' }}>
-                        <Heart size={13} color={color.danger} fill={color.danger} />
-                      </View>
-                    ) : null}
-                  </View>
-                  <Text numberOfLines={2} style={[type.footnote, { color: color.text, textAlign: 'center', paddingHorizontal: 6, fontWeight: '600' }]}>{s.title}</Text>
-                </Pressable>
-              );
-            })}
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: TAB_BAR_SPACE + 8, gap: 12 }} showsVerticalScrollIndicator={false}>
+            {sections.map((sec) => (
+              <View key={sec.key} style={{ gap: 12 }}>
+                <Text style={[type.title3, { color: color.text, fontWeight: '800', marginTop: 8 }]}>{sec.title}</Text>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 14 }}>
+                  {sec.items.map((s, i) => (
+                    <SoundCard key={s.id} sound={s} bg={CARD_BG[i % CARD_BG.length]} locked={!!s.pro && !isPro} on={playing === s.id} fav={favs.includes(s.id)} onPress={() => press(s)} onFav={() => toggleFav(s.id)} />
+                  ))}
+                </View>
+              </View>
+            ))}
           </ScrollView>
         </>
       )}
     </SafeAreaView>
+  );
+}
+
+function SoundCard({ sound: s, bg, locked, on, fav, onPress, onFav }: { sound: Sound; bg: string; locked: boolean; on: boolean; fav: boolean; onPress: () => void; onFav: () => void }) {
+  const { t } = useTranslation();
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={s.title} accessibilityState={{ selected: on }} onPress={onPress} onLongPress={onFav} style={({ pressed }) => ({ width: '48%', transform: [{ scale: pressed ? 0.96 : on ? 1.02 : 1 }] })}>
+      <View style={[{ height: 176, borderRadius: radius.lg, padding: 8, gap: 8, backgroundColor: bg, borderWidth: 3, borderColor: on ? color.primary : color.surface }, on ? shadow.glow : shadow.card]}>
+        <View style={{ flex: 1, borderRadius: radius.md, overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.18)', alignItems: 'center', justifyContent: 'center' }}>
+          {SOUND_ART[s.id] ? (
+            <Image source={SOUND_ART[s.id]} style={{ width: '100%', height: '100%' }} resizeMode="cover" accessibilityIgnoresInvertColors />
+          ) : (
+            <Text style={{ fontSize: 56 }}>{EMOJI[s.category]}</Text>
+          )}
+          {/* play / pause in the middle of the picture */}
+          <View style={{ position: 'absolute', width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: on ? color.primary : 'rgba(21,29,56,0.55)' }}>
+            {on ? <Pause size={18} color={color.onPrimary} fill={color.onPrimary} /> : <Play size={18} color={color.onBrand} fill={color.onBrand} style={{ marginLeft: 2 }} />}
+          </View>
+          {locked ? (
+            <View style={{ position: 'absolute', top: 6, left: 6, width: 28, height: 28, borderRadius: 14, backgroundColor: color.brandStrong, alignItems: 'center', justifyContent: 'center' }}>
+              <Crown size={14} color={color.highlight} fill={color.highlight} />
+            </View>
+          ) : null}
+          <Pressable accessibilityRole="button" accessibilityLabel={t('sounds.favorites')} accessibilityState={{ selected: fav }} hitSlop={8} onPress={onFav} style={{ position: 'absolute', top: 6, right: 6, width: 30, height: 30, borderRadius: 15, backgroundColor: 'rgba(255,255,255,0.92)', alignItems: 'center', justifyContent: 'center' }}>
+            <Heart size={15} color={color.danger} fill={fav ? color.danger : 'transparent'} />
+          </Pressable>
+        </View>
+        <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75} style={[type.subheadStrong, { color: color.onBrand, fontWeight: '800', textAlign: 'center' }]}>{s.title}</Text>
+      </View>
+    </Pressable>
   );
 }

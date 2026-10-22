@@ -6,15 +6,11 @@ export const cors = {
   'access-control-allow-headers': 'authorization, content-type',
 };
 
-const LIMITS: Record<string, { free: number; pro: number }> = {
-  bark: { free: 3, pro: 50 },
-  scan: { free: 2, pro: 30 },
-  chat: { free: 10, pro: 200 },
-  portrait: { free: 0, pro: 5 },
-};
+// Pro users get a generous per-day fair-use cap. Free users spend one of their one-time credits per call instead.
+const PRO_DAILY: Record<string, number> = { bark: 50, scan: 30, chat: 200, portrait: 5 };
 
-/** Authenticates the caller, enforces the per-day quota server-side, and runs the handler. */
-export function guarded(feature: keyof typeof LIMITS, handler: (req: Request, userId: string) => Promise<unknown>) {
+/** Authenticates the caller, charges a credit (free) or checks the daily cap (Pro) server-side, and runs the handler. */
+export function guarded(feature: keyof typeof PRO_DAILY, handler: (req: Request, userId: string) => Promise<unknown>) {
   return async (req: Request) => {
     if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
     try {
@@ -27,11 +23,22 @@ export function guarded(feature: keyof typeof LIMITS, handler: (req: Request, us
 
       const { data: ent } = await admin.from('entitlements').select('is_pro, expires_at').eq('user_id', uid).maybeSingle();
       const pro = !!ent?.is_pro && (!ent.expires_at || new Date(ent.expires_at) > new Date());
-      const limit = pro ? LIMITS[feature].pro : LIMITS[feature].free;
-      const { data: ok } = await admin.rpc('consume_usage', { p_user: uid, p_feature: feature, p_limit: limit });
-      if (!ok) throw new HttpError(429, pro ? 'daily_limit_reached' : 'free_limit_reached');
+      if (pro) {
+        const { data: ok } = await admin.rpc('consume_usage', { p_user: uid, p_feature: feature, p_limit: PRO_DAILY[feature] });
+        if (!ok) throw new HttpError(429, 'daily_limit_reached');
+      } else {
+        const { data: left } = await admin.rpc('spend_credit', { p_user: uid });
+        if (typeof left !== 'number' || left < 0) throw new HttpError(402, 'no_credits');
+      }
 
-      const body = await handler(req, uid);
+      let body: unknown;
+      try {
+        body = await handler(req, uid);
+      } catch (e) {
+        // A failed AI call shouldn't cost the user a credit.
+        if (!pro) await admin.rpc('refund_credit', { p_user: uid });
+        throw e;
+      }
       return new Response(JSON.stringify(body), { headers: { ...cors, 'content-type': 'application/json' } });
     } catch (e) {
       const status = e instanceof HttpError ? e.status : 500;

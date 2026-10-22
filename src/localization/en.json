@@ -1,5 +1,6 @@
 {
   "common": {
+    "close": "Close",
     "continue": "Continue",
     "skip": "Skip",
     "back": "Back",
@@ -16,7 +17,8 @@
     "translate": "Translate",
     "training": "Training",
     "scanner": "AI Scan",
-    "more": "More"
+    "more": "More",
+    "ai": "AI Studio"
   },
   "onboarding": {
     "s1Title": "Hear what each bark might mean",
@@ -107,7 +109,8 @@
     "portrait_provider_not_configured": "Portraits aren't available yet.",
     "unknown": "Something went wrong. Please try again.",
     "unsupported_audio": "Only WAV files can be imported for now. Record directly, or convert your file to WAV.",
-    "audio_too_long": "That file is longer than 30 seconds. Trim it and try again."
+    "audio_too_long": "That file is longer than 30 seconds. Trim it and try again.",
+    "no_credits": "You've used your free credits. Go Pro for unlimited translations and AI."
   },
   "home": {
     "greetingMorning": "Good morning, {{name}}",
@@ -195,7 +198,17 @@
     "justNow": "Just now · {{s}}s bark",
     "levelLow": "Low",
     "levelMedium": "Medium",
-    "levelHigh": "High"
+    "levelHigh": "High",
+    "dog": "Dog",
+    "tapToSpeak": "Tap the button and speak",
+    "tapToRecordDog": "Tap to record {{name}}’s bark",
+    "whatSaying": "What is {{name}} saying?",
+    "talkTo": "Talk to {{name}}",
+    "tips": {
+      "quiet": "🔇 Quiet room",
+      "close": "📏 Get close"
+    },
+    "pickInstead": "Voice input isn't available here. Tap what you want to say:"
   },
   "history": {
     "empty": "No saved results for {{name}} yet.",
@@ -216,7 +229,9 @@
     "weekEmpty": "No entries this week yet.",
     "addTitle": "How is {{name}} today?",
     "note": "Note (optional)",
-    "noNote": "No note"
+    "noNote": "No note",
+    "saved": "Saved to the diary",
+    "timeline": "Timeline"
   },
   "training": {
     "streak_one": "{{count}}-day streak",
@@ -277,7 +292,12 @@
     "speakTab": "Speak",
     "typeTab": "Type",
     "playAs": "Play as {{voice}} dog",
-    "tryTraining": "For real cues, try Training"
+    "tryTraining": "For real cues, try Training",
+    "dogWillHear": "Your dog will hear",
+    "tapMic": "Tap the mic and say a phrase",
+    "speakHint": "Try “sit”, “come here” or “good dog”.",
+    "phrasesTitle": "Phrases",
+    "voiceTitle": "Dog voice"
   },
   "games": {
     "bee": "Chase the Bee",
@@ -300,12 +320,21 @@
     "done": "You scored {{score}} of {{total}} today. Come back tomorrow!"
   },
   "assistant": {
-    "title": "Dog assistant",
+    "title": "Ask AI",
     "clear": "Clear",
     "disclaimer": "General dog-care and training tips only. I'm not a veterinarian. For urgent symptoms, contact a vet right away.",
     "typing": "Thinking…",
     "placeholder": "Ask about {{name}}…",
-    "send": "Send"
+    "send": "Send",
+    "welcomeTitle": "Ask me anything about {{name}}",
+    "welcomeBody": "Behaviour, food, training or health questions — I’ll give friendly, practical tips.",
+    "costHint": "Each question uses 1 free credit",
+    "suggestions": {
+      "bark": "Why does {{name}} bark at night?",
+      "food": "How much should {{name}} eat a day?",
+      "walk": "How long should our walks be?",
+      "train": "How do I teach {{name}} to stay?"
+    }
   },
   "scanner": {
     "title": "AI scanner",
@@ -327,11 +356,16 @@
     "traits": "Visible traits",
     "cues": "Visible cues (not a mood diagnosis)",
     "care": "General care",
-    "followUps": "Questions to explore"
+    "followUps": "Questions to explore",
+    "emptyTitle": "Add a photo of your dog",
+    "emptyBody": "A clear, well-lit photo of the face and body works best.",
+    "scanning": "Analyzing…",
+    "bestMatch": "Best match",
+    "newScan": "New scan"
   },
   "portraits": {
     "title": "AI portraits",
-    "body": "Turn your dog's photo into a stylised portrait. Pro feature.",
+    "body": "Pick a style and a photo — we’ll create a one-of-a-kind portrait.",
     "styles": {
       "sticker": "Sticker",
       "cartoon": "Cartoon",
@@ -339,7 +373,13 @@
     },
     "pick": "Choose a photo",
     "generate": "Generate",
-    "result": "Generated portrait"
+    "result": "Generated portrait",
+    "introTitle": "Turn your pup into art",
+    "chooseStyle": "Choose a style",
+    "pickHint": "A clear photo of your dog’s face works best.",
+    "change": "Change",
+    "creating": "Creating your portrait…",
+    "costHint": "Uses 1 free credit"
   },
   "paywall": {
     "title": "Everything your dog loves, all in one place",
@@ -354,6 +394,8 @@
     "seePro": "See Pro",
     "subscribe": "Continue",
     "restore": "Restore purchases",
+    "continueFree": "Continue with free",
+    "save": "SAVE {{pct}}%",
     "failed": "The purchase didn't complete. You haven't been charged.",
     "restored": "Purchases restored.",
     "nothingToRestore": "No active purchases found.",
@@ -370,7 +412,42 @@
       "LIFETIME": "Lifetime",
       "OTHER": "Pro"
     },
-    "bestValue": "BEST VALUE"
+    "bestValue": "BEST VALUE",
+    "hero": {
+      "translate": {
+        "tab": "Translator",
+        "a": "Woof! Woof! 🐾",
+        "b": "Let's go to the park! 🌳"
+      },
+      "sounds": {
+        "tab": "Sounds",
+        "a": "🔔 Ding dong!",
+        "b": "Ears up! 👂"
+      },
+      "scan": {
+        "tab": "AI Scan",
+        "a": "😊 Happy",
+        "b": "🎾 Playful"
+      },
+      "training": {
+        "tab": "Training",
+        "a": "🎓 Sit!",
+        "b": "⭐ Good dog!"
+      }
+    },
+    "secured": "SECURED WITH APP STORE",
+    "renews": "{{price}}/{{period}} · Just {{day}}/day · Cancel anytime",
+    "oneTime": "{{price}} once · Yours forever",
+    "period": {
+      "WEEKLY": "week",
+      "MONTHLY": "month",
+      "ANNUAL": "year"
+    },
+    "popular": "POPULAR",
+    "restoreShort": "Restore",
+    "forever": "forever",
+    "oneTimeShort": "One-time purchase",
+    "perPeriod": "per {{period}}"
   },
   "more": {
     "dogs": "Your dogs",
@@ -427,5 +504,113 @@
   "reminder": {
     "title": "Time to train!",
     "body": "A short, fun session with {{name}} keeps skills sharp."
+  },
+  "account": {
+    "proActive": "Pro is active",
+    "title": "Create your account",
+    "signinTitle": "Sign in to your account",
+    "body": "Save your Pro subscription to your account so you keep it on every device and after reinstalling.",
+    "why": "Your subscription is linked to this account. We never share your email.",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "create": "Create account",
+    "signin": "Sign in",
+    "haveAccount": "Already have an account?",
+    "noAccount": "New here?",
+    "codeTitle": "Check your email",
+    "codeBody": "We sent a 6-digit code to {{email}}.",
+    "code": "Verification code",
+    "verify": "Verify",
+    "resend": "Resend code",
+    "resent": "Code sent",
+    "changeEmail": "Change email",
+    "notifyTitle": "You're all set! 🎉",
+    "notifyBody": "Turn on notifications so you never miss a thing.",
+    "notify": {
+      "reminders": "Training reminders",
+      "tips": "Daily dog tips & facts",
+      "offers": "New features and offers"
+    },
+    "notifyAllow": "Turn on notifications",
+    "notifyLater": "Not now",
+    "errors": {
+      "email_format": "Enter a valid email address.",
+      "invalid_email": "Enter a valid email address.",
+      "email_taken": "This email already has an account. Sign in instead.",
+      "password_short": "Use at least 8 characters.",
+      "weak_password": "Choose a stronger password.",
+      "wrong_credentials": "Email or password is incorrect.",
+      "bad_code": "That code is wrong or expired.",
+      "offline": "You're offline. Check your connection and try again.",
+      "unknown": "Something went wrong. Please try again."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "sections": {
+      "dogs": "My dogs",
+      "general": "General",
+      "support": "Purchases & legal"
+    },
+    "push": "Push notifications",
+    "version": "Version {{version}}"
+  },
+  "app": {
+    "proBanner": "Unlock Pro for unlimited fun with your dog!"
+  },
+  "ai": {
+    "scan": {
+      "title": "AI Breed Scanner",
+      "body": "Snap your dog and find their breed in seconds.",
+      "cta": "Scan"
+    },
+    "tools": {
+      "assistant": {
+        "title": "Ask AI",
+        "body": "Any dog question, answered"
+      },
+      "portraits": {
+        "title": "AI Portraits",
+        "body": "Turn your pup into art"
+      },
+      "talk": {
+        "title": "Talk to Your Dog",
+        "body": "Say it, hear it in barks"
+      },
+      "mood": {
+        "title": "Mood Diary",
+        "body": "Track how your dog feels"
+      }
+    }
+  },
+  "trainingTools": {
+    "clicker": "Clicker",
+    "whistle": "Whistle",
+    "quiz": "Quiz",
+    "games": "Games",
+    "lessons": "Lessons",
+    "nextUp": "Next up",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "steps_one": "{{count}} step",
+    "steps_other": "{{count}} steps",
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "completed": "Done",
+    "goal": "Goal",
+    "howTo": "Step by step",
+    "tips": "Tips",
+    "mistakes": "Avoid these",
+    "clickerHint": "Click the moment your dog gets it right, then reward.",
+    "practisedAgain": "Practised again",
+    "goodLuck": "Have fun, {{name}}!"
+  },
+  "credits": {
+    "left_one": "{{count}} free credit left",
+    "left_other": "{{count}} free credits left"
   }
 }

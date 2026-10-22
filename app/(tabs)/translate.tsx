@@ -3,16 +3,18 @@ import * as Haptics from 'expo-haptics';
 import { File } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Bookmark, ChevronLeft, Pause, Play, RotateCcw, Share2, Smile, X, Info } from 'lucide-react-native';
+import { Bookmark, ChevronDown, ChevronLeft, Pause, Play, RotateCcw, Share2, Smile, X, Info } from 'lucide-react-native';
 import { useEffect, useRef, useState, type ComponentRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, Pressable, Share, Text, View } from 'react-native';
+import { Image, Linking, Pressable, Share, Text, View } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
+import Animated, { ZoomIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppHeader, TAB_BAR_SPACE, TAB_BG } from '@/components/AppHeader';
 import { Button, Card, DogAvatar, MoodBadge, Screen, T } from '@/components/ui';
-import { PHRASES, PHRASE_SOUNDS, type Phrase } from '@/content/sounds';
+import { PHRASES, PHRASE_KEYWORDS, PHRASE_SOUNDS, type Phrase } from '@/content/sounds';
 import { useActiveDog } from '@/features/dog-profiles/store';
-import { LiveWave, ModeSwap, RecordBackdrop, RecordStage, levelFromDb, type TranslateMode } from '@/features/translate/RecordStage';
+import { LiveWave, RecordStage, levelFromDb, type TranslateMode } from '@/features/translate/RecordStage';
 import { useJournal, type Confidence } from '@/features/journal/store';
 import { extractFeatures, type BarkFeatures } from '@/lib/features';
 import { errorKey, isLimit } from '@/lib/errors';
@@ -21,7 +23,10 @@ import { playAsset, stopPlayback } from '@/lib/playback';
 import { listenOnce } from '@/lib/speech';
 import i18n from '@/localization';
 import { callFn } from '@/services/api';
-import { color, mood as moodTokens, radius, type, type Mood } from '@/theme/tokens';
+import { spendCredit } from '@/services/credits';
+import { log } from '@/services/logger';
+import { usePurchases } from '@/services/purchases';
+import { color, mood as moodTokens, radius, shadow, type, type Mood } from '@/theme/tokens';
 
 const moodColor = Object.fromEntries(Object.entries(moodTokens).map(([k, v]) => [k, v.fg])) as Record<Mood, string>;
 
@@ -88,7 +93,15 @@ export default function Translate() {
   const [phrase, setPhrase] = useState<Phrase>();
   const [note, setNote] = useState('');
   const phraseSound = phrase && PHRASE_SOUNDS[phrase]?.[dog?.voice ?? 'medium'];
-  const clearHuman = () => { setHeard(''); setPhrase(undefined); setNote(''); };
+  // When speech recognition fails (e.g. the iOS Simulator), the user taps the phrase instead.
+  const [pickPhrase, setPickPhrase] = useState(false);
+  const clearHuman = () => { setHeard(''); setPhrase(undefined); setNote(''); setPickPhrase(false); };
+  const sayPhrase = (p: Phrase) => {
+    setPhrase(p);
+    const src = PHRASE_SOUNDS[p]?.[dog?.voice ?? 'medium'];
+    if (src) void playAsset(src, 0.5);
+    else setNote(t('talk.noPack'));
+  };
 
   /** Turns the user's recording into a phrase and plays it back as a bark. */
   async function translateHuman(uri: string | null) {
@@ -98,7 +111,7 @@ export default function Translate() {
       setHeard(text);
       // Match against the current language and English, so either works.
       const labels = Object.fromEntries(PHRASES.map((p) => [p, [t(`talk.phrases.${p}`), i18n.t(`talk.phrases.${p}`, { lng: 'en' })]])) as Record<Phrase, string[]>;
-      const m = matchPhrase(text, labels);
+      const m = matchPhrase(text, labels, PHRASE_KEYWORDS);
       if (!m) setNote(t('talk.noMatch'));
       else {
         setPhrase(m);
@@ -107,7 +120,9 @@ export default function Translate() {
         else setNote(t('talk.noPack'));
       }
     } catch (e) {
-      setNote(t('talk.voiceUnavailable') + (__DEV__ ? ` [${(e as Error).message}]` : ''));
+      log.warn('speech_failed', e);
+      setNote(t('translate.pickInstead'));
+      setPickPhrase(true);
     } finally {
       try { if (uri) new File(uri).delete(); } catch {} // the voice recording is never kept
       setPhase('idle');
@@ -159,7 +174,15 @@ export default function Translate() {
   async function finish() {
     await rec.stop().catch(() => {});
     await setAudioModeAsync({ allowsRecording: false }).catch(() => {});
-    if (mode === 'human') return translateHuman(rec.uri);
+    if (mode === 'human') {
+      // Free users pay one credit per voice translation; out of credits sends them to Pro.
+      if (!usePurchases.getState().isPro && (await spendCredit()) === 'none') {
+        try { if (rec.uri) new File(rec.uri).delete(); } catch {}
+        setPhase('idle');
+        return router.push('/paywall?reason=credits');
+      }
+      return translateHuman(rec.uri);
+    }
     lastUri.current = rec.uri; // kept on-device only so the user can replay it; deleted on reset or leaving
     await analyze(extractFeatures(samples.current, TICK));
   }
@@ -322,105 +345,135 @@ export default function Translate() {
     );
   }
 
-  // ---- dark record canvas (D1 ready / D2 recording / D3 processing) -------------------------------------------
+  // ---- record canvas (ready / recording / processing) -----------------------------------------------------------
   const recording = phase === 'recording';
   const busy = phase === 'analyzing';
   const human = mode === 'human';
   const sec = Math.floor(state.durationMillis / 1000);
   const level = recording && !paused && typeof state.metering === 'number' ? levelFromDb(state.metering) : 0;
-  const circle = { width: 52, height: 52, borderRadius: 26, backgroundColor: 'rgba(255,255,255,0.12)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)', alignItems: 'center' as const, justifyContent: 'center' as const };
-  const glass = { backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)' };
+  const circle = { width: 52, height: 52, borderRadius: 26, backgroundColor: color.surface, alignItems: 'center' as const, justifyContent: 'center' as const, ...shadow.card };
+  const pick = (m: TranslateMode) => {
+    if (recording || busy || m === mode) return;
+    Haptics.selectionAsync().catch(() => {});
+    stopPlayback();
+    clearHuman();
+    setMode(m);
+  };
+  const dogName = name || t('translate.dog');
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.brandDeep }} edges={['top']}>
-      <RecordBackdrop recording={recording} />
-      <View style={{ alignItems: 'center', paddingTop: 8, paddingHorizontal: 24, gap: 14 }}>
-        <View style={[{ flexDirection: 'row', alignItems: 'center', gap: 8, paddingRight: 14, paddingLeft: 4, height: 40, borderRadius: radius.full }, glass]}>
-          <DogAvatar name={name || '?'} uri={dog?.photoUri} size={32} selected />
-          <Text style={[type.subheadStrong, { color: color.onBrand }]}>{t('translate.listeningFor', { name })}</Text>
-        </View>
-        {recording ? (
-          <View style={{ alignItems: 'center', gap: 4 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, height: 28, borderRadius: radius.full, backgroundColor: 'rgba(214,69,53,0.25)' }}>
-              <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: paused ? color.onBrandMuted : color.danger }} />
-              <Text style={[type.caption, { color: color.onBrand }]}>{paused ? t('translate.pause') : t('translate.recordingBadge')}</Text>
-            </View>
-            <Text style={[type.numeric, { color: color.onBrand, fontVariant: ['tabular-nums'] }]}>0:{String(sec).padStart(2, '0')}</Text>
-            <Text style={[type.caption, { color: color.onBrandMuted }]}>{t('translate.ofMax')}</Text>
-          </View>
-        ) : (
-          <View style={{ alignItems: 'center', gap: 8 }}>
-            <Text style={[type.title1, { color: color.onBrand, textAlign: 'center' }]}>
-              {busy ? t('translate.analyzing') : t('translate.tapMic')}
-            </Text>
-            <Text style={[type.subhead, { color: color.onBrandMuted, textAlign: 'center' }]}>{human ? t('translate.humanSub', { name }) : t('translate.sub')}</Text>
-          </View>
-        )}
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: TAB_BG }} edges={['top']}>
+      <AppHeader
+        leading={
+          <Pressable accessibilityRole="button" onPress={() => router.push('/settings')} style={({ pressed }) => [{ flexDirection: 'row', alignItems: 'center', gap: 8, paddingLeft: 4, paddingRight: 12, height: 44, borderRadius: 22, backgroundColor: color.surface, opacity: pressed ? 0.8 : 1 }, shadow.card]}>
+            <DogAvatar name={dogName} uri={dog?.photoUri} size={36} />
+            <Text numberOfLines={1} style={[type.headline, { color: color.text, maxWidth: 140 }]}>{dogName}</Text>
+            <ChevronDown size={16} color={color.textSecondary} />
+          </Pressable>
+        }
+      />
 
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <RecordStage
-          state={recording ? 'recording' : busy ? 'analyzing' : 'idle'}
-          level={level}
-          progress={state.durationMillis / MAX_MS}
-          label={recording ? t('translate.stop') : t('home.record')}
-          tone={human ? 'human' : 'dog'}
-          onPress={() => {
-            Haptics.impactAsync(recording ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-            void (recording ? finish() : start());
-          }}
-        />
-      </View>
+      <View style={{ flex: 1, paddingHorizontal: 16, paddingBottom: TAB_BAR_SPACE, gap: 14 }}>
+        <Text style={[type.title2, { color: color.text, textAlign: 'center', marginTop: 4 }]}>
+          {human ? t('translate.talkTo', { name: dogName }) : t('translate.whatSaying', { name: dogName })}
+        </Text>
 
-      <View style={{ alignItems: 'center', paddingHorizontal: 24, paddingBottom: 64, gap: 16 }}>
-        {recording ? (
-          <>
-            <LiveWave levels={samples.current.map(levelFromDb)} />
-            <View style={{ flexDirection: 'row', gap: 72 }}>
-              <Pressable accessibilityRole="button" accessibilityLabel={paused ? t('translate.resume') : t('translate.pause')} onPress={togglePause} style={{ alignItems: 'center', gap: 6 }}>
-                <View style={circle}>{paused ? <Play size={20} color={color.onBrand} /> : <Pause size={20} color={color.onBrand} />}</View>
-                <Text style={[type.caption, { color: color.onBrandMuted }]}>{paused ? t('translate.resume') : t('translate.pause')}</Text>
-              </Pressable>
-              <Pressable accessibilityRole="button" accessibilityLabel={t('common.cancel')} onPress={cancel} style={{ alignItems: 'center', gap: 6 }}>
-                <View style={circle}><X size={20} color={color.onBrand} /></View>
-                <Text style={[type.caption, { color: color.onBrandMuted }]}>{t('common.cancel')}</Text>
-              </Pressable>
+        <DirectionToggle value={mode} disabled={recording || busy} onChange={pick} labels={{ bark: t('home.barkToHuman'), human: t('home.humanToDog') }} />
+
+        {/* Cream stage in brand colours: the speaker on top, the button in the middle, tips or controls below. */}
+        <View style={[{ flex: 1, borderRadius: 36, backgroundColor: color.brandFaint, borderWidth: 1, borderColor: '#F3E2B8', alignItems: 'center', paddingHorizontal: 16, paddingTop: 18, paddingBottom: 16, overflow: 'hidden' }, shadow.card]}>
+          {recording ? (
+            <View style={{ alignSelf: 'stretch', alignItems: 'center', gap: 4 }}>
+              <Text style={[type.title2, { color: color.text, fontVariant: ['tabular-nums'] }]}>0:{String(sec).padStart(2, '0')} <Text style={[type.footnote, { color: color.textSecondary }]}>/ 0:10</Text></Text>
+              <LiveWave levels={samples.current.map(levelFromDb)} h={44} />
             </View>
-            <Text style={[type.subhead, { color: color.onBrandMuted }]}>{human ? t('translate.tapStopHuman') : t('translate.tapStop', { name })}</Text>
-          </>
-        ) : busy ? null : (
-          <>
-            {human && (heard || note) ? (
-              <View style={[{ alignSelf: 'stretch', gap: 10, padding: 14, borderRadius: radius.lg }, glass]}>
-                {heard ? <Text style={[type.headline, { color: color.onBrand }]}>“{heard}”</Text> : null}
-                {phrase ? (
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                    <Text style={[type.subheadStrong, { color: color.highlight, flex: 1 }]}>🐶 {t(`talk.phrases.${phrase}`)}</Text>
-                    {phraseSound ? (
-                      <Pressable accessibilityRole="button" accessibilityLabel={t('talk.play')} onPress={() => void playAsset(phraseSound, 0.5)} style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: color.primary, alignItems: 'center', justifyContent: 'center' }}>
-                        <Play size={18} color={color.onPrimary} fill={color.onPrimary} />
-                      </Pressable>
-                    ) : null}
-                  </View>
-                ) : null}
-                {note ? <Text style={[type.footnote, { color: color.onBrandMuted }]}>{note}</Text> : null}
-              </View>
-            ) : null}
-            <ModeSwap
-              value={mode}
-              dog={{ name, uri: dog?.photoUri }}
-              labels={{ bark: t('home.barkToHuman'), human: t('home.humanToDog') }}
-              onChange={(m) => {
-                Haptics.selectionAsync().catch(() => {});
-                stopPlayback();
-                clearHuman();
-                setMode(m);
+          ) : human && (heard || note || pickPhrase) ? (
+            <View style={{ alignSelf: 'stretch', gap: 8, padding: 12, borderRadius: radius.lg, backgroundColor: color.surface }}>
+              {heard ? <Text style={[type.headline, { color: color.text }]}>“{heard}”</Text> : null}
+              {phrase && !pickPhrase ? (
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                  <Text style={[type.subheadStrong, { color: color.textAccent, flex: 1 }]}>🐶 {t(`talk.phrases.${phrase}`)}</Text>
+                  {phraseSound ? (
+                    <Pressable accessibilityRole="button" accessibilityLabel={t('talk.play')} onPress={() => void playAsset(phraseSound, 0.5)} style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: color.primary, alignItems: 'center', justifyContent: 'center' }}>
+                      <Play size={18} color={color.onPrimary} fill={color.onPrimary} />
+                    </Pressable>
+                  ) : null}
+                </View>
+              ) : null}
+              {note ? <Text style={[type.footnote, { color: color.textSecondary }]}>{note}</Text> : null}
+              {pickPhrase ? (
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                  {PHRASES.map((p) => (
+                    <Pressable key={p} accessibilityRole="button" onPress={() => sayPhrase(p)} style={{ paddingHorizontal: 12, height: 34, borderRadius: 17, justifyContent: 'center', backgroundColor: phrase === p ? color.primary : color.brandSoft }}>
+                      <Text style={[type.subheadStrong, { color: phrase === p ? color.onPrimary : color.text }]}>{t(`talk.phrases.${p}`)}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              ) : null}
+            </View>
+          ) : (
+            <Animated.View key={mode} entering={ZoomIn.springify()} style={[{ width: 112, height: 112, borderRadius: 56, borderWidth: 4, borderColor: color.primary, backgroundColor: color.surface, overflow: 'hidden', alignItems: 'center', justifyContent: 'flex-end' }, shadow.glow]}>
+              <Image source={human ? require('../../assets/illustrations/translate-human.png') : require('../../assets/illustrations/translate-dog.png')} style={{ width: 120, height: 120, marginBottom: -10 }} resizeMode="contain" accessibilityIgnoresInvertColors />
+            </Animated.View>
+          )}
+
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <RecordStage
+              state={recording ? 'recording' : busy ? 'analyzing' : 'idle'}
+              level={level}
+              progress={state.durationMillis / MAX_MS}
+              label={recording ? t('translate.stop') : t('home.record')}
+              tone={human ? 'human' : 'dog'}
+              onPress={() => {
+                Haptics.impactAsync(recording ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+                void (recording ? finish() : start());
               }}
             />
-          </>
-        )}
-      </View>
+          </View>
 
+          {recording ? (
+            <View style={{ flexDirection: 'row', gap: 56 }}>
+              <Pressable accessibilityRole="button" accessibilityLabel={paused ? t('translate.resume') : t('translate.pause')} onPress={togglePause} style={circle}>
+                {paused ? <Play size={20} color={color.text} /> : <Pause size={20} color={color.text} />}
+              </Pressable>
+              <Pressable accessibilityRole="button" accessibilityLabel={t('common.cancel')} onPress={cancel} style={circle}>
+                <X size={20} color={color.text} />
+              </Pressable>
+            </View>
+          ) : busy ? (
+            <Text style={[type.callout, { color: color.textSecondary }]}>{t('translate.analyzing')}</Text>
+          ) : (
+            <View style={{ alignItems: 'center', gap: 10 }}>
+              <Text style={[type.callout, { color: color.text, fontWeight: '600', textAlign: 'center' }]}>
+                {human ? t('translate.tapToSpeak') : t('translate.tapToRecordDog', { name: dogName })}
+              </Text>
+              <View style={{ flexDirection: 'row', gap: 8 }}>
+                {(['quiet', 'close'] as const).map((k) => (
+                  <View key={k} style={{ paddingHorizontal: 10, height: 28, borderRadius: 14, justifyContent: 'center', backgroundColor: color.surface }}>
+                    <Text style={[type.caption, { color: color.textSecondary }]}>{t(`translate.tips.${k}`)}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+        </View>
+      </View>
     </SafeAreaView>
+  );
+}
+
+/** Two-option switch for the translation direction; an amber pill slides under the active side. */
+function DirectionToggle({ value, onChange, labels, disabled }: { value: TranslateMode; onChange: (m: TranslateMode) => void; labels: Record<TranslateMode, string>; disabled?: boolean }) {
+  return (
+    <View style={[{ flexDirection: 'row', padding: 4, borderRadius: 26, backgroundColor: color.surface, opacity: disabled ? 0.6 : 1 }, shadow.card]}>
+      {(['bark', 'human'] as const).map((m) => {
+        const on = value === m;
+        return (
+          <Pressable key={m} accessibilityRole="tab" accessibilityState={{ selected: on, disabled }} disabled={disabled} onPress={() => onChange(m)} style={{ flex: 1, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: on ? color.primary : 'transparent' }}>
+            <Text numberOfLines={1} style={[type.subheadStrong, { color: on ? color.onPrimary : color.textSecondary, fontWeight: on ? '800' : '600' }]}>{m === 'bark' ? '🐶 ' : '🗣️ '}{labels[m]}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
   );
 }

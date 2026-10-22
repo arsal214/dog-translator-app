@@ -30,6 +30,7 @@
     "expo-splash-screen": "~58.0.10",
     "expo-status-bar": "~58.0.3",
     "expo-store-review": "~58.0.2",
+    "expo-video": "~58.0.12",
     "expo-widgets": "~58.0.21",
     "i18next": "^26.5.3",
     "lucide-react-native": "^1.60.0",

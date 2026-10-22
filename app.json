@@ -13,7 +13,10 @@
         "NSMicrophoneUsageDescription": "Dog Translator uses the microphone to hear the phrase you want to play.",
         "NSPhotoLibraryUsageDescription": "Dog Translator uses your photos for your dog's profile, the breed scanner and portraits.",
         "NSCameraUsageDescription": "Dog Translator uses the camera to photograph your dog.",
-        "NSSpeechRecognitionUsageDescription": "Dog Translator uses speech recognition to turn your spoken phrase into text."
+        "NSSpeechRecognitionUsageDescription": "Dog Translator uses speech recognition to turn your spoken phrase into text.",
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },
@@ -28,10 +31,23 @@
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ],
       "predictiveBackGestureEnabled": false,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#FDB515"
+      }
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/Artwork.png",
+          "imageWidth": 180,
+          "resizeMode": "contain",
+          "backgroundColor": "#151D38"
+        }
+      ],
       "expo-audio",
       "expo-localization",
       "expo-secure-store",
@@ -88,7 +104,8 @@
       ],
       "expo-sharing",
       "expo-notifications",
-      "./plugins/withShortNativeBuildDir"
+      "./plugins/withShortNativeBuildDir",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true
@@ -119,6 +136,7 @@
           "web": true
         }
       }
-    }
+    },
+    "icon": "./assets/icon.png"
   }
 }

@@ -72,6 +72,15 @@ export const SOUNDS: Sound[] = [
 // Phrase -> sound per dog size. Same rule: only real, licensed assets (reusing catalog files is fine here).
 export type Phrase = 'come' | 'sit' | 'stay' | 'goodDog' | 'play' | 'outside';
 export const PHRASES: Phrase[] = ['come', 'sit', 'stay', 'goodDog', 'play', 'outside'];
+// Words that point to a phrase when the exact wording isn't used (en, es, fr, de, pt), for matchPhrase.
+export const PHRASE_KEYWORDS: Record<Phrase, string[]> = {
+  come: ['come', 'here', 'come back', 'ven', 'aqui', 'viens', 'ici', 'komm', 'hier', 'vem', 'venha'],
+  sit: ['sit', 'sit down', 'sientate', 'sentado', 'assis', 'assieds', 'sitz', 'senta'],
+  stay: ['stay', 'wait', 'stop', 'hold', 'quieto', 'espera', 'reste', 'attends', 'bleib', 'warte', 'fica', 'parado'],
+  goodDog: ['good', 'boy', 'girl', 'well done', 'nice', 'buen', 'bueno', 'bravo', 'bon', 'brav', 'gut', 'bom', 'lindo'],
+  play: ['play', 'fetch', 'ball', 'toy', 'game', 'juega', 'jugar', 'pelota', 'joue', 'jouer', 'balle', 'spiel', 'spielen', 'brincar', 'bola'],
+  outside: ['outside', 'out', 'walk', 'walkies', 'park', 'garden', 'fuera', 'afuera', 'paseo', 'dehors', 'promenade', 'sortir', 'raus', 'draussen', 'gassi', 'fora', 'passear', 'rua'],
+};
 export const PHRASE_SOUNDS: Partial<Record<Phrase, Partial<Record<'small' | 'medium' | 'big', number>>>> = {
   come: {
     small: require('../../assets/sounds/attention-small-dog-at-door.m4a'),

@@ -23,6 +23,14 @@ export async function enablePush(): Promise<boolean> {
   return true;
 }
 
+/** Re-registers the token at launch when permission was already granted, so it follows the current user. Never prompts. */
+export async function syncPushToken() {
+  const m = messaging();
+  if (!m || (await m.hasPermission()) < 1) return;
+  await registerToken(await m.getToken());
+  m.onTokenRefresh(registerToken);
+}
+
 async function registerToken(token: string) {
   const { data } = await supabase.auth.getSession();
   if (!data.session) return; // stored once the user has a session (anonymous counts)

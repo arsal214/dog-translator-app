@@ -1,5 +1,6 @@
 {
   "common": {
+    "close": "Fermer",
     "continue": "Continuer",
     "skip": "Passer",
     "back": "Retour",
@@ -16,7 +17,8 @@
     "translate": "Traduire",
     "training": "Éducation",
     "scanner": "Scan IA",
-    "more": "Plus"
+    "more": "Plus",
+    "ai": "Studio IA"
   },
   "onboarding": {
     "s1Title": "Découvrez ce que chaque aboiement pourrait signifier",
@@ -107,7 +109,8 @@
     "portrait_provider_not_configured": "Les portraits ne sont pas encore disponibles.",
     "unknown": "Une erreur s’est produite. Réessayez.",
     "unsupported_audio": "Seuls les fichiers WAV peuvent être importés pour le moment. Enregistrez directement ou convertissez votre fichier en WAV.",
-    "audio_too_long": "Ce fichier dure plus de 30 secondes. Raccourcissez-le et réessayez."
+    "audio_too_long": "Ce fichier dure plus de 30 secondes. Raccourcissez-le et réessayez.",
+    "no_credits": "Tu as utilisé tes crédits gratuits. Passe à Pro pour des traductions et de l’IA illimitées."
   },
   "home": {
     "greetingMorning": "Bonjour, {{name}}",
@@ -195,7 +198,17 @@
     "justNow": "À l’instant · aboiement de {{s}} s",
     "levelLow": "Faible",
     "levelMedium": "Moyenne",
-    "levelHigh": "Élevée"
+    "levelHigh": "Élevée",
+    "dog": "Chien",
+    "tapToSpeak": "Appuie sur le bouton et parle",
+    "tapToRecordDog": "Appuie pour enregistrer l’aboiement de {{name}}",
+    "whatSaying": "Que dit {{name}} ?",
+    "talkTo": "Parle à {{name}}",
+    "tips": {
+      "quiet": "🔇 Pièce calme",
+      "close": "📏 Approche-toi"
+    },
+    "pickInstead": "La saisie vocale n’est pas disponible ici. Touche ce que tu veux dire :"
   },
   "history": {
     "empty": "Aucun résultat enregistré pour {{name}}.",
@@ -216,7 +229,9 @@
     "weekEmpty": "Aucune entrée cette semaine.",
     "addTitle": "Comment va {{name}} aujourd’hui ?",
     "note": "Note (facultatif)",
-    "noNote": "Pas de note"
+    "noNote": "Pas de note",
+    "saved": "Enregistré dans le journal",
+    "timeline": "Historique"
   },
   "training": {
     "streak_one": "Série de {{count}} jour",
@@ -277,7 +292,12 @@
     "speakTab": "Parler",
     "typeTab": "Écrire",
     "playAs": "Lire · voix {{voice}}",
-    "tryTraining": "Pour de vrais signaux, essayez l’Éducation"
+    "tryTraining": "Pour de vrais signaux, essayez l’Éducation",
+    "dogWillHear": "Ton chien entendra",
+    "tapMic": "Touche le micro et dis une phrase",
+    "speakHint": "Essaie « assis », « viens ici » ou « bon chien ».",
+    "phrasesTitle": "Phrases",
+    "voiceTitle": "Voix du chien"
   },
   "games": {
     "bee": "Attrape l’abeille",
@@ -300,12 +320,21 @@
     "done": "Vous avez obtenu {{score}} sur {{total}} aujourd’hui. À demain !"
   },
   "assistant": {
-    "title": "Assistant canin",
+    "title": "Demande à l’IA",
     "clear": "Effacer",
     "disclaimer": "Conseils généraux de soins et d’éducation uniquement. Je ne suis pas vétérinaire. En cas de symptômes urgents, contactez immédiatement un vétérinaire.",
     "typing": "Réflexion…",
     "placeholder": "Posez une question sur {{name}}…",
-    "send": "Envoyer"
+    "send": "Envoyer",
+    "welcomeTitle": "Demande-moi tout sur {{name}}",
+    "welcomeBody": "Comportement, alimentation, dressage ou santé — je donne des conseils pratiques.",
+    "costHint": "Chaque question utilise 1 crédit gratuit",
+    "suggestions": {
+      "bark": "Pourquoi {{name}} aboie la nuit ?",
+      "food": "Combien {{name}} doit-il manger par jour ?",
+      "walk": "Combien de temps doivent durer nos balades ?",
+      "train": "Comment apprendre « reste » à {{name}} ?"
+    }
   },
   "scanner": {
     "title": "Scanner IA",
@@ -327,11 +356,16 @@
     "traits": "Traits visibles",
     "cues": "Signes visibles (pas un diagnostic d’humeur)",
     "care": "Soins généraux",
-    "followUps": "Questions à explorer"
+    "followUps": "Questions à explorer",
+    "emptyTitle": "Ajoute une photo de ton chien",
+    "emptyBody": "Une photo nette et bien éclairée du visage et du corps marche le mieux.",
+    "scanning": "Analyse…",
+    "bestMatch": "Meilleure correspondance",
+    "newScan": "Nouveau scan"
   },
   "portraits": {
     "title": "Portraits IA",
-    "body": "Transformez la photo de votre chien en portrait stylisé. Fonction Pro.",
+    "body": "Choisis un style et une photo — on crée un portrait unique.",
     "styles": {
       "sticker": "Sticker",
       "cartoon": "Dessin animé",
@@ -339,7 +373,13 @@
     },
     "pick": "Choisir une photo",
     "generate": "Générer",
-    "result": "Portrait généré"
+    "result": "Portrait généré",
+    "introTitle": "Transforme ton chien en œuvre d’art",
+    "chooseStyle": "Choisis un style",
+    "pickHint": "Une photo nette du visage de ton chien marche le mieux.",
+    "change": "Changer",
+    "creating": "Création du portrait…",
+    "costHint": "Utilise 1 crédit gratuit"
   },
   "paywall": {
     "title": "Tout ce que votre chien adore, au même endroit",
@@ -354,6 +394,8 @@
     "seePro": "Découvrir Pro",
     "subscribe": "Continuer",
     "restore": "Restaurer les achats",
+    "continueFree": "Continuer gratuitement",
+    "save": "ÉCONOMISEZ {{pct}} %",
     "failed": "L’achat n’a pas abouti. Vous n’avez pas été débité.",
     "restored": "Achats restaurés.",
     "nothingToRestore": "Aucun achat actif trouvé.",
@@ -370,7 +412,42 @@
       "LIFETIME": "À vie",
       "OTHER": "Pro"
     },
-    "bestValue": "MEILLEURE OFFRE"
+    "bestValue": "MEILLEURE OFFRE",
+    "hero": {
+      "translate": {
+        "tab": "Traducteur",
+        "a": "Ouaf ! Ouaf ! 🐾",
+        "b": "On va au parc ! 🌳"
+      },
+      "sounds": {
+        "tab": "Sons",
+        "a": "🔔 Ding dong !",
+        "b": "Oreilles dressées ! 👂"
+      },
+      "scan": {
+        "tab": "Scan IA",
+        "a": "😊 Heureux",
+        "b": "🎾 Joueur"
+      },
+      "training": {
+        "tab": "Dressage",
+        "a": "🎓 Assis !",
+        "b": "⭐ Bon chien !"
+      }
+    },
+    "secured": "SÉCURISÉ PAR L’APP STORE",
+    "renews": "{{price}}/{{period}} · Seulement {{day}}/jour · Annulable à tout moment",
+    "oneTime": "{{price}} une fois · À vie",
+    "period": {
+      "WEEKLY": "semaine",
+      "MONTHLY": "mois",
+      "ANNUAL": "an"
+    },
+    "popular": "POPULAIRE",
+    "restoreShort": "Restaurer",
+    "forever": "à vie",
+    "oneTimeShort": "Achat unique",
+    "perPeriod": "par {{period}}"
   },
   "more": {
     "dogs": "Vos chiens",
@@ -427,5 +504,113 @@
     "stop": "Arrêter",
     "limitations": "Les haut-parleurs de téléphone peuvent ne pas reproduire correctement les fréquences très élevées. Les chiens entendent plus aigu que nous : gardez le volume bas, les séances courtes et arrêtez si votre chien semble mal à l’aise.",
     "autoStop": "La lecture s’arrête automatiquement après {{seconds}} secondes."
+  },
+  "account": {
+    "proActive": "Pro est actif",
+    "title": "Crée ton compte",
+    "signinTitle": "Connecte-toi",
+    "body": "Enregistre ton abonnement Pro sur ton compte pour le garder sur tous tes appareils et après une réinstallation.",
+    "why": "Ton abonnement est lié à ce compte. Nous ne partageons jamais ton e-mail.",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "passwordHint": "Au moins 8 caractères",
+    "create": "Créer un compte",
+    "signin": "Se connecter",
+    "haveAccount": "Déjà un compte ?",
+    "noAccount": "Nouveau ici ?",
+    "codeTitle": "Vérifie tes e-mails",
+    "codeBody": "Nous avons envoyé un code à 6 chiffres à {{email}}.",
+    "code": "Code de vérification",
+    "verify": "Vérifier",
+    "resend": "Renvoyer le code",
+    "resent": "Code envoyé",
+    "changeEmail": "Changer d’e-mail",
+    "notifyTitle": "Tout est prêt ! 🎉",
+    "notifyBody": "Active les notifications pour ne rien manquer.",
+    "notify": {
+      "reminders": "Rappels de dressage",
+      "tips": "Astuces et anecdotes canines",
+      "offers": "Nouveautés et offres"
+    },
+    "notifyAllow": "Activer les notifications",
+    "notifyLater": "Pas maintenant",
+    "errors": {
+      "email_format": "Saisis une adresse e-mail valide.",
+      "invalid_email": "Saisis une adresse e-mail valide.",
+      "email_taken": "Un compte existe déjà avec cet e-mail. Connecte-toi plutôt.",
+      "password_short": "Au moins 8 caractères.",
+      "weak_password": "Choisis un mot de passe plus fort.",
+      "wrong_credentials": "E-mail ou mot de passe incorrect.",
+      "bad_code": "Ce code est faux ou expiré.",
+      "offline": "Tu es hors ligne. Vérifie ta connexion.",
+      "unknown": "Une erreur est survenue. Réessaie."
+    }
+  },
+  "settings": {
+    "title": "Réglages",
+    "sections": {
+      "dogs": "Mes chiens",
+      "general": "Général",
+      "support": "Achats et mentions légales"
+    },
+    "push": "Notifications push",
+    "version": "Version {{version}}"
+  },
+  "app": {
+    "proBanner": "Passe à Pro pour t’amuser sans limite avec ton chien !"
+  },
+  "ai": {
+    "scan": {
+      "title": "Scanner de race IA",
+      "body": "Photographie ton chien et découvre sa race en quelques secondes.",
+      "cta": "Scanner"
+    },
+    "tools": {
+      "assistant": {
+        "title": "Demande à l’IA",
+        "body": "Toutes tes questions sur ton chien"
+      },
+      "portraits": {
+        "title": "Portraits IA",
+        "body": "Transforme ton chien en œuvre d’art"
+      },
+      "talk": {
+        "title": "Parle à ton chien",
+        "body": "Dis-le, écoute-le en aboiements"
+      },
+      "mood": {
+        "title": "Journal d’humeur",
+        "body": "Suis l’humeur de ton chien"
+      }
+    }
+  },
+  "trainingTools": {
+    "clicker": "Clicker",
+    "whistle": "Sifflet",
+    "quiz": "Quiz",
+    "games": "Jeux",
+    "lessons": "Leçons",
+    "nextUp": "À suivre",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "steps_one": "{{count}} étape",
+    "steps_other": "{{count}} étapes",
+    "levels": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé"
+    },
+    "completed": "Fait",
+    "goal": "Objectif",
+    "howTo": "Étape par étape",
+    "tips": "Astuces",
+    "mistakes": "À éviter",
+    "clickerHint": "Clique au bon moment, puis récompense.",
+    "practisedAgain": "Pratiqué à nouveau",
+    "goodLuck": "Amuse-toi bien, {{name}} !"
+  },
+  "credits": {
+    "left_one": "{{count}} crédit gratuit restant",
+    "left_other": "{{count}} crédits gratuits restants"
   }
 }

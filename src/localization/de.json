@@ -1,5 +1,6 @@
 {
   "common": {
+    "close": "Schließen",
     "continue": "Weiter",
     "skip": "Überspringen",
     "back": "Zurück",
@@ -16,7 +17,8 @@
     "translate": "Übersetzen",
     "training": "Training",
     "scanner": "KI-Scan",
-    "more": "Mehr"
+    "more": "Mehr",
+    "ai": "KI-Studio"
   },
   "onboarding": {
     "s1Title": "Erfahre, was jedes Bellen bedeuten könnte",
@@ -107,7 +109,8 @@
     "portrait_provider_not_configured": "Porträts sind noch nicht verfügbar.",
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     "unsupported_audio": "Derzeit können nur WAV-Dateien importiert werden. Nimm direkt auf oder konvertiere deine Datei in WAV.",
-    "audio_too_long": "Diese Datei ist länger als 30 Sekunden. Kürze sie und versuche es erneut."
+    "audio_too_long": "Diese Datei ist länger als 30 Sekunden. Kürze sie und versuche es erneut.",
+    "no_credits": "Deine Gratis-Credits sind aufgebraucht. Hol dir Pro für unbegrenzte Übersetzungen und KI."
   },
   "home": {
     "greetingMorning": "Guten Morgen, {{name}}",
@@ -195,7 +198,17 @@
     "justNow": "Gerade eben · {{s}} s Bellen",
     "levelLow": "Niedrig",
     "levelMedium": "Mittel",
-    "levelHigh": "Hoch"
+    "levelHigh": "Hoch",
+    "dog": "Hund",
+    "tapToSpeak": "Tippe auf den Knopf und sprich",
+    "tapToRecordDog": "Tippe, um {{name}}s Bellen aufzunehmen",
+    "whatSaying": "Was sagt {{name}}?",
+    "talkTo": "Sprich mit {{name}}",
+    "tips": {
+      "quiet": "🔇 Ruhiger Raum",
+      "close": "📏 Nah rangehen"
+    },
+    "pickInstead": "Spracheingabe ist hier nicht verfügbar. Tippe, was du sagen möchtest:"
   },
   "history": {
     "empty": "Noch keine gespeicherten Ergebnisse für {{name}}.",
@@ -216,7 +229,9 @@
     "weekEmpty": "Diese Woche noch keine Einträge.",
     "addTitle": "Wie geht es {{name}} heute?",
     "note": "Notiz (optional)",
-    "noNote": "Keine Notiz"
+    "noNote": "Keine Notiz",
+    "saved": "Im Tagebuch gespeichert",
+    "timeline": "Verlauf"
   },
   "training": {
     "streak_one": "{{count}} Tag in Folge",
@@ -277,7 +292,12 @@
     "speakTab": "Sprechen",
     "typeTab": "Tippen",
     "playAs": "Abspielen · Stimme: {{voice}}",
-    "tryTraining": "Für echte Signale probiere das Training"
+    "tryTraining": "Für echte Signale probiere das Training",
+    "dogWillHear": "Dein Hund hört",
+    "tapMic": "Tippe aufs Mikro und sag einen Satz",
+    "speakHint": "Probier „Sitz“, „Komm her“ oder „Braver Hund“.",
+    "phrasesTitle": "Sätze",
+    "voiceTitle": "Hundestimme"
   },
   "games": {
     "bee": "Jage die Biene",
@@ -300,12 +320,21 @@
     "done": "Du hast heute {{score}} von {{total}} erreicht. Komm morgen wieder!"
   },
   "assistant": {
-    "title": "Hunde-Assistent",
+    "title": "Frag die KI",
     "clear": "Leeren",
     "disclaimer": "Nur allgemeine Tipps zu Pflege und Training. Ich bin kein Tierarzt. Bei dringenden Symptomen wende dich sofort an einen Tierarzt.",
     "typing": "Denke nach …",
     "placeholder": "Frag etwas zu {{name}} …",
-    "send": "Senden"
+    "send": "Senden",
+    "welcomeTitle": "Frag mich alles über {{name}}",
+    "welcomeBody": "Verhalten, Futter, Training oder Gesundheit – ich gebe freundliche, praktische Tipps.",
+    "costHint": "Jede Frage kostet 1 Gratis-Credit",
+    "suggestions": {
+      "bark": "Warum bellt {{name}} nachts?",
+      "food": "Wie viel sollte {{name}} am Tag fressen?",
+      "walk": "Wie lange sollten unsere Spaziergänge sein?",
+      "train": "Wie bringe ich {{name}} „Bleib“ bei?"
+    }
   },
   "scanner": {
     "title": "KI-Scanner",
@@ -327,11 +356,16 @@
     "traits": "Sichtbare Merkmale",
     "cues": "Sichtbare Signale (keine Stimmungsdiagnose)",
     "care": "Allgemeine Pflege",
-    "followUps": "Fragen zum Weiterforschen"
+    "followUps": "Fragen zum Weiterforschen",
+    "emptyTitle": "Füge ein Foto deines Hundes hinzu",
+    "emptyBody": "Ein klares, helles Foto von Gesicht und Körper funktioniert am besten.",
+    "scanning": "Wird analysiert…",
+    "bestMatch": "Beste Übereinstimmung",
+    "newScan": "Neuer Scan"
   },
   "portraits": {
     "title": "KI-Porträts",
-    "body": "Verwandle das Foto deines Hundes in ein stilisiertes Porträt. Pro-Funktion.",
+    "body": "Wähle einen Stil und ein Foto – wir erstellen ein einzigartiges Porträt.",
     "styles": {
       "sticker": "Sticker",
       "cartoon": "Cartoon",
@@ -339,7 +373,13 @@
     },
     "pick": "Foto wählen",
     "generate": "Erstellen",
-    "result": "Erstelltes Porträt"
+    "result": "Erstelltes Porträt",
+    "introTitle": "Mach deinen Hund zum Kunstwerk",
+    "chooseStyle": "Stil wählen",
+    "pickHint": "Ein klares Foto vom Gesicht deines Hundes funktioniert am besten.",
+    "change": "Ändern",
+    "creating": "Dein Porträt wird erstellt…",
+    "costHint": "Kostet 1 Gratis-Credit"
   },
   "paywall": {
     "title": "Alles, was dein Hund liebt, an einem Ort",
@@ -354,6 +394,8 @@
     "seePro": "Pro ansehen",
     "subscribe": "Weiter",
     "restore": "Käufe wiederherstellen",
+    "continueFree": "Kostenlos fortfahren",
+    "save": "{{pct}} % SPAREN",
     "failed": "Der Kauf wurde nicht abgeschlossen. Dir wurde nichts berechnet.",
     "restored": "Käufe wiederhergestellt.",
     "nothingToRestore": "Keine aktiven Käufe gefunden.",
@@ -370,7 +412,42 @@
       "LIFETIME": "Lebenslang",
       "OTHER": "Pro"
     },
-    "bestValue": "BESTER WERT"
+    "bestValue": "BESTER WERT",
+    "hero": {
+      "translate": {
+        "tab": "Übersetzer",
+        "a": "Wuff! Wuff! 🐾",
+        "b": "Ab in den Park! 🌳"
+      },
+      "sounds": {
+        "tab": "Sounds",
+        "a": "🔔 Ding dong!",
+        "b": "Ohren hoch! 👂"
+      },
+      "scan": {
+        "tab": "KI-Scan",
+        "a": "😊 Glücklich",
+        "b": "🎾 Verspielt"
+      },
+      "training": {
+        "tab": "Training",
+        "a": "🎓 Sitz!",
+        "b": "⭐ Braver Hund!"
+      }
+    },
+    "secured": "GESICHERT DURCH DEN APP STORE",
+    "renews": "{{price}}/{{period}} · Nur {{day}}/Tag · Jederzeit kündbar",
+    "oneTime": "{{price}} einmalig · Für immer deins",
+    "period": {
+      "WEEKLY": "Woche",
+      "MONTHLY": "Monat",
+      "ANNUAL": "Jahr"
+    },
+    "popular": "BELIEBT",
+    "restoreShort": "Wiederherstellen",
+    "forever": "für immer",
+    "oneTimeShort": "Einmaliger Kauf",
+    "perPeriod": "pro {{period}}"
   },
   "more": {
     "dogs": "Deine Hunde",
@@ -427,5 +504,113 @@
     "stop": "Stopp",
     "limitations": "Handylautsprecher geben sehr hohe Frequenzen möglicherweise nicht zuverlässig wieder. Hunde hören höher als Menschen: Halte die Lautstärke niedrig, die Einheiten kurz und höre auf, wenn sich dein Hund unwohl fühlt.",
     "autoStop": "Die Wiedergabe stoppt automatisch nach {{seconds}} Sekunden."
+  },
+  "account": {
+    "proActive": "Pro ist aktiv",
+    "title": "Erstelle dein Konto",
+    "signinTitle": "Melde dich an",
+    "body": "Sichere dein Pro-Abo in deinem Konto, damit du es auf jedem Gerät und nach einer Neuinstallation behältst.",
+    "why": "Dein Abo ist mit diesem Konto verknüpft. Wir geben deine E-Mail nie weiter.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 8 Zeichen",
+    "create": "Konto erstellen",
+    "signin": "Anmelden",
+    "haveAccount": "Schon ein Konto?",
+    "noAccount": "Neu hier?",
+    "codeTitle": "Prüfe deine E-Mails",
+    "codeBody": "Wir haben einen 6-stelligen Code an {{email}} gesendet.",
+    "code": "Bestätigungscode",
+    "verify": "Bestätigen",
+    "resend": "Code erneut senden",
+    "resent": "Code gesendet",
+    "changeEmail": "E-Mail ändern",
+    "notifyTitle": "Alles bereit! 🎉",
+    "notifyBody": "Aktiviere Mitteilungen, damit du nichts verpasst.",
+    "notify": {
+      "reminders": "Trainingserinnerungen",
+      "tips": "Tägliche Hundetipps & Fakten",
+      "offers": "Neue Funktionen und Angebote"
+    },
+    "notifyAllow": "Mitteilungen aktivieren",
+    "notifyLater": "Nicht jetzt",
+    "errors": {
+      "email_format": "Gib eine gültige E-Mail-Adresse ein.",
+      "invalid_email": "Gib eine gültige E-Mail-Adresse ein.",
+      "email_taken": "Für diese E-Mail gibt es schon ein Konto. Melde dich stattdessen an.",
+      "password_short": "Mindestens 8 Zeichen verwenden.",
+      "weak_password": "Wähle ein stärkeres Passwort.",
+      "wrong_credentials": "E-Mail oder Passwort ist falsch.",
+      "bad_code": "Der Code ist falsch oder abgelaufen.",
+      "offline": "Du bist offline. Prüfe deine Verbindung.",
+      "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "sections": {
+      "dogs": "Meine Hunde",
+      "general": "Allgemein",
+      "support": "Käufe & Rechtliches"
+    },
+    "push": "Push-Mitteilungen",
+    "version": "Version {{version}}"
+  },
+  "app": {
+    "proBanner": "Hol dir Pro für unbegrenzten Spaß mit deinem Hund!"
+  },
+  "ai": {
+    "scan": {
+      "title": "KI-Rasse-Scanner",
+      "body": "Fotografiere deinen Hund und erfahre seine Rasse in Sekunden.",
+      "cta": "Scannen"
+    },
+    "tools": {
+      "assistant": {
+        "title": "Frag die KI",
+        "body": "Jede Hundefrage beantwortet"
+      },
+      "portraits": {
+        "title": "KI-Porträts",
+        "body": "Mach deinen Hund zum Kunstwerk"
+      },
+      "talk": {
+        "title": "Sprich mit deinem Hund",
+        "body": "Sag es, hör es als Bellen"
+      },
+      "mood": {
+        "title": "Stimmungstagebuch",
+        "body": "Verfolge, wie es deinem Hund geht"
+      }
+    }
+  },
+  "trainingTools": {
+    "clicker": "Klicker",
+    "whistle": "Pfeife",
+    "quiz": "Quiz",
+    "games": "Spiele",
+    "lessons": "Lektionen",
+    "nextUp": "Als Nächstes",
+    "minutes_one": "{{count}} Min.",
+    "minutes_other": "{{count}} Min.",
+    "steps_one": "{{count}} Schritt",
+    "steps_other": "{{count}} Schritte",
+    "levels": {
+      "beginner": "Anfänger",
+      "intermediate": "Fortgeschritten",
+      "advanced": "Profi"
+    },
+    "completed": "Erledigt",
+    "goal": "Ziel",
+    "howTo": "Schritt für Schritt",
+    "tips": "Tipps",
+    "mistakes": "Vermeide das",
+    "clickerHint": "Klicke genau im richtigen Moment, dann belohne.",
+    "practisedAgain": "Erneut geübt",
+    "goodLuck": "Viel Spaß, {{name}}!"
+  },
+  "credits": {
+    "left_one": "{{count}} Gratis-Credit übrig",
+    "left_other": "{{count}} Gratis-Credits übrig"
   }
 }

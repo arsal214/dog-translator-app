@@ -1,9 +1,10 @@
 import { File, Paths } from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import { Camera } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Pressable, Text, View } from 'react-native';
+import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
+import { Mascot } from '@/components/Mascot';
 import { Button, Chip, Segmented, T, TextField } from '@/components/ui';
 import { color, radius, type } from '@/theme/tokens';
 import { AGE_RANGES, ageGroupFor, type AgeRange, type Dog, type DogSex, type DogSize } from './store';
@@ -43,10 +44,10 @@ export function ProfileForm({ onSubmit, submitLabel }: { onSubmit: (d: Omit<Dog,
 
   return (
     <View style={{ gap: 20 }}>
-      <T.Title>{t('profile.createTitle')}</T.Title>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('profile.addPhoto')} onPress={pickPhoto} style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
-        <View style={{ width: 96, height: 96, borderRadius: radius.lg, backgroundColor: color.brandSoft, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-          {photoUri ? <Image source={{ uri: photoUri }} style={{ width: 96, height: 96 }} /> : <Camera size={30} color={color.brandStrong} />}
+      <T.Title>{name.trim() ? `${name.trim()} 🐾` : t('profile.createTitle')}</T.Title>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('profile.addPhoto')} onPress={pickPhoto} style={({ pressed }) => ({ flexDirection: 'row', gap: 16, alignItems: 'center', transform: [{ scale: pressed ? 0.97 : 1 }] })}>
+        <View style={{ width: 96, height: 96, borderRadius: radius.lg, backgroundColor: color.brandSoft, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderWidth: 2, borderColor: photoUri ? color.brandStrong : color.brandSoft }}>
+          {photoUri ? <Animated.Image key={photoUri} entering={ZoomIn.springify()} source={{ uri: photoUri }} style={{ width: 96, height: 96 }} /> : <Mascot size={96} />}
         </View>
         <View style={{ flex: 1 }}>
           <Text style={[type.headline, { color: color.text }]}>{t('profile.addPhoto')}</Text>
@@ -55,27 +56,27 @@ export function ProfileForm({ onSubmit, submitLabel }: { onSubmit: (d: Omit<Dog,
       </Pressable>
       <TextField label={t('profile.name')} placeholder={t('profile.namePlaceholder')} value={name} onChangeText={(v) => { setName(v); setError(''); }} error={error} maxLength={30} />
       <TextField label={t('profile.breed')} placeholder={t('profile.breedPlaceholder')} value={breed} onChangeText={setBreed} maxLength={40} />
-      <View style={{ gap: 6 }}>
+      <Animated.View entering={FadeInDown.delay(70).springify()} style={{ gap: 6 }}>
         <T.Head>{t('profile.sex')}</T.Head>
         {/* No default: nothing is highlighted until the user picks one. */}
         <Segmented value={sex as DogSex} onChange={setSex} options={(['male', 'female'] as const).map((k) => ({ key: k, label: t(`profile.sexOptions.${k}`) }))} />
-      </View>
-      <View style={{ gap: 6 }}>
+      </Animated.View>
+      <Animated.View entering={FadeInDown.delay(140).springify()} style={{ gap: 6 }}>
         <T.Head>{t('profile.age')}</T.Head>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
           {AGE_RANGES.map((r) => <Chip key={r} label={t(`profile.ageRanges.${r}`)} selected={ageRange === r} onPress={() => setAgeRange(r)} />)}
         </View>
-      </View>
-      <View style={{ gap: 6 }}>
-        <T.Head>{t('profile.traits')}</T.Head>
+      </Animated.View>
+      <Animated.View entering={FadeInDown.delay(210).springify()} style={{ gap: 6 }}>
+        <T.Head>{t('profile.traits')} · {traits.length}/4</T.Head>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
           {TRAITS.map((x) => <Chip key={x} label={t(`profile.traitOptions.${x}`)} selected={traits.includes(x)} onPress={() => toggle(x)} />)}
         </View>
-      </View>
-      <View style={{ gap: 6 }}>
+      </Animated.View>
+      <Animated.View entering={FadeInDown.delay(280).springify()} style={{ gap: 6 }}>
         <T.Head>{t('profile.voice')}</T.Head>
         <Segmented value={voice} onChange={setVoice} options={(['small', 'medium', 'big'] as const).map((k) => ({ key: k, label: t(`profile.voiceOptions.${k}`) }))} />
-      </View>
+      </Animated.View>
       <Button label={submitLabel} onPress={submit} />
     </View>
   );

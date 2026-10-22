@@ -2,14 +2,26 @@ import { Tabs } from 'expo-router';
 import { Home, Mic, MoreHorizontal, Music, ScanFace } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { View, type ColorValue } from 'react-native';
+import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { color, type } from '@/theme/tokens';
 
 // The app opens straight on the record screen.
-export const unstable_settings = { initialRouteName: 'translate' };
+export const unstable_settings = { anchor: 'translate' };
+
+// Amber pill that springs in behind the active tab's icon.
+function TabIcon({ Icon, focused, c, size }: { Icon: typeof Home; focused: boolean; c: ColorValue; size: number }) {
+  const pill = useAnimatedStyle(() => ({ opacity: withSpring(focused ? 1 : 0), transform: [{ scaleX: withSpring(focused ? 1 : 0.4) }] }));
+  return (
+    <View style={{ width: 56, height: 32, alignItems: 'center', justifyContent: 'center' }}>
+      <Animated.View style={[{ position: 'absolute', width: 56, height: 32, borderRadius: 16, backgroundColor: color.primary }, pill]} />
+      <Icon color={focused ? color.onPrimary : (c as string)} size={size} />
+    </View>
+  );
+}
 
 export default function TabsLayout() {
   const { t } = useTranslation();
-  const icon = (Icon: typeof Home) => ({ color: c, size }: { color: ColorValue; size: number }) => <Icon color={c as string} size={size} />;
+  const icon = (Icon: typeof Home) => ({ color: c, size, focused }: { color: ColorValue; size: number; focused: boolean }) => <TabIcon Icon={Icon} focused={focused} c={c} size={size} />;
   return (
     <Tabs
       screenOptions={{

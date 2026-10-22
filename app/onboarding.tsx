@@ -1,66 +1,65 @@
 import { useRouter } from 'expo-router';
-import { Mic, Sparkles, Volume2 } from 'lucide-react-native';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Pressable, Text, View } from 'react-native';
-import { Button, Screen, T } from '@/components/ui';
+import { useEffect, useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { Text, View } from 'react-native';
+import Animated, { FadeInDown, useAnimatedStyle, useSharedValue, withTiming, ZoomIn } from 'react-native-reanimated';
+import { Mascot } from '@/components/Mascot';
 import { OnboardingProfile } from '@/features/dog-profiles/OnboardingProfile';
+import { Halo, HeroBackdrop } from '@/features/dog-profiles/HeroDecor';
 import { useDogs } from '@/features/dog-profiles/store';
-import { color, radius, type } from '@/theme/tokens';
+import { color, shadow, type } from '@/theme/tokens';
 
-const SLIDES = [
-  { Icon: Mic, title: 'onboarding.s1Title', body: 'onboarding.s1Body' },
-  { Icon: Volume2, title: 'onboarding.s2Title', body: 'onboarding.s2Body' },
-  { Icon: Sparkles, title: 'onboarding.s3Title', body: 'onboarding.s3Body' },
-] as const;
+const LOAD_MS = 2200;
 
 export default function Onboarding() {
-  const { t } = useTranslation();
   const router = useRouter();
   const addDog = useDogs((s) => s.addDog);
   const finish = useDogs((s) => s.finishOnboarding);
-  const [step, setStep] = useState(0); // 0-2 intro, 3 profile steps
+  const [step, setStep] = useState(0); // 0 splash, 1 profile steps
+  const w = useSharedValue(0);
+  const fill = useAnimatedStyle(() => ({ width: `${w.value}%` }));
+  useEffect(() => {
+    w.value = withTiming(100, { duration: LOAD_MS });
+    const id = setTimeout(() => setStep(1), LOAD_MS + 200);
+    return () => clearTimeout(id);
+  }, [w]);
 
-  if (step === 3) {
+  if (step === 1) {
     return (
+      <>
+      <StatusBar style="light" />
       <OnboardingProfile
-        onBack={() => setStep(2)}
-        onDone={async (d) => {
+        onDone={(d) => {
           addDog(d);
           finish();
-          router.replace('/(tabs)/translate');
-          // Loaded lazily so a build without the native module still opens onboarding.
-          // iOS decides whether the rating prompt actually appears (at most 3 times a year).
-          const StoreReview = await import('expo-store-review').catch(() => null);
-          if (StoreReview && (await StoreReview.isAvailableAsync())) StoreReview.requestReview().catch(() => {});
+          router.replace('/paywall?from=onboarding');
         }}
       />
+      </>
     );
   }
 
-  const { Icon, title, body } = SLIDES[step];
   return (
-    <Screen scroll={false} style={{ justifyContent: 'space-between', padding: 24 }}>
-      <View style={{ alignItems: 'flex-end' }}>
-        <Pressable accessibilityRole="button" onPress={() => setStep(3)} hitSlop={12}>
-          <Text style={[type.subheadStrong, { color: color.textSecondary }]}>{t('common.skip')}</Text>
-        </Pressable>
-      </View>
-      <View style={{ gap: 24 }}>
-        <View style={{ height: 300, borderRadius: radius.xl, backgroundColor: color.brandSoft, alignItems: 'center', justifyContent: 'center' }}>
-          <Icon size={88} color={color.brandStrong} />
+    <View style={{ flex: 1, backgroundColor: color.brandDeep }}>
+      <StatusBar style="light" />
+      <HeroBackdrop />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 28, padding: 24 }}>
+        <View style={{ width: 190, height: 190 }}>
+          <Halo size={190} />
+          <Animated.View entering={ZoomIn.duration(600).springify()} style={[{ width: 190, height: 190, borderRadius: 95, borderWidth: 5, borderColor: color.primary, backgroundColor: color.brandSoft, overflow: 'hidden' }, shadow.glow]}>
+            <Mascot size={180} />
+          </Animated.View>
         </View>
-        <T.Title>{t(title)}</T.Title>
-        <T.Body style={type.body}>{t(body)}</T.Body>
+        <Animated.View entering={FadeInDown.delay(350).springify()} style={{ alignItems: 'center', gap: 6 }}>
+          <Text accessibilityRole="header" style={[type.largeTitle, { color: color.onBrand }]}>Dog Translator</Text>
+          <Text style={{ fontSize: 22 }}>🐶 ⇄ 🗣️</Text>
+        </Animated.View>
       </View>
-      <View style={{ gap: 20 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 6 }}>
-          {SLIDES.map((_, i) => (
-            <View key={i} style={{ height: 8, width: i === step ? 24 : 8, borderRadius: 4, backgroundColor: i === step ? color.primary : color.disabled }} />
-          ))}
+      <Animated.View entering={FadeInDown.delay(500)} style={{ alignItems: 'center', paddingBottom: 64 }}>
+        <View style={[{ width: '60%', height: 10, borderRadius: 5, backgroundColor: 'rgba(255,255,255,0.2)', overflow: 'hidden' }]}>
+          <Animated.View style={[{ height: 10, borderRadius: 5, backgroundColor: color.primary }, fill]} />
         </View>
-        <Button label={step === 2 ? t('onboarding.getStarted') : t('common.continue')} onPress={() => setStep(step + 1)} />
-      </View>
-    </Screen>
+      </Animated.View>
+    </View>
   );
 }

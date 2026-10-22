@@ -1,8 +1,32 @@
-import { ArrowRight, Mic, Square } from 'lucide-react-native';
+import { RefreshCw, Square } from 'lucide-react-native';
 import { useEffect, useRef } from 'react';
-import { Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
-import Svg, { Circle, Defs, Ellipse, G, LinearGradient, RadialGradient, Rect, Stop } from 'react-native-svg';
+import { Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import Svg, { Circle, Defs, Ellipse, G, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { color, radius, shadow, type } from '@/theme/tokens';
+
+/** Solid microphone: filled capsule, cradle arc and stand (lucide's outline icon smears when filled). */
+export function MicGlyph({ size, color: c }: { size: number; color: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Rect x="8.5" y="2" width="7" height="12" rx="3.5" fill={c} />
+      <Path d="M5 11a7 7 0 0 0 14 0" stroke={c} strokeWidth={2.2} strokeLinecap="round" />
+      <Path d="M12 18v3.5M8.5 21.5h7" stroke={c} strokeWidth={2.2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+/** Solid paw: four toes and a pad. */
+export function PawGlyph({ size, color: c }: { size: number; color: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={c}>
+      <Ellipse cx="4.8" cy="11.2" rx="2.1" ry="2.8" transform="rotate(-18 4.8 11.2)" />
+      <Ellipse cx="9.2" cy="6" rx="2.2" ry="3" transform="rotate(-6 9.2 6)" />
+      <Ellipse cx="14.8" cy="6" rx="2.2" ry="3" transform="rotate(6 14.8 6)" />
+      <Ellipse cx="19.2" cy="11.2" rx="2.1" ry="2.8" transform="rotate(18 19.2 11.2)" />
+      <Path d="M12 11.5c-3.6 0-6.4 3.2-6.4 5.9 0 2.2 1.6 3.3 3.3 3.3 1.1 0 2-.5 3.1-.5s2 .5 3.1.5c1.7 0 3.3-1.1 3.3-3.3 0-2.7-2.8-5.9-6.4-5.9z" />
+    </Svg>
+  );
+}
 
 const BUTTON = 128;
 const STAGE = 280;
@@ -186,12 +210,20 @@ function Spinner() {
   );
 }
 
+const CREAM = '#FFF1DC';
+// Glossy button palettes: warm orange for the human voice, coral for the dog.
+const TONES = {
+  human: { light: '#FFD9A0', mid: '#F9A64A', deep: '#EA7A1E', ring: '#FFB35C', halo: 'rgba(249,166,74,0.22)' },
+  dog: { light: '#FFB1A8', mid: '#F4655F', deep: '#DD4444', ring: '#FF8A80', halo: 'rgba(244,101,95,0.22)' },
+} as const;
+
 /**
  * The big mic button with its animated surroundings.
  * `level` is the live input loudness (0–1) so the glow breathes with the bark.
  */
-export function RecordStage({ state, level, progress, onPress, label }: { state: 'idle' | 'recording' | 'analyzing'; level: number; progress: number; onPress: () => void; label: string }) {
+export function RecordStage({ state, level, progress, onPress, label, tone = 'human' }: { state: 'idle' | 'recording' | 'analyzing'; level: number; progress: number; onPress: () => void; label: string; tone?: 'human' | 'dog' }) {
   const recording = state === 'recording';
+  const t = TONES[tone];
   const busy = state === 'analyzing';
   const glow = useRef(new Animated.Value(0)).current;
   const press = useRef(new Animated.Value(1)).current;
@@ -204,7 +236,7 @@ export function RecordStage({ state, level, progress, onPress, label }: { state:
 
   return (
     <View style={{ width: STAGE, height: STAGE, alignItems: 'center', justifyContent: 'center' }}>
-      {!busy && <PulseRings tint={recording ? 'rgba(255,120,100,0.9)' : color.highlight} fast={recording} />}
+      {!busy && <PulseRings tint={recording ? 'rgba(255,120,100,0.9)' : t.ring} fast={recording} />}
       {/* loudness-reactive halo */}
       <Animated.View
         pointerEvents="none"
@@ -213,7 +245,7 @@ export function RecordStage({ state, level, progress, onPress, label }: { state:
           width: BUTTON + 24,
           height: BUTTON + 24,
           borderRadius: (BUTTON + 24) / 2,
-          backgroundColor: recording ? 'rgba(214,69,53,0.35)' : 'rgba(253,181,21,0.18)',
+          backgroundColor: recording ? 'rgba(214,69,53,0.35)' : t.halo,
           transform: [{ scale: glow.interpolate({ inputRange: [0, 1], outputRange: [1, 1.45] }) }],
         }}
       />
@@ -228,8 +260,8 @@ export function RecordStage({ state, level, progress, onPress, label }: { state:
           onPressIn={() => pressTo(0.92)}
           onPressOut={() => pressTo(1)}
           style={[
-            { width: BUTTON, height: BUTTON, borderRadius: BUTTON / 2, alignItems: 'center', justifyContent: 'center', backgroundColor: recording ? color.surface : busy ? 'rgba(255,255,255,0.14)' : color.primary, borderWidth: 4, borderColor: recording ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.25)' },
-            recording || busy ? null : shadow.glow,
+            { width: BUTTON, height: BUTTON, borderRadius: BUTTON / 2, alignItems: 'center', justifyContent: 'center', backgroundColor: recording ? color.surface : busy ? 'rgba(255,255,255,0.14)' : t.mid, borderWidth: 5, borderColor: recording ? 'rgba(255,255,255,0.35)' : '#FFFFFF' },
+            recording || busy ? null : { shadowColor: t.mid, shadowOpacity: 0.5, shadowRadius: 24, shadowOffset: { width: 0, height: 8 }, elevation: 8 },
           ]}
         >
           {!recording && !busy ? (
@@ -237,15 +269,15 @@ export function RecordStage({ state, level, progress, onPress, label }: { state:
             <Svg width={BUTTON - 8} height={BUTTON - 8} style={{ position: 'absolute' }}>
               <Defs>
                 <RadialGradient id="micFill" cx="35%" cy="28%" r="80%">
-                  <Stop offset="0" stopColor="#FFE08A" />
-                  <Stop offset="0.55" stopColor={color.primary} />
-                  <Stop offset="1" stopColor="#E88A00" />
+                  <Stop offset="0" stopColor={t.light} />
+                  <Stop offset="0.55" stopColor={t.mid} />
+                  <Stop offset="1" stopColor={t.deep} />
                 </RadialGradient>
               </Defs>
               <Circle cx={(BUTTON - 8) / 2} cy={(BUTTON - 8) / 2} r={(BUTTON - 8) / 2} fill="url(#micFill)" />
             </Svg>
           ) : null}
-          {recording ? <Square size={40} color={color.danger} fill={color.danger} strokeWidth={0} /> : <Mic size={52} color={busy ? color.onBrandMuted : color.onPrimary} strokeWidth={2.2} />}
+          {recording ? <Square size={40} color={color.danger} fill={color.danger} strokeWidth={0} /> : (tone === 'dog' ? PawGlyph : MicGlyph)({ size: 64, color: busy ? color.onBrandMuted : CREAM })}
         </Pressable>
       </Animated.View>
     </View>
@@ -270,60 +302,52 @@ export const levelFromDb = (db: number) => Math.max(0, Math.min(1, (db + 55) / 5
 
 export type TranslateMode = 'bark' | 'human';
 
-const RING_TINT: Record<string, string> = { '🐶': color.primary, '🗣️': '#8FB3FF' };
-
-/** Glossy round badge: soft white-to-cream fill, coloured rim and a gentle drop shadow. */
-function ModeBadge({ emoji, size = 46 }: { emoji: string; size?: number }) {
-  const id = emoji === '🐶' ? 'dogFill' : 'humanFill';
+/** Round avatar with a coloured rim; the active speaker gets an amber rim and a small mic/paw badge. */
+function Face({ active, human, dog, size = 64 }: { active: boolean; human: boolean; dog: { name: string; uri?: string }; size?: number }) {
+  const Badge = human ? MicGlyph : PawGlyph;
   return (
-    <View style={{ width: size, height: size, borderRadius: size / 2, alignItems: 'center', justifyContent: 'center', borderWidth: 2.5, borderColor: RING_TINT[emoji], ...shadow.raised }}>
-      <Svg width={size} height={size} style={{ position: 'absolute' }}>
-        <Defs>
-          <RadialGradient id={id} cx="35%" cy="30%" r="75%">
-            <Stop offset="0" stopColor="#FFFFFF" />
-            <Stop offset="1" stopColor={emoji === '🐶' ? '#FFE7B0' : '#DCE7FF'} />
-          </RadialGradient>
-        </Defs>
-        <Circle cx={size / 2} cy={size / 2} r={size / 2 - 2.5} fill={`url(#${id})`} />
-      </Svg>
-      <Text style={{ fontSize: size * 0.52, lineHeight: size * 0.62 }}>{emoji}</Text>
+    <View style={{ width: size, height: size }}>
+      <View style={[{ width: size, height: size, borderRadius: size / 2, borderWidth: 3, borderColor: active ? color.primary : '#2F5BD3', backgroundColor: human ? '#DCE7FF' : color.brandSoft, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' }, active && shadow.glow]}>
+        {human ? <Text style={{ fontSize: size * 0.55 }}>🧑</Text> : dog.uri ? <Image source={{ uri: dog.uri }} style={{ width: size, height: size }} /> : <Text style={{ fontSize: size * 0.55 }}>🐶</Text>}
+      </View>
+      {active && (
+        <View style={{ position: 'absolute', right: -4, bottom: -4, width: 26, height: 26, borderRadius: 13, backgroundColor: color.primary, borderWidth: 2, borderColor: color.brandDeep, alignItems: 'center', justifyContent: 'center' }}>
+          <Badge size={15} color={color.onPrimary} />
+        </View>
+      )}
     </View>
   );
 }
 
 /**
- * One control for the translation direction: 🐶 on the left, 🗣️ on the right and a round button
- * between them whose arrow flips (→ Bark to Human, ← Human to Dog) each time it is tapped.
+ * Pill with the speaker on the left and the listener on the right: the dog (Bark → Human) or you (Human → Dog).
+ * Tap the swap button or the other face to flip direction.
  */
-export function ModeSwap({ value, onChange, labels }: { value: TranslateMode; onChange: (m: TranslateMode) => void; labels: Record<TranslateMode, string> }) {
+export function ModeSwap({ value, onChange, labels, dog }: { value: TranslateMode; onChange: (m: TranslateMode) => void; labels: Record<TranslateMode, string>; dog: { name: string; uri?: string } }) {
   const flip = useRef(new Animated.Value(value === 'bark' ? 0 : 1)).current;
   useEffect(() => {
     Animated.spring(flip, { toValue: value === 'bark' ? 0 : 1, useNativeDriver: true, speed: 14, bounciness: 10 }).start();
   }, [value, flip]);
-
-  const dogScale = flip.interpolate({ inputRange: [0, 1], outputRange: [1.08, 0.92] });
-  const humanScale = flip.interpolate({ inputRange: [0, 1], outputRange: [0.92, 1.08] });
   const next: TranslateMode = value === 'bark' ? 'human' : 'bark';
+  const humanSpeaks = value === 'human';
 
   return (
-    <View style={{ alignSelf: 'stretch', alignItems: 'center', paddingVertical: 12, borderRadius: radius.xl, backgroundColor: 'rgba(255,255,255,0.07)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.14)' }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 18 }}>
-        {/* Tapping a face picks who is talking: the dog (Bark → Human) or you (Human → Dog). */}
-        <Pressable accessibilityRole="button" accessibilityLabel={labels.bark} accessibilityState={{ selected: value === 'bark' }} hitSlop={8} onPress={() => value !== 'bark' && onChange('bark')}>
-          <Animated.View style={{ transform: [{ scale: dogScale }] }}><ModeBadge emoji="🐶" size={58} /></Animated.View>
-        </Pressable>
+    <View style={{ alignSelf: 'center', paddingHorizontal: 14, paddingVertical: 10, borderRadius: radius.full, backgroundColor: 'rgba(255,255,255,0.12)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+        <Face active human={humanSpeaks} dog={dog} />
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={labels[next]}
+          hitSlop={10}
           onPress={() => onChange(next)}
-          style={({ pressed }) => [{ width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center', backgroundColor: color.primary, borderWidth: 3, borderColor: 'rgba(255,255,255,0.3)', transform: [{ scale: pressed ? 0.9 : 1 }] }, shadow.glow]}
+          style={({ pressed }) => ({ transform: [{ scale: pressed ? 0.88 : 1 }] })}
         >
           <Animated.View style={{ transform: [{ rotate: flip.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '180deg'] }) }] }}>
-            <ArrowRight size={26} color={color.onPrimary} strokeWidth={3} />
+            <RefreshCw size={28} color={color.primary} strokeWidth={3} />
           </Animated.View>
         </Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel={labels.human} accessibilityState={{ selected: value === 'human' }} hitSlop={8} onPress={() => value !== 'human' && onChange('human')}>
-          <Animated.View style={{ transform: [{ scale: humanScale }] }}><ModeBadge emoji="🗣️" size={58} /></Animated.View>
+        <Pressable accessibilityRole="button" accessibilityLabel={labels[next]} hitSlop={8} onPress={() => onChange(next)}>
+          <Face active={false} human={!humanSpeaks} dog={dog} />
         </Pressable>
       </View>
     </View>

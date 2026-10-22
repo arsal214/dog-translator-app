@@ -1,8 +1,11 @@
 import { useRouter, type Href } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChevronRight } from 'lucide-react-native';
 import { Alert, Pressable, Switch, Text, View } from 'react-native';
+import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { Button, Card, Chip, Screen, T } from '@/components/ui';
+import { DogProfileCard } from '@/features/dog-profiles/DogProfileCard';
 import { useDogs } from '@/features/dog-profiles/store';
 import { useJournal } from '@/features/journal/store';
 import i18n, { LANGUAGES, setLanguage, type Lang } from '@/localization';
@@ -10,7 +13,10 @@ import { setDailyReminder } from '@/services/reminders';
 import { supabase } from '@/services/supabase';
 import { enablePush } from '@/services/push';
 import { usePurchases } from '@/services/purchases';
-import { color, type } from '@/theme/tokens';
+import { color, mood, radius, shadow, type } from '@/theme/tokens';
+
+const LINK_EMOJI: Record<string, string> = { mood: '🎭', quiz: '💡', history: '🕘', talk: '🗣️', assistant: '💬', training: '🎓', portraits: '🎨', bee: '🐝', laser: '🔴', mouse: '🐭' };
+const TINTS = [mood.happy.bg, mood.excited.bg, mood.calm.bg, mood.anxious.bg, mood.playful.bg] as const;
 
 const LINKS: { key: string; href: Href }[] = [
   { key: 'mood', href: '/mood' },
@@ -28,7 +34,7 @@ const LINKS: { key: string; href: Href }[] = [
 export default function More() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { dogs, activeDogId, setActive, removeDog } = useDogs();
+  const { dogs, activeDogId } = useDogs();
   const isPro = usePurchases((s) => s.isPro);
   const [push, setPush] = useState(false);
   const reminder = useJournal((st) => st.reminder);
@@ -61,43 +67,65 @@ export default function More() {
       },
     ]);
 
+  const row = { flexDirection: 'row', alignItems: 'center', gap: 12 } as const;
   return (
-    <Screen>
+    <Screen style={{ gap: 20, paddingBottom: 40 }}>
       <T.Title>{t('tabs.more')}</T.Title>
-      <Card style={{ gap: 12 }}>
-        <T.Head>{t('more.dogs')}</T.Head>
-        {dogs.map((d) => (
-          <Pressable key={d.id} accessibilityRole="radio" accessibilityState={{ selected: d.id === activeDogId }} onPress={() => setActive(d.id)} onLongPress={() => dogs.length > 1 && removeDog(d.id)}>
-            <Text style={[type.body, { color: d.id === activeDogId ? color.primary : color.text, fontWeight: d.id === activeDogId ? '700' : '400' }]}>
-              {d.id === activeDogId ? '● ' : '○ '}{d.name}{d.breed ? ` · ${d.breed}` : ''}
-            </Text>
+      <DogProfileCard />
+
+      {!isPro ? (
+        <Animated.View entering={FadeInDown.delay(100).springify()}>
+          <Pressable accessibilityRole="button" onPress={() => router.push('/paywall')} style={({ pressed }) => [{ ...row, padding: 16, borderRadius: radius.lg, backgroundColor: color.primary, transform: [{ scale: pressed ? 0.98 : 1 }] }, shadow.glow]}>
+            <Text style={{ fontSize: 32 }}>👑</Text>
+            <Text style={[type.headline, { color: color.onPrimary, flex: 1 }]}>{t('paywall.seePro')}</Text>
+            <ChevronRight size={22} color={color.onPrimary} />
           </Pressable>
+        </Animated.View>
+      ) : (
+        <View style={{ ...row, padding: 14, borderRadius: radius.lg, backgroundColor: color.brandSoft }}>
+          <Text style={{ fontSize: 26 }}>👑</Text>
+          <T.Head>{t('paywall.youArePro')}</T.Head>
+        </View>
+      )}
+
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+        {LINKS.map((l, i) => (
+          <Animated.View key={l.key} entering={ZoomIn.delay(150 + i * 40).springify()} style={{ flexBasis: '47%', flexGrow: 1 }}>
+            <Pressable accessibilityRole="button" onPress={() => router.push(l.href)} style={({ pressed }) => [{ ...row, gap: 10, padding: 12, borderRadius: radius.lg, backgroundColor: TINTS[i % TINTS.length], transform: [{ scale: pressed ? 0.96 : 1 }] }, shadow.card]}>
+              <View style={{ width: 40, height: 40, borderRadius: 14, backgroundColor: color.surface, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 22 }}>{LINK_EMOJI[l.key]}</Text>
+              </View>
+              <Text numberOfLines={2} style={[type.subheadStrong, { color: color.text, flex: 1 }]}>{t(`more.links.${l.key}`)}</Text>
+            </Pressable>
+          </Animated.View>
         ))}
-        <Button variant="secondary" label={t('profile.addDog')} onPress={() => router.push('/dog/new')} />
+      </View>
+
+      <Card style={{ gap: 16 }}>
+        <View style={row}>
+          <Text style={{ fontSize: 22 }}>🔔</Text>
+          <View style={{ flex: 1 }}><T.Head>{t('more.reminderLabel')}</T.Head></View>
+          <Switch value={reminder} onValueChange={toggleReminder} trackColor={{ true: color.primary }} accessibilityLabel={t('more.reminderLabel')} />
+        </View>
+        {denied ? <T.Body>{t('more.notificationsDenied')}</T.Body> : null}
+        <View style={row}>
+          <Text style={{ fontSize: 22 }}>📲</Text>
+          <View style={{ flex: 1 }}><T.Head>{t('more.notifications')} (push)</T.Head></View>
+          <Switch value={push} onValueChange={togglePush} trackColor={{ true: color.primary }} accessibilityLabel={t('more.notifications')} />
+        </View>
       </Card>
 
-      {!isPro ? <Button label={t('paywall.seePro')} onPress={() => router.push('/paywall')} /> : <T.Head>{t('paywall.youArePro')}</T.Head>}
+      <Card style={{ gap: 12 }}>
+        <View style={row}>
+          <Text style={{ fontSize: 22 }}>🌐</Text>
+          <T.Head>{t('more.language')}</T.Head>
+        </View>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          {(Object.keys(LANGUAGES) as Lang[]).map((l) => <Chip key={l} label={LANGUAGES[l]} selected={i18n.language === l} onPress={() => setLanguage(l)} />)}
+        </View>
+      </Card>
 
-      {LINKS.map((l) => (
-        <Pressable key={l.key} accessibilityRole="button" onPress={() => router.push(l.href)}>
-          <Card><T.Head>{t(`more.links.${l.key}`)}</T.Head></Card>
-        </Pressable>
-      ))}
-
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-        <View style={{ flex: 1 }}><T.Head>{t('more.reminderLabel')}</T.Head></View>
-        <Switch value={reminder} onValueChange={toggleReminder} trackColor={{ true: color.primary }} accessibilityLabel={t('more.reminderLabel')} />
-      </View>
-      {denied ? <T.Body>{t('more.notificationsDenied')}</T.Body> : null}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <T.Head>{t('more.notifications')} (push)</T.Head>
-        <Switch value={push} onValueChange={togglePush} trackColor={{ true: color.primary }} accessibilityLabel={t('more.notifications')} />
-      </View>
-      <T.Head>{t('more.language')}</T.Head>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-        {(Object.keys(LANGUAGES) as Lang[]).map((l) => <Chip key={l} label={LANGUAGES[l]} selected={i18n.language === l} onPress={() => setLanguage(l)} />)}
-      </View>
-      <T.Body>{t('more.privacyNote')}</T.Body>
+      <T.Body style={{ textAlign: 'center' }}>🔒 {t('more.privacyNote')}</T.Body>
       <Button variant="tertiary" label={t('more.deleteAccount')} onPress={wipe} />
     </Screen>
   );

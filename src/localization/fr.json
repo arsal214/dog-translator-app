@@ -359,7 +359,18 @@
     "nothingToRestore": "Aucun achat actif trouvé.",
     "youArePro": "Vous êtes Pro. Merci !",
     "unavailable": "Impossible de charger les offres pour le moment. Vérifiez votre connexion et réessayez.",
-    "disclosure": "Le paiement est débité sur votre compte de la boutique. Les abonnements se renouvellent automatiquement sauf annulation au moins 24 heures avant la fin de la période. Gérez ou annulez à tout moment dans les réglages de votre compte."
+    "disclosure": "Le paiement est débité sur votre compte de la boutique. Les abonnements se renouvellent automatiquement sauf annulation au moins 24 heures avant la fin de la période. Gérez ou annulez à tout moment dans les réglages de votre compte.",
+    "plans": {
+      "WEEKLY": "Hebdomadaire",
+      "MONTHLY": "Mensuel",
+      "TWO_MONTH": "2 mois",
+      "THREE_MONTH": "3 mois",
+      "SIX_MONTH": "6 mois",
+      "ANNUAL": "Annuel",
+      "LIFETIME": "À vie",
+      "OTHER": "Pro"
+    },
+    "bestValue": "MEILLEURE OFFRE"
   },
   "more": {
     "dogs": "Vos chiens",

@@ -359,7 +359,18 @@
     "nothingToRestore": "Nenhuma compra ativa encontrada.",
     "youArePro": "Você é Pro. Obrigado!",
     "unavailable": "Não foi possível carregar os planos agora. Verifique a conexão e tente de novo.",
-    "disclosure": "O pagamento é cobrado na sua conta da loja. As assinaturas renovam automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período. Gerencie ou cancele quando quiser nos ajustes da sua conta da loja."
+    "disclosure": "O pagamento é cobrado na sua conta da loja. As assinaturas renovam automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período. Gerencie ou cancele quando quiser nos ajustes da sua conta da loja.",
+    "plans": {
+      "WEEKLY": "Semanal",
+      "MONTHLY": "Mensal",
+      "TWO_MONTH": "2 meses",
+      "THREE_MONTH": "3 meses",
+      "SIX_MONTH": "6 meses",
+      "ANNUAL": "Anual",
+      "LIFETIME": "Vitalício",
+      "OTHER": "Pro"
+    },
+    "bestValue": "MELHOR VALOR"
   },
   "more": {
     "dogs": "Seus cães",

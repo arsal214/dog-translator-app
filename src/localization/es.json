@@ -359,7 +359,18 @@
     "nothingToRestore": "No se encontraron compras activas.",
     "youArePro": "Eres Pro. ¡Gracias!",
     "unavailable": "No se pueden cargar los planes ahora. Revisa tu conexión e inténtalo de nuevo.",
-    "disclosure": "El pago se carga a tu cuenta de la tienda. Las suscripciones se renuevan automáticamente salvo que las canceles al menos 24 horas antes de que termine el periodo. Gestiona o cancela cuando quieras en los ajustes de tu cuenta de la tienda."
+    "disclosure": "El pago se carga a tu cuenta de la tienda. Las suscripciones se renuevan automáticamente salvo que las canceles al menos 24 horas antes de que termine el periodo. Gestiona o cancela cuando quieras en los ajustes de tu cuenta de la tienda.",
+    "plans": {
+      "WEEKLY": "Semanal",
+      "MONTHLY": "Mensual",
+      "TWO_MONTH": "2 meses",
+      "THREE_MONTH": "3 meses",
+      "SIX_MONTH": "6 meses",
+      "ANNUAL": "Anual",
+      "LIFETIME": "De por vida",
+      "OTHER": "Pro"
+    },
+    "bestValue": "MEJOR VALOR"
   },
   "more": {
     "dogs": "Tus perros",

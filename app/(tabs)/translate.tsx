@@ -68,11 +68,13 @@ export default function Translate() {
   const state = useAudioRecorderState(rec, TICK);
   const samples = useRef<number[]>([]);
   const lastUri = useRef<string | null>(null);
+  const lastFeatures = useRef<BarkFeatures | undefined>(undefined);
   const card = useRef<ComponentRef<typeof View>>(null);
   const [phase, setPhase] = useState<Phase>('idle');
   const [paused, setPaused] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [errKey, setErrKey] = useState('');
+  const [errCode, setErrCode] = useState(''); // raw cause, shown in dev builds only
   const [limit, setLimit] = useState(false);
   const [saved, setSaved] = useState(false);
   const [feedback, setFeedback] = useState(false);
@@ -104,8 +106,8 @@ export default function Translate() {
         if (src) void playAsset(src, 0.5);
         else setNote(t('talk.noPack'));
       }
-    } catch {
-      setNote(t('talk.voiceUnavailable'));
+    } catch (e) {
+      setNote(t('talk.voiceUnavailable') + (__DEV__ ? ` [${(e as Error).message}]` : ''));
     } finally {
       try { if (uri) new File(uri).delete(); } catch {} // the voice recording is never kept
       setPhase('idle');
@@ -163,6 +165,7 @@ export default function Translate() {
   }
 
   async function analyze(features: BarkFeatures) {
+    lastFeatures.current = features;
     setPhase('analyzing');
     try {
       const r = await callFn<Result>('analyze-bark', { features, dog: { name: dog?.name, size: dog?.voice }, language: i18n.language });
@@ -171,6 +174,8 @@ export default function Translate() {
       setResult(r);
       setPhase('result');
     } catch (e) {
+      console.warn('analyze-bark failed', e, features);
+      setErrCode(e instanceof Error ? e.message : String(e));
       setErrKey(errorKey(e));
       setLimit(isLimit(e));
       setPhase('error');
@@ -213,6 +218,7 @@ export default function Translate() {
       <Screen>
         <T.Title>{t('translate.errorTitle')}</T.Title>
         <T.Body>{t(errKey)}</T.Body>
+        {__DEV__ ? <T.Body>{`dev: ${errCode} · ${JSON.stringify(lastFeatures.current)}`}</T.Body> : null}
         {limit ? <Button label={t('paywall.seePro')} onPress={() => router.push('/paywall?reason=ai')} /> : <Button label={t('common.retry')} onPress={() => setPhase('idle')} />}
       </Screen>
     );
@@ -358,6 +364,7 @@ export default function Translate() {
           level={level}
           progress={state.durationMillis / MAX_MS}
           label={recording ? t('translate.stop') : t('home.record')}
+          tone={human ? 'human' : 'dog'}
           onPress={() => {
             Haptics.impactAsync(recording ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
             void (recording ? finish() : start());
@@ -401,6 +408,7 @@ export default function Translate() {
             ) : null}
             <ModeSwap
               value={mode}
+              dog={{ name, uri: dog?.photoUri }}
               labels={{ bark: t('home.barkToHuman'), human: t('home.humanToDog') }}
               onChange={(m) => {
                 Haptics.selectionAsync().catch(() => {});

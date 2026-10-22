@@ -359,7 +359,18 @@
     "nothingToRestore": "Keine aktiven Käufe gefunden.",
     "youArePro": "Du bist Pro. Danke!",
     "unavailable": "Die Tarife können gerade nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.",
-    "disclosure": "Die Zahlung wird deinem Store-Konto belastet. Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ablauf des Zeitraums gekündigt werden. Verwalten oder kündigen kannst du jederzeit in den Kontoeinstellungen deines Stores."
+    "disclosure": "Die Zahlung wird deinem Store-Konto belastet. Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ablauf des Zeitraums gekündigt werden. Verwalten oder kündigen kannst du jederzeit in den Kontoeinstellungen deines Stores.",
+    "plans": {
+      "WEEKLY": "Wöchentlich",
+      "MONTHLY": "Monatlich",
+      "TWO_MONTH": "2 Monate",
+      "THREE_MONTH": "3 Monate",
+      "SIX_MONTH": "6 Monate",
+      "ANNUAL": "Jährlich",
+      "LIFETIME": "Lebenslang",
+      "OTHER": "Pro"
+    },
+    "bestValue": "BESTER WERT"
   },
   "more": {
     "dogs": "Deine Hunde",

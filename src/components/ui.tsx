@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import type { ReactNode } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View, type TextInputProps, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -51,8 +52,8 @@ export function Chip({ label, selected, onPress }: { label: string; selected?: b
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected: !!selected }}
-      onPress={onPress}
-      style={{ height: 36, paddingHorizontal: 16, borderRadius: radius.full, justifyContent: 'center', backgroundColor: selected ? color.brandStrong : color.surface, borderWidth: 1, borderColor: selected ? color.brandStrong : color.border }}
+      onPress={() => { Haptics.selectionAsync(); onPress(); }}
+      style={({ pressed }) => ({ height: 36, paddingHorizontal: 16, borderRadius: radius.full, justifyContent: 'center', backgroundColor: selected ? color.brandStrong : color.surface, borderWidth: 1, borderColor: selected ? color.brandStrong : color.border, transform: [{ scale: pressed ? 0.94 : 1 }] })}
     >
       <Text style={[type.subheadStrong, { color: selected ? color.onBrand : color.text }]}>{selected ? '✓ ' : ''}{label}</Text>
     </Pressable>

@@ -2,8 +2,10 @@ import { useRouter, type Href } from 'expo-router';
 import { ArrowRight, AudioLines, ChevronRight, Flame, Gamepad2, GraduationCap, Lightbulb, MessageCircle, Mic, MousePointerClick, Music, Palette, Plus, ScanFace, type LucideIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
+import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { DonutRing } from '@/components/DonutRing';
 import { Card, DogAvatar, MoodBadge, Screen, T } from '@/components/ui';
+import { Halo, HeroBackdrop } from '@/features/dog-profiles/HeroDecor';
 import { useActiveDog, useDogs } from '@/features/dog-profiles/store';
 import { dayKey, streak, useJournal } from '@/features/journal/store';
 import i18n from '@/localization';
@@ -43,17 +45,21 @@ export default function Home() {
   return (
     <Screen style={{ gap: 20, paddingBottom: 40 }}>
       {/* Hero: greeting, today's mood and the active dog */}
-      <View style={[{ borderRadius: radius.xl, overflow: 'hidden', backgroundColor: color.brandStrong, padding: 20, gap: 16 }, shadow.raised]}>
+      <Animated.View entering={FadeInDown.springify()} style={[{ borderRadius: radius.xl, overflow: 'hidden', padding: 20, gap: 16 }, shadow.raised]}>
+        <HeroBackdrop />
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
           <View style={{ flex: 1, gap: 4 }}>
             <Text style={[type.overline, { color: color.onBrandMuted }]}>{new Date().toLocaleDateString(i18n.language, { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase()}</Text>
-            <Text style={[type.title2, { color: color.onBrand }]}>{t(greeting, { name })}</Text>
+            <Text style={[type.title1, { color: color.onBrand }]}>{t(greeting, { name })}</Text>
           </View>
-          <DonutRing size={84} segments={ranked.map((m) => ({ value: counts[m], color: moodTokens[m].fg }))}>
-            <DogAvatar name={name} uri={dog?.photoUri} size={64} />
-          </DonutRing>
+          <View style={{ width: 84, height: 84 }}>
+            <Halo size={84} />
+            <DonutRing size={84} segments={ranked.map((m) => ({ value: counts[m], color: moodTokens[m].fg }))}>
+              <DogAvatar name={name} uri={dog?.photoUri} size={64} />
+            </DonutRing>
+          </View>
         </View>
-        <Pressable accessibilityRole="button" onPress={() => router.push('/mood')} style={{ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12, borderRadius: radius.md, backgroundColor: 'rgba(255,255,255,0.1)' }}>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/mood')} style={{ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12, borderRadius: radius.md, backgroundColor: 'rgba(255,255,255,0.14)' }}>
           <View style={{ flex: 1, gap: 2 }}>
             <Text style={[type.caption, { color: color.onBrandMuted }]}>{t('home.todaysMood').toUpperCase()}</Text>
             <Text style={[type.headline, { color: color.onBrand }]}>{top ? t(`moods.${top}`) : t('home.noMood')}</Text>
@@ -61,7 +67,7 @@ export default function Home() {
           {top ? <MoodBadge mood={top} label={t(`moods.${top}`)} /> : null}
           <ChevronRight size={20} color={color.onBrandMuted} />
         </Pressable>
-      </View>
+      </Animated.View>
 
       {/* Dog switcher only when there's something to switch between */}
       {dogs.length > 1 ? (
@@ -81,25 +87,28 @@ export default function Home() {
         </ScrollView>
       ) : null}
 
-      <View style={{ flexDirection: 'row', gap: 12 }}>
+      <Animated.View entering={FadeInDown.delay(120).springify()} style={{ flexDirection: 'row', gap: 12 }}>
         <ModeCard dark from="🐶" to="🗣️" title={t('home.barkToHuman')} body={t('home.barkToHumanBody', { name })} onPress={() => router.push('/(tabs)/translate?mode=bark')} />
         <ModeCard from="🗣️" to="🐶" title={t('home.humanToDog')} body={t('home.humanToDogBody')} onPress={() => router.push('/(tabs)/translate?mode=human')} />
-      </View>
+      </Animated.View>
 
       <View style={{ gap: 12 }}>
         <T.Head>{t('home.tools')}</T.Head>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', rowGap: 16 }}>
-          {SHORTCUTS.map(({ key, Icon, href, tint }) => (
-            <Pressable key={key} accessibilityRole="button" accessibilityLabel={t(`shortcuts.${key}`)} onPress={() => router.push(href)} style={({ pressed }) => ({ width: '25%', alignItems: 'center', gap: 6, opacity: pressed ? 0.7 : 1 })}>
-              <View style={{ width: 58, height: 58, borderRadius: 18, backgroundColor: tint.bg, alignItems: 'center', justifyContent: 'center' }}>
-                <Icon size={26} color={tint.fg} />
+          {SHORTCUTS.map(({ key, Icon, href, tint }, i) => (
+            <Animated.View key={key} entering={ZoomIn.delay(200 + i * 50).springify()} style={{ width: '25%' }}>
+            <Pressable accessibilityRole="button" accessibilityLabel={t(`shortcuts.${key}`)} onPress={() => router.push(href)} style={({ pressed }) => ({ alignItems: 'center', gap: 6, transform: [{ scale: pressed ? 0.92 : 1 }] })}>
+              <View style={[{ width: 62, height: 62, borderRadius: 20, backgroundColor: tint.bg, alignItems: 'center', justifyContent: 'center' }, shadow.card]}>
+                <Icon size={28} color={tint.fg} />
               </View>
               <Text numberOfLines={1} style={[type.caption, { color: color.text }]}>{t(`shortcuts.${key}`)}</Text>
             </Pressable>
+            </Animated.View>
           ))}
         </View>
       </View>
 
+      <Animated.View entering={FadeInDown.delay(300).springify()}>
       <Pressable accessibilityRole="button" onPress={() => router.push('/quiz')}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, borderRadius: radius.lg, backgroundColor: color.brandSoft }}>
           <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: color.highlight, alignItems: 'center', justifyContent: 'center' }}>
@@ -115,6 +124,7 @@ export default function Home() {
           </View>
         </View>
       </Pressable>
+      </Animated.View>
 
       {entries.length > 0 ? (
         <View style={{ gap: 10 }}>

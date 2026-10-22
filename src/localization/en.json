@@ -359,7 +359,18 @@
     "nothingToRestore": "No active purchases found.",
     "youArePro": "You're on Pro. Thank you!",
     "unavailable": "Plans can't be loaded right now. Check your connection and try again.",
-    "disclosure": "Payment is charged to your store account. Subscriptions renew automatically unless cancelled at least 24 hours before the period ends. Manage or cancel any time in your store account settings."
+    "disclosure": "Payment is charged to your store account. Subscriptions renew automatically unless cancelled at least 24 hours before the period ends. Manage or cancel any time in your store account settings.",
+    "plans": {
+      "WEEKLY": "Weekly",
+      "MONTHLY": "Monthly",
+      "TWO_MONTH": "2 months",
+      "THREE_MONTH": "3 months",
+      "SIX_MONTH": "6 months",
+      "ANNUAL": "Yearly",
+      "LIFETIME": "Lifetime",
+      "OTHER": "Pro"
+    },
+    "bestValue": "BEST VALUE"
   },
   "more": {
     "dogs": "Your dogs",

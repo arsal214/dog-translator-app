@@ -5,6 +5,7 @@ import { ensureSession } from './api';
 import { refreshCredits } from './credits';
 import { log } from './logger';
 import { syncPushToken } from './push';
+import { startSync } from './sync';
 import { backendConfigured, supabase } from './supabase';
 
 /**
@@ -29,6 +30,7 @@ export async function bootstrapUser() {
     });
     if (error) log.warn('profile_sync_failed', error.message);
     void refreshCredits();
+    startSync().catch((e) => log.warn('sync_start_failed', e)); // dogs, journal, lessons, favourites, settings
     syncPushToken().catch((e) => log.warn('push_sync_failed', e));
     log.info('app_open');
   } catch (e) {

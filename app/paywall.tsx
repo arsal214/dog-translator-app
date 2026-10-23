@@ -45,7 +45,7 @@ export default function Paywall() {
     const StoreReview = await import('expo-store-review').catch(() => null);
     if (StoreReview && (await StoreReview.isAvailableAsync())) StoreReview.requestReview().catch(() => {});
   };
-  const { packages, isPro, ready } = usePurchases();
+  const { packages, isPro, ready, offeringsError } = usePurchases();
   const [feature, setFeature] = useFeatureCycle();
   const [sel, setSel] = useState<string>();
   const [busy, setBusy] = useState(false);
@@ -113,6 +113,12 @@ export default function Paywall() {
             <View style={{ padding: 16, borderRadius: radius.lg, backgroundColor: 'rgba(255,255,255,0.08)', alignItems: 'center', gap: 8 }}>
               {!ready ? <ActivityIndicator color={color.primary} /> : null}
               <Text style={[type.footnote, { color: color.onBrandMuted, textAlign: 'center' }]}>{t('paywall.unavailable')}</Text>
+              {ready && offeringsError ? <Text selectable style={[type.caption, { color: color.onBrandMuted, textAlign: 'center', opacity: 0.7 }]}>{offeringsError}</Text> : null}
+              {ready ? (
+                <Pressable accessibilityRole="button" onPress={() => void loadOfferings()} hitSlop={8}>
+                  <Text style={[type.footnote, { color: color.highlight, fontWeight: '700' }]}>{t('common.retry')}</Text>
+                </Pressable>
+              ) : null}
             </View>
           ) : (
             <View accessibilityRole="radiogroup" style={{ gap: 11, paddingTop: 6 }}>

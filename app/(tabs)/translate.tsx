@@ -3,7 +3,7 @@ import * as Haptics from 'expo-haptics';
 import { File } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Bookmark, ChevronDown, ChevronLeft, Pause, Play, RotateCcw, Share2, Smile, X, Info } from 'lucide-react-native';
+import { Bookmark, ChevronDown, Crown, ChevronLeft, Pause, Play, RotateCcw, Share2, Smile, X, Info } from 'lucide-react-native';
 import { useEffect, useRef, useState, type ComponentRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Linking, Pressable, Share, Text, View } from 'react-native';
@@ -84,10 +84,22 @@ export default function Translate() {
   const [saved, setSaved] = useState(false);
   const [feedback, setFeedback] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const [mode, setMode] = useState<TranslateMode>('bark');
+  const [mode, setMode] = useState<TranslateMode>('human');
   // The home cards open this tab in a given direction (?mode=bark|human).
   const { mode: modeParam } = useLocalSearchParams<{ mode?: string }>();
-  useEffect(() => { if (modeParam === 'bark' || modeParam === 'human') setMode(modeParam); }, [modeParam]);
+  const isPro = usePurchases((s) => s.isPro);
+  const proChecked = usePurchases((s) => s.checked);
+  // Bark → Human is a Pro tool; free users stay on Human → Dog and are sent to the paywall.
+  // Waits for RevenueCat so a Pro user opening ?mode=bark at launch isn't bounced to the paywall.
+  useEffect(() => {
+    if (modeParam === 'human') setMode('human');
+    else if (modeParam === 'bark' && proChecked) {
+      if (usePurchases.getState().isPro) setMode('bark');
+      else router.push('/paywall?reason=translate');
+    }
+  }, [modeParam, proChecked]);
+  // Losing Pro (expiry, sign-out) must not leave the Pro mode open.
+  useEffect(() => { if (!isPro) setMode('human'); }, [isPro]);
   // Human → Dog: what we heard, the phrase it matched and any message for the user.
   const [heard, setHeard] = useState('');
   const [phrase, setPhrase] = useState<Phrase>();
@@ -108,6 +120,14 @@ export default function Translate() {
     setPhase('analyzing');
     try {
       const text = uri ? await listenOnce(i18n.language, uri) : '';
+      // Charged only once speech was understood, so a failed recognition costs nothing. Free users who run out
+      // are sent to Pro; Pro users see a notice until their plan renews.
+      if (text.trim() && (await spendCredit()) === 'none') {
+        if (!usePurchases.getState().isPro) return router.push('/paywall?reason=credits');
+        setErrKey('errors.no_credits_pro');
+        setLimit(false);
+        return setPhase('error');
+      }
       setHeard(text);
       // Match against the current language and English, so either works.
       const labels = Object.fromEntries(PHRASES.map((p) => [p, [t(`talk.phrases.${p}`), i18n.t(`talk.phrases.${p}`, { lng: 'en' })]])) as Record<Phrase, string[]>;
@@ -125,7 +145,7 @@ export default function Translate() {
       setPickPhrase(true);
     } finally {
       try { if (uri) new File(uri).delete(); } catch {} // the voice recording is never kept
-      setPhase('idle');
+      setPhase((p) => (p === 'analyzing' ? 'idle' : p));
     }
   }
 
@@ -171,20 +191,20 @@ export default function Translate() {
     setPhase('idle');
   };
 
+  // The stop button and the auto-stop can both fire; only the first one may finish (and spend a credit).
+  const finishing = useRef(false);
   async function finish() {
-    await rec.stop().catch(() => {});
-    await setAudioModeAsync({ allowsRecording: false }).catch(() => {});
-    if (mode === 'human') {
-      // Free users pay one credit per voice translation; out of credits sends them to Pro.
-      if (!usePurchases.getState().isPro && (await spendCredit()) === 'none') {
-        try { if (rec.uri) new File(rec.uri).delete(); } catch {}
-        setPhase('idle');
-        return router.push('/paywall?reason=credits');
-      }
-      return translateHuman(rec.uri);
+    if (finishing.current) return;
+    finishing.current = true;
+    try {
+      await rec.stop().catch(() => {});
+      await setAudioModeAsync({ allowsRecording: false }).catch(() => {});
+      if (mode === 'human') return await translateHuman(rec.uri);
+      lastUri.current = rec.uri; // kept on-device only so the user can replay it; deleted on reset or leaving
+      await analyze(extractFeatures(samples.current, TICK));
+    } finally {
+      finishing.current = false;
     }
-    lastUri.current = rec.uri; // kept on-device only so the user can replay it; deleted on reset or leaving
-    await analyze(extractFeatures(samples.current, TICK));
   }
 
   async function analyze(features: BarkFeatures) {
@@ -355,6 +375,7 @@ export default function Translate() {
   const pick = (m: TranslateMode) => {
     if (recording || busy || m === mode) return;
     Haptics.selectionAsync().catch(() => {});
+    if (m === 'bark' && !isPro) return router.push('/paywall?reason=translate');
     stopPlayback();
     clearHuman();
     setMode(m);
@@ -378,7 +399,7 @@ export default function Translate() {
           {human ? t('translate.talkTo', { name: dogName }) : t('translate.whatSaying', { name: dogName })}
         </Text>
 
-        <DirectionToggle value={mode} disabled={recording || busy} onChange={pick} labels={{ bark: t('home.barkToHuman'), human: t('home.humanToDog') }} />
+        <DirectionToggle value={mode} locked={!isPro} disabled={recording || busy} onChange={pick} labels={{ bark: t('home.barkToHuman'), human: t('home.humanToDog') }} />
 
         {/* Cream stage in brand colours: the speaker on top, the button in the middle, tips or controls below. */}
         <View style={[{ flex: 1, borderRadius: 36, backgroundColor: color.brandFaint, borderWidth: 1, borderColor: '#F3E2B8', alignItems: 'center', paddingHorizontal: 16, paddingTop: 18, paddingBottom: 16, overflow: 'hidden' }, shadow.card]}>
@@ -463,14 +484,15 @@ export default function Translate() {
 }
 
 /** Two-option switch for the translation direction; an amber pill slides under the active side. */
-function DirectionToggle({ value, onChange, labels, disabled }: { value: TranslateMode; onChange: (m: TranslateMode) => void; labels: Record<TranslateMode, string>; disabled?: boolean }) {
+function DirectionToggle({ value, onChange, labels, disabled, locked }: { value: TranslateMode; onChange: (m: TranslateMode) => void; labels: Record<TranslateMode, string>; disabled?: boolean; locked?: boolean }) {
   return (
     <View style={[{ flexDirection: 'row', padding: 4, borderRadius: 26, backgroundColor: color.surface, opacity: disabled ? 0.6 : 1 }, shadow.card]}>
-      {(['bark', 'human'] as const).map((m) => {
+      {(['human', 'bark'] as const).map((m) => {
         const on = value === m;
         return (
-          <Pressable key={m} accessibilityRole="tab" accessibilityState={{ selected: on, disabled }} disabled={disabled} onPress={() => onChange(m)} style={{ flex: 1, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: on ? color.primary : 'transparent' }}>
-            <Text numberOfLines={1} style={[type.subheadStrong, { color: on ? color.onPrimary : color.textSecondary, fontWeight: on ? '800' : '600' }]}>{m === 'bark' ? '🐶 ' : '🗣️ '}{labels[m]}</Text>
+          <Pressable key={m} accessibilityRole="tab" accessibilityState={{ selected: on, disabled }} disabled={disabled} onPress={() => onChange(m)} style={{ flex: 1, height: 44, borderRadius: 22, flexDirection: 'row', gap: 5, alignItems: 'center', justifyContent: 'center', backgroundColor: on ? color.primary : 'transparent' }}>
+            <Text numberOfLines={1} style={[type.subheadStrong, { flexShrink: 1, color: on ? color.onPrimary : color.textSecondary, fontWeight: on ? '800' : '600' }]}>{m === 'bark' ? '🐶 ' : '🗣️ '}{labels[m]}</Text>
+            {m === 'bark' && locked ? <Crown size={13} color={color.highlight} fill={color.highlight} /> : null}
           </Pressable>
         );
       })}

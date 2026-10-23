@@ -107,7 +107,9 @@
       "expo-sharing",
       "expo-notifications",
       "./plugins/withShortNativeBuildDir",
-      "expo-video"
+      "expo-video",
+      "expo-asset",
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true

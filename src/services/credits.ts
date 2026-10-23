@@ -2,7 +2,8 @@ import { create } from 'zustand';
 import { log } from './logger';
 import { backendConfigured, supabase } from './supabase';
 
-// One-time free credits (5 per new user), kept and spent on the server. Pro users never spend them.
+// Credits are kept and spent on the server. Free users get a one-time 5; each plan resets the balance to its
+// allowance on purchase and every renewal (see PLAN_CREDITS in the rc-webhook function).
 
 type CreditState = { balance: number | null };
 export const useCredits = create<CreditState>(() => ({ balance: null }));

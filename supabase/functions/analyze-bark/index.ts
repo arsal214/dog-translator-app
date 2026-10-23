@@ -16,5 +16,10 @@ Deno.serve(guarded('bark', async (req) => {
     role: 'user',
     content: `Reply language: ${language ?? 'en'}. Dog: ${dog?.name ?? 'unknown'} (${dog?.size ?? 'unknown size'}). Features: ${JSON.stringify(features)}`,
   }], 300);
-  return parseJson(raw);
-}));
+  const r = parseJson<{ emotion?: string; intensity?: number; confidence?: string; interpretation?: string }>(raw);
+  const ok = ['happy', 'excited', 'calm', 'anxious', 'playful', 'alert'].includes(r.emotion ?? '')
+    && typeof r.intensity === 'number' && r.intensity >= 1 && r.intensity <= 5
+    && ['low', 'medium', 'high'].includes(r.confidence ?? '') && typeof r.interpretation === 'string';
+  if (!ok) throw new HttpError(502, 'bad_ai_output'); // the guard refunds the credit
+  return r;
+}, { proOnly: true }));

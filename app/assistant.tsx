@@ -11,7 +11,6 @@ import { Button } from '@/components/ui';
 import { useActiveDog } from '@/features/dog-profiles/store';
 import { errorKey, isLimit } from '@/lib/errors';
 import { callFn } from '@/services/api';
-import { usePurchases } from '@/services/purchases';
 import { color, radius, shadow, type } from '@/theme/tokens';
 
 type Msg = { id: number; role: 'user' | 'assistant'; content: string; error?: boolean };
@@ -22,7 +21,6 @@ export default function Assistant() {
   const { t } = useTranslation();
   const router = useRouter();
   const dog = useActiveDog();
-  const isPro = usePurchases((s) => s.isPro);
   const [msgs, setMsgs] = useState<Msg[]>([]); // in memory only: chat history is not persisted
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
@@ -35,7 +33,12 @@ export default function Assistant() {
     setBusy(true);
     try {
       const { reply } = await callFn<{ reply: string }>('assistant', {
-        messages: history.filter((m) => !m.error).map(({ role, content }) => ({ role, content })),
+        // The server takes at most 30 messages; keep the latest, starting with a user turn.
+        messages: (() => {
+          const recent = history.filter((m) => !m.error).slice(-30);
+          while (recent[0]?.role === 'assistant') recent.shift();
+          return recent.map(({ role, content }) => ({ role, content }));
+        })(),
         dog: dog ? { name: dog.name, breed: dog.breed, sex: dog.sex, age: dog.age, size: dog.voice, personality: dog.traits } : undefined,
         language: i18n.language,
       });
@@ -145,7 +148,7 @@ export default function Assistant() {
               <ArrowUp size={22} color={canSend ? color.onPrimary : color.textTertiary} strokeWidth={2.6} />
             </Pressable>
           </View>
-          {!isPro ? <Text style={[type.caption, { color: color.textTertiary, textAlign: 'center' }]}>⚡ {t('assistant.costHint')}</Text> : null}
+          <Text style={[type.caption, { color: color.textTertiary, textAlign: 'center' }]}>⚡ {t('assistant.costHint')}</Text>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

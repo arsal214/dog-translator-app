@@ -12,6 +12,7 @@ import { useJournal } from '@/features/journal/store';
 import { PRIVACY_URL, TERMS_URL } from '@/lib/links';
 import i18n, { LANGUAGES, setLanguage, type Lang } from '@/localization';
 import { restore, usePurchases } from '@/services/purchases';
+import { log } from '@/services/logger';
 import { enablePush } from '@/services/push';
 import { setDailyReminder } from '@/services/reminders';
 import { supabase } from '@/services/supabase';
@@ -56,7 +57,14 @@ export default function Settings() {
         onPress: async () => {
           // Server account (if any) first, then every local store.
           const { data } = await supabase.auth.getSession();
-          if (data.session) await supabase.functions.invoke('delete-account').catch(() => {});
+          if (data.session) {
+            // Stop if the server delete failed (e.g. offline), so the account and its synced data aren't orphaned.
+            const { error } = await supabase.functions.invoke('delete-account').catch((e: unknown) => ({ error: e }));
+            if (error) {
+              log.warn('delete_account_failed', error);
+              return Alert.alert(t('more.deleteAccount'), t('errors.offline'));
+            }
+          }
           await supabase.auth.signOut().catch(() => {});
           useJournal.setState({ entries: [], favorites: [], lessons: {}, quiz: {} });
           useDogs.setState({ dogs: [], activeDogId: undefined, onboarded: false });

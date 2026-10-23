@@ -101,6 +101,7 @@
     "offline": "Vous semblez hors ligne. Vérifiez votre connexion et réessayez.",
     "unauthorized": "Impossible de démarrer une session. Réessayez.",
     "free_limit_reached": "Vous avez utilisé les analyses gratuites du jour. Passez à Pro pour en avoir plus.",
+    "pro_required": "Aboiement → Humain est une fonctionnalité Pro. Passez à Pro pour traduire les aboiements de votre chien.",
     "daily_limit_reached": "Vous avez atteint la limite du jour. Revenez demain.",
     "audio_too_quiet_or_short": "L’enregistrement était trop court ou trop faible. Réessayez plus près de votre chien.",
     "image_too_large": "Cette photo est trop volumineuse. Essayez-en une autre.",
@@ -110,7 +111,8 @@
     "unknown": "Une erreur s’est produite. Réessayez.",
     "unsupported_audio": "Seuls les fichiers WAV peuvent être importés pour le moment. Enregistrez directement ou convertissez votre fichier en WAV.",
     "audio_too_long": "Ce fichier dure plus de 30 secondes. Raccourcissez-le et réessayez.",
-    "no_credits": "Tu as utilisé tes crédits gratuits. Passe à Pro pour des traductions et de l’IA illimitées."
+    "no_credits": "Tu as utilisé tes crédits gratuits. Passe à Pro pour obtenir plus de crédits pour les traductions et l’IA.",
+    "no_credits_pro": "Tu as utilisé tous tes crédits pour cette période. Ils seront rechargés au renouvellement de ton abonnement."
   },
   "home": {
     "greetingMorning": "Bonjour, {{name}}",
@@ -328,7 +330,7 @@
     "send": "Envoyer",
     "welcomeTitle": "Demande-moi tout sur {{name}}",
     "welcomeBody": "Comportement, alimentation, dressage ou santé — je donne des conseils pratiques.",
-    "costHint": "Chaque question utilise 1 crédit gratuit",
+    "costHint": "Chaque question utilise 1 crédit",
     "suggestions": {
       "bark": "Pourquoi {{name}} aboie la nuit ?",
       "food": "Combien {{name}} doit-il manger par jour ?",
@@ -379,7 +381,7 @@
     "pickHint": "Une photo nette du visage de ton chien marche le mieux.",
     "change": "Changer",
     "creating": "Création du portrait…",
-    "costHint": "Utilise 1 crédit gratuit"
+    "costHint": "Utilise 1 crédit"
   },
   "paywall": {
     "title": "Tout ce que votre chien adore, au même endroit",
@@ -557,7 +559,7 @@
     "version": "Version {{version}}"
   },
   "app": {
-    "proBanner": "Passe à Pro pour t’amuser sans limite avec ton chien !"
+    "proBanner": "Passe à Pro et obtiens des crédits pour toutes les fonctions IA !"
   },
   "ai": {
     "scan": {

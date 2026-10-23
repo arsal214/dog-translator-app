@@ -25,9 +25,9 @@ export function AppHeader({ title, leading, right }: { title?: string; leading?:
         {leading ?? <Text accessibilityRole="header" numberOfLines={1} style={[type.title2, { color: color.text, fontWeight: '800' }]}>{title}</Text>}
       </View>
       {right}
-      {/* Free users see how many one-time credits are left; tapping it explains Pro. */}
-      {isPro || credits === null ? null : (
-        <Pressable accessibilityRole="button" accessibilityLabel={t('credits.left', { count: credits })} hitSlop={6} onPress={() => router.push('/paywall?reason=credits')} style={[{ flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, height: 34, borderRadius: 17, backgroundColor: credits > 0 ? color.surface : color.dangerSoft }, shadow.card]}>
+      {/* Everyone sees their credit balance; for free users tapping it explains Pro. */}
+      {credits === null ? null : (
+        <Pressable accessibilityRole="button" accessibilityLabel={t('credits.left', { count: credits })} hitSlop={6} disabled={isPro} onPress={() => router.push('/paywall?reason=credits')} style={[{ flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, height: 34, borderRadius: 17, backgroundColor: credits > 0 ? color.surface : color.dangerSoft }, shadow.card]}>
           <Text style={{ fontSize: 13 }}>⚡</Text>
           <Text style={[type.subheadStrong, { color: credits > 0 ? color.text : color.textDanger, fontVariant: ['tabular-nums'] }]}>{credits}</Text>
         </Pressable>

@@ -18,5 +18,11 @@ Deno.serve(guarded('scan', async (req) => {
       { type: 'text', text: `Reply language: ${language ?? 'en'}.` },
     ],
   }], 700); // the image is processed in-memory and never stored
-  return parseJson(raw);
+  const r = parseJson<Record<string, unknown>>(raw);
+  if (typeof r.isDog !== 'boolean') throw new HttpError(502, 'bad_ai_output'); // the guard refunds the credit
+  const strings = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []);
+  const breeds = Array.isArray(r.breeds)
+    ? r.breeds.filter((b) => b && typeof b.name === 'string').map((b) => ({ name: b.name, likelihood: ['low', 'medium', 'high'].includes(b.likelihood) ? b.likelihood : 'low' }))
+    : [];
+  return { isDog: r.isDog, breeds, traits: strings(r.traits), visibleCues: String(r.visibleCues ?? ''), care: String(r.care ?? ''), followUps: strings(r.followUps) };
 }));

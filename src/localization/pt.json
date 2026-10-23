@@ -101,6 +101,7 @@
     "offline": "Você parece estar offline. Verifique a conexão e tente de novo.",
     "unauthorized": "Não conseguimos iniciar a sessão. Tente de novo.",
     "free_limit_reached": "Você usou as análises gratuitas de hoje. Assine o Pro para ter mais.",
+    "pro_required": "Latido → Humano é um recurso Pro. Assine o Pro para traduzir os latidos do seu cão.",
     "daily_limit_reached": "Você atingiu o limite de hoje. Volte amanhã.",
     "audio_too_quiet_or_short": "A gravação ficou curta ou baixa demais. Tente de novo mais perto do seu cão.",
     "image_too_large": "Essa foto é grande demais. Tente outra.",
@@ -110,7 +111,8 @@
     "unknown": "Algo deu errado. Tente de novo.",
     "unsupported_audio": "Por enquanto só é possível importar arquivos WAV. Grave diretamente ou converta o arquivo para WAV.",
     "audio_too_long": "Esse arquivo tem mais de 30 segundos. Corte-o e tente de novo.",
-    "no_credits": "Você usou seus créditos grátis. Seja Pro para traduções e IA ilimitadas."
+    "no_credits": "Você usou seus créditos grátis. Seja Pro para ganhar mais créditos para traduções e IA.",
+    "no_credits_pro": "Você usou todos os seus créditos deste período. Eles são recarregados quando seu plano renovar."
   },
   "home": {
     "greetingMorning": "Bom dia, {{name}}",
@@ -328,7 +330,7 @@
     "send": "Enviar",
     "welcomeTitle": "Pergunte qualquer coisa sobre {{name}}",
     "welcomeBody": "Comportamento, comida, treino ou saúde — dou dicas práticas e amigáveis.",
-    "costHint": "Cada pergunta usa 1 crédito grátis",
+    "costHint": "Cada pergunta usa 1 crédito",
     "suggestions": {
       "bark": "Por que {{name}} late à noite?",
       "food": "Quanto {{name}} deve comer por dia?",
@@ -379,7 +381,7 @@
     "pickHint": "Uma foto nítida do rosto do seu cão funciona melhor.",
     "change": "Trocar",
     "creating": "Criando seu retrato…",
-    "costHint": "Usa 1 crédito grátis"
+    "costHint": "Usa 1 crédito"
   },
   "paywall": {
     "title": "Tudo o que seu cão ama, em um só lugar",
@@ -557,7 +559,7 @@
     "version": "Versão {{version}}"
   },
   "app": {
-    "proBanner": "Seja Pro e divirta-se sem limites com seu cão!"
+    "proBanner": "Seja Pro e ganhe créditos para todos os recursos de IA!"
   },
   "ai": {
     "scan": {

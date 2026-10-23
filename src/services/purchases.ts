@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import Purchases, { type CustomerInfo, type PurchasesPackage } from 'react-native-purchases';
 import { create } from 'zustand';
+import { refreshCredits } from './credits';
 import { log } from './logger';
 import { supabase } from './supabase';
 
@@ -13,6 +14,8 @@ type PurchaseState = {
   checked: boolean;
   isPro: boolean;
   packages: PurchasesPackage[];
+  /** Last offerings failure, shown on the paywall so TestFlight testers can report it. */
+  offeringsError?: string;
   set: (p: Partial<PurchaseState>) => void;
 };
 export const usePurchases = create<PurchaseState>((set) => ({ ready: false, checked: false, isPro: false, packages: [], set }));
@@ -43,7 +46,9 @@ export async function initPurchases() {
     if (!configured || !id) return;
     Purchases.getAppUserID()
       .then((current) => (current === id ? null : Purchases.logIn(id)))
-      .then((r) => r && apply(r.customerInfo))
+      // Moving to another account doesn't move this device's purchase until it is synced (RevenueCat transfer).
+      .then((r) => (r ? Purchases.syncPurchases().then(() => Purchases.getCustomerInfo()) : null))
+      .then((info) => { if (info) { apply(info); void refreshCredits(); } })
       .catch((e) => log.warn('purchases_login_failed', e));
   });
   // Fetched independently so a customer-info failure doesn't hide the packages.
@@ -56,12 +61,16 @@ export async function initPurchases() {
 
 /** Also called when the paywall opens, so a failed or empty startup fetch is retried. */
 export async function loadOfferings() {
+  const set = usePurchases.getState().set;
+  if (!configured) return set({ ready: true, offeringsError: key ? 'RevenueCat not configured' : 'Missing RevenueCat API key' });
+  set({ ready: false, offeringsError: undefined });
   try {
     const offerings = await Purchases.getOfferings();
     if (!offerings.current) log.warn('purchases_no_current_offering', undefined, { offerings: Object.keys(offerings.all) });
-    usePurchases.getState().set({ ready: true, packages: offerings.current?.availablePackages ?? [] });
+    set({ ready: true, packages: offerings.current?.availablePackages ?? [], offeringsError: offerings.current ? undefined : 'No current offering in RevenueCat' });
   } catch (e) {
     log.error('purchases_offerings_failed', e); // paywall shows an unavailable state
+    set({ ready: true, offeringsError: e instanceof Error ? e.message : String(e) });
   }
 }
 
@@ -72,6 +81,8 @@ export async function purchase(pkg: PurchasesPackage): Promise<PurchaseResult> {
   try {
     const { customerInfo } = await Purchases.purchasePackage(pkg);
     apply(customerInfo); // Pro is granted only if RevenueCat reports the entitlement active
+    // The plan's credits arrive through the RevenueCat webhook a few seconds later.
+    for (const ms of [0, 4000, 10000]) setTimeout(() => void refreshCredits(), ms);
     const ok = !!customerInfo.entitlements.active[ENTITLEMENT];
     if (ok) log.info('purchase_success', context);
     else log.error('purchase_no_entitlement', 'purchase completed but pro is not active', context);
@@ -90,6 +101,7 @@ export async function restore(): Promise<boolean> {
   try {
     const info = await Purchases.restorePurchases();
     apply(info);
+    for (const ms of [0, 4000]) setTimeout(() => void refreshCredits(), ms);
     const ok = !!info.entitlements.active[ENTITLEMENT];
     log.info('restore', { restored: ok });
     return ok;

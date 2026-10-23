@@ -66,7 +66,9 @@ export default function Scanner() {
         log.error('scan_image_resize_failed', e, { scheme: uri.split(':')[0] });
         throw e;
       }
-      const r = await callFn<Scan>('scan-dog', { imageBase64, mediaType: 'image/jpeg', language: i18n.language });
+      const res = await callFn<Partial<Scan>>('scan-dog', { imageBase64, mediaType: 'image/jpeg', language: i18n.language });
+      // Missing lists from the model must not crash the result view.
+      const r: Scan = { isDog: !!res.isDog, breeds: res.breeds ?? [], traits: res.traits ?? [], visibleCues: res.visibleCues ?? '', care: res.care ?? '', followUps: res.followUps ?? [] };
       if (!r.isDog) setErr(t('scanner.notDog'));
       else {
         setScan(r);

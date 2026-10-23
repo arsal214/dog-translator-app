@@ -10,7 +10,6 @@ import { ScreenHeader } from '@/components/ScreenHeader';
 import { Button } from '@/components/ui';
 import { errorKey, isLimit } from '@/lib/errors';
 import { callFn } from '@/services/api';
-import { usePurchases } from '@/services/purchases';
 import { color, radius, shadow, type } from '@/theme/tokens';
 
 const STYLES = [
@@ -23,7 +22,6 @@ type Style = (typeof STYLES)[number]['key'];
 export default function Portraits() {
   const { t } = useTranslation();
   const router = useRouter();
-  const isPro = usePurchases((s) => s.isPro);
   const [style, setStyle] = useState<Style>('sticker');
   const [uri, setUri] = useState<string | null>(null);
   const [out, setOut] = useState<string | null>(null);
@@ -108,7 +106,7 @@ export default function Portraits() {
 
         <View style={{ gap: 8 }}>
           <Button label={`✨ ${t('portraits.generate')}`} loading={busy} disabled={!uri} onPress={generate} />
-          {!isPro ? <Text style={[type.caption, { color: color.textSecondary, textAlign: 'center' }]}>⚡ {t('portraits.costHint')}</Text> : null}
+          <Text style={[type.caption, { color: color.textSecondary, textAlign: 'center' }]}>⚡ {t('portraits.costHint')}</Text>
         </View>
 
         {err ? (

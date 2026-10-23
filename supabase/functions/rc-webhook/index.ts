@@ -3,6 +3,14 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
 // RevenueCat webhook -> entitlements (current state) + subscription_events (full history).
 // Set the webhook Authorization header to RC_WEBHOOK_SECRET.
 // RevenueCat app_user_id must equal the Supabase user id (the app configures Purchases with user.id).
+// Credits each plan gives on purchase and on every renewal (balance is reset, not added). Matched by product id.
+const PLAN_CREDITS: [RegExp, number][] = [[/lifetime/i, 330], [/week/i, 20], [/month/i, 90], [/year|annual/i, 200]];
+const planCredits = (productId: unknown) => PLAN_CREDITS.find(([re]) => typeof productId === 'string' && re.test(productId))?.[1] ?? 0;
+const GRANTS_CREDITS = ['INITIAL_PURCHASE', 'RENEWAL', 'NON_RENEWING_PURCHASE'];
+// Readable plan name for the dashboard, from the store product id.
+const PLAN_NAMES: [RegExp, string][] = [[/lifetime/i, 'lifetime'], [/week/i, 'weekly'], [/month/i, 'monthly'], [/year|annual/i, 'yearly']];
+const planName = (productId: unknown) => (typeof productId === 'string' ? PLAN_NAMES.find(([re]) => re.test(productId))?.[1] ?? 'other' : null);
+
 const ms = (v: unknown) => (typeof v === 'number' ? new Date(v).toISOString() : null);
 const UUID = /^[0-9a-f-]{36}$/;
 
@@ -26,6 +34,7 @@ Deno.serve(async (req) => {
     app_user_id: String(event.app_user_id ?? ''),
     type: event.type,
     product_id: event.product_id ?? null,
+    plan: planName(event.product_id),
     store: event.store ?? null,
     environment: event.environment ?? null,
     period_type: event.period_type ?? null,
@@ -45,6 +54,12 @@ Deno.serve(async (req) => {
     if (prev) {
       await admin.from('entitlements').upsert({ ...prev, user_id: uid, last_event: 'TRANSFER', updated_at: new Date().toISOString() });
       await admin.from('entitlements').update({ is_pro: false, last_event: 'TRANSFER', updated_at: new Date().toISOString() }).in('user_id', from);
+      // The paid credit balance follows the subscription too.
+      const { data: paid } = await admin.from('credits').select('balance, granted').eq('user_id', prev.user_id).maybeSingle();
+      if (paid) {
+        await admin.from('credits').upsert({ user_id: uid, balance: paid.balance, granted: paid.granted, updated_at: new Date().toISOString() });
+        await admin.from('credits').update({ balance: 0, updated_at: new Date().toISOString() }).eq('user_id', prev.user_id);
+      }
     }
     return new Response('ok');
   }
@@ -56,6 +71,7 @@ Deno.serve(async (req) => {
     is_pro: active,
     expires_at: expires,
     product_id: event.product_id ?? null,
+    plan: planName(event.product_id),
     store: event.store ?? null,
     period_type: event.period_type ?? null,
     environment: event.environment ?? null,
@@ -69,9 +85,24 @@ Deno.serve(async (req) => {
   if (event.type === 'INITIAL_PURCHASE') row.original_purchased_at = ms(event.purchased_at_ms);
   if (event.period_type === 'TRIAL') row.trial_used = true; // one trial per account, kept server-side
   const { error } = await admin.from('entitlements').upsert(row);
+  // 23503: the user was deleted (account deletion); nothing to update, and retrying would never succeed.
+  if (error?.code === '23503') return new Response('ok');
   if (error) {
     console.error('entitlements', error);
     return new Response('error', { status: 500 }); // RevenueCat retries on 5xx
+  }
+
+  if (GRANTS_CREDITS.includes(event.type)) {
+    const amount = planCredits(event.product_id);
+    if (!amount) console.error('plan_credits_unknown_product', event.product_id);
+    else {
+      // Idempotent per event id, so a retried webhook doesn't grant twice.
+      const { error: grantError } = await admin.rpc('grant_plan_credits', { p_user: uid, p_amount: amount, p_event: event.id, p_product: event.product_id });
+      if (grantError) {
+        console.error('grant_plan_credits', grantError);
+        return new Response('error', { status: 500 });
+      }
+    }
   }
   return new Response('ok');
 });

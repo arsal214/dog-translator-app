@@ -101,6 +101,7 @@
     "offline": "Parece que no tienes conexión. Revisa tu conexión e inténtalo de nuevo.",
     "unauthorized": "No pudimos iniciar la sesión. Inténtalo de nuevo.",
     "free_limit_reached": "Has usado los análisis gratuitos de hoy. Pásate a Pro para tener más.",
+    "pro_required": "Ladrido → Humano es una función Pro. Pásate a Pro para traducir los ladridos de tu perro.",
     "daily_limit_reached": "Has alcanzado el límite de hoy. Vuelve mañana.",
     "audio_too_quiet_or_short": "La grabación fue demasiado corta o silenciosa. Inténtalo de nuevo más cerca de tu perro.",
     "image_too_large": "Esa foto es demasiado grande. Prueba con otra.",
@@ -110,7 +111,8 @@
     "unknown": "Algo salió mal. Inténtalo de nuevo.",
     "unsupported_audio": "Por ahora solo se pueden importar archivos WAV. Graba directamente o convierte tu archivo a WAV.",
     "audio_too_long": "Ese archivo dura más de 30 segundos. Recórtalo e inténtalo de nuevo.",
-    "no_credits": "Has usado tus créditos gratis. Hazte Pro para traducciones e IA ilimitadas."
+    "no_credits": "Has usado tus créditos gratis. Hazte Pro para obtener más créditos para traducciones e IA.",
+    "no_credits_pro": "Has usado todos tus créditos de este periodo. Se recargan cuando se renueve tu plan."
   },
   "home": {
     "greetingMorning": "Buenos días, {{name}}",
@@ -328,7 +330,7 @@
     "send": "Enviar",
     "welcomeTitle": "Pregúntame lo que quieras sobre {{name}}",
     "welcomeBody": "Comportamiento, comida, adiestramiento o salud: te doy consejos prácticos.",
-    "costHint": "Cada pregunta usa 1 crédito gratis",
+    "costHint": "Cada pregunta usa 1 crédito",
     "suggestions": {
       "bark": "¿Por qué ladra {{name}} por la noche?",
       "food": "¿Cuánto debe comer {{name}} al día?",
@@ -379,7 +381,7 @@
     "pickHint": "Funciona mejor una foto clara de la cara de tu perro.",
     "change": "Cambiar",
     "creating": "Creando tu retrato…",
-    "costHint": "Usa 1 crédito gratis"
+    "costHint": "Usa 1 crédito"
   },
   "paywall": {
     "title": "Todo lo que ama tu perro, en un solo lugar",
@@ -557,7 +559,7 @@
     "version": "Versión {{version}}"
   },
   "app": {
-    "proBanner": "¡Hazte Pro y diviértete sin límites con tu perro!"
+    "proBanner": "¡Hazte Pro y consigue créditos para todas las funciones de IA!"
   },
   "ai": {
     "scan": {

@@ -101,6 +101,7 @@
     "offline": "You seem to be offline. Check your connection and try again.",
     "unauthorized": "We couldn't start a session. Please try again.",
     "free_limit_reached": "You've used today's free analyses. Go Pro for more.",
+    "pro_required": "Bark → Human is a Pro feature. Go Pro to translate your dog's barks.",
     "daily_limit_reached": "You've reached today's limit. Please come back tomorrow.",
     "audio_too_quiet_or_short": "That recording was too short or too quiet. Try again closer to your dog.",
     "image_too_large": "That photo is too large. Try a different one.",
@@ -110,7 +111,8 @@
     "unknown": "Something went wrong. Please try again.",
     "unsupported_audio": "Only WAV files can be imported for now. Record directly, or convert your file to WAV.",
     "audio_too_long": "That file is longer than 30 seconds. Trim it and try again.",
-    "no_credits": "You've used your free credits. Go Pro for unlimited translations and AI."
+    "no_credits": "You've used your free credits. Go Pro to get more credits for translations and AI.",
+    "no_credits_pro": "You've used all your credits for this period. They refill when your plan renews."
   },
   "home": {
     "greetingMorning": "Good morning, {{name}}",
@@ -328,7 +330,7 @@
     "send": "Send",
     "welcomeTitle": "Ask me anything about {{name}}",
     "welcomeBody": "Behaviour, food, training or health questions — I’ll give friendly, practical tips.",
-    "costHint": "Each question uses 1 free credit",
+    "costHint": "Each question uses 1 credit",
     "suggestions": {
       "bark": "Why does {{name}} bark at night?",
       "food": "How much should {{name}} eat a day?",
@@ -379,7 +381,7 @@
     "pickHint": "A clear photo of your dog’s face works best.",
     "change": "Change",
     "creating": "Creating your portrait…",
-    "costHint": "Uses 1 free credit"
+    "costHint": "Uses 1 credit"
   },
   "paywall": {
     "title": "Everything your dog loves, all in one place",
@@ -557,7 +559,7 @@
     "version": "Version {{version}}"
   },
   "app": {
-    "proBanner": "Unlock Pro for unlimited fun with your dog!"
+    "proBanner": "Unlock Pro and get credits for every AI feature!"
   },
   "ai": {
     "scan": {

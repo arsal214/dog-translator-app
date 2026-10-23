@@ -41,12 +41,17 @@ export default function Talk() {
     if (m) { stopPlayback(); setPhrase(m); setNote(''); } else setNote(input.trim() ? t('talk.noMatch') : '');
   };
   const speak = async () => {
-    // Voice input costs free users one credit, like the translator.
-    if (!usePurchases.getState().isPro && (await spendCredit()) === 'none') return router.push('/paywall?reason=credits');
+    if (listening) return;
     setListening(true);
     setNote('');
     try {
       const heard = await listenOnce(i18n.language);
+      // Voice input costs one credit, like the translator, charged only once speech was understood.
+      if (heard.trim() && (await spendCredit()) === 'none') {
+        if (usePurchases.getState().isPro) setNote(t('errors.no_credits_pro'));
+        else router.push('/paywall?reason=credits');
+        return;
+      }
       setText(heard);
       apply(heard);
     } catch (e) {

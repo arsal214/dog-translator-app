@@ -27,10 +27,12 @@ export const SOUNDS: Sound[] = [
   { id: 'bark-sled-dog-long', title: 'Sled dog barking spree', category: 'barks', source: require('../../assets/sounds/bark-sled-dog-long.mp3'), license: bsb('barking-dog-2-s2954.html'), attribution: BSB_ATTRIBUTION, pro: true },
   { id: 'bark-small-mudi', title: 'Small herding dog barking', category: 'barks', source: require('../../assets/sounds/bark-small-mudi.m4a'), license: bsb('small-dog-barking-s0612.html'), attribution: BSB_ATTRIBUTION, pro: true },
   { id: 'bark-sled-dog-pack', title: 'Pack of sled dogs', category: 'barks', source: require('../../assets/sounds/bark-sled-dog-pack.m4a'), license: bsb('pack-of-dogs-s2953.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'bark-dog-barking-1', title: 'Barking dog', category: 'barks', source: require('../../assets/sounds/bark-dog-barking-1.m4a'), license: bsb('barking-dog-s0916.html'), attribution: BSB_ATTRIBUTION },
 
   // Growls
   { id: 'growl-spitz', title: 'Spitz growl and bark', category: 'growls', source: require('../../assets/sounds/growl-spitz.mp3'), license: bsb('barking-of-a-spitz-s0682.html'), attribution: BSB_ATTRIBUTION },
   { id: 'growl-small-dogs-fence', title: 'Small dogs growling at the fence', category: 'growls', source: require('../../assets/sounds/growl-small-dogs-fence.m4a'), license: bsb('small-dogs-bark-growl-s1060.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'growl-small-dogs-duo', title: 'Two small dogs growling', category: 'growls', source: require('../../assets/sounds/growl-small-dogs-duo.m4a'), license: bsb('small-dogs-bark-growl-2-s1061.html'), attribution: BSB_ATTRIBUTION, pro: true },
 
   // Whines
   { id: 'whine-dog-crying-1', title: 'Dog whimpering', category: 'whines', source: require('../../assets/sounds/whine-dog-crying-1.mp3'), license: bsb('dogs-barking-and-crying-1-s1544.html'), attribution: BSB_ATTRIBUTION },
@@ -47,6 +49,10 @@ export const SOUNDS: Sound[] = [
   // Attention
   { id: 'attention-small-dog-at-door', title: 'Small dog at the door', category: 'attention', source: require('../../assets/sounds/attention-small-dog-at-door.m4a'), license: bsb('small-dog-barking-behind-door-s3537.html'), attribution: BSB_ATTRIBUTION },
   { id: 'attention-dogs-at-gate', title: 'Dogs barking at the gate', category: 'attention', source: require('../../assets/sounds/attention-dogs-at-gate.m4a'), license: bsb('2-dogs-barking-s0868.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'attention-door-knock', title: 'Knock at the door', category: 'attention', source: require('../../assets/sounds/attention-door-knock.mp3'), license: bsb('door-knock-s0095.html'), attribution: BSB_ATTRIBUTION },
+  { id: 'attention-cat-meow-1', title: 'Cat meowing', category: 'attention', source: require('../../assets/sounds/attention-cat-meow-1.mp3'), license: bsb('meow-cat-1-s1889.html'), attribution: BSB_ATTRIBUTION },
+  { id: 'attention-knock-light-door', title: 'Quick door knock', category: 'attention', source: require('../../assets/sounds/attention-knock-light-door.mp3'), license: bsb('knock-on-a-light-door-s0374.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'attention-cat-meow-2', title: 'Cat meow', category: 'attention', source: require('../../assets/sounds/attention-cat-meow-2.mp3'), license: bsb('meow-cat-2-s1890.html'), attribution: BSB_ATTRIBUTION, pro: true },
 
   // Squeaky toys
   { id: 'squeaky-toy-long', title: 'Squeaky toy', category: 'squeaky', source: require('../../assets/sounds/squeaky-toy-long.mp3'), license: bsb('squeaker-toy-2-s0879.html'), attribution: BSB_ATTRIBUTION },
@@ -55,18 +61,25 @@ export const SOUNDS: Sound[] = [
   { id: 'squeaky-pear-horn-2', title: 'Quick squeak', category: 'squeaky', source: require('../../assets/sounds/squeaky-pear-horn-2.mp3'), license: bsb('couinement-jouet-1-s3331.html'), attribution: BSB_ATTRIBUTION, pro: true },
   { id: 'squeaky-pear-horn-3', title: 'Double squeak', category: 'squeaky', source: require('../../assets/sounds/squeaky-pear-horn-3.mp3'), license: bsb('couinement-jouet-4-s3334.html'), attribution: BSB_ATTRIBUTION, pro: true },
   { id: 'squeaky-pear-horn-4', title: 'Squeak-squeak-squeak', category: 'squeaky', source: require('../../assets/sounds/squeaky-pear-horn-4.mp3'), license: bsb('couinement-jouet-6-s3336.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'squeaky-pear-horn-5', title: 'Tiny squeak', category: 'squeaky', source: require('../../assets/sounds/squeaky-pear-horn-5.mp3'), license: bsb('couinement-jouet-8-s3338.html'), attribution: BSB_ATTRIBUTION, pro: true },
 
   // Doorbells
   { id: 'doorbell-electronic', title: 'Electronic doorbell', category: 'doorbell', source: require('../../assets/sounds/doorbell-electronic.mp3'), license: bsb('doorbell-2-s0160.html'), attribution: BSB_ATTRIBUTION },
   { id: 'doorbell-mechanical-short', title: 'Ring-ring doorbell', category: 'doorbell', source: require('../../assets/sounds/doorbell-mechanical-short.mp3'), license: bsb('mechanical-doorbell-short-s1206.html'), attribution: BSB_ATTRIBUTION },
   { id: 'doorbell-bigben-chime', title: 'Big Ben door chime', category: 'doorbell', source: require('../../assets/sounds/doorbell-bigben-chime.mp3'), license: bsb('doorbell-house-1-s0159.html'), attribution: BSB_ATTRIBUTION, pro: true },
   { id: 'doorbell-large-chime', title: 'Ding-dong house chime', category: 'doorbell', source: require('../../assets/sounds/doorbell-large-chime.mp3'), license: bsb('doorbell-8-s2880.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'doorbell-ding', title: 'Doorbell ding', category: 'doorbell', source: require('../../assets/sounds/doorbell-ding.mp3'), license: bsb('doorbell-3-s0161.html'), attribution: BSB_ATTRIBUTION },
+  { id: 'doorbell-mechanical-bells', title: 'Old mechanical doorbell', category: 'doorbell', source: require('../../assets/sounds/doorbell-mechanical-bells.mp3'), license: bsb('doorbell-1-s0088.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'doorbell-mechanical-triple', title: 'Triple ring doorbell', category: 'doorbell', source: require('../../assets/sounds/doorbell-mechanical-triple.mp3'), license: bsb('mechanical-doorbell-triple-s1209.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'doorbell-shop-chime', title: 'Shop door chime', category: 'doorbell', source: require('../../assets/sounds/doorbell-shop-chime.mp3'), license: bsb('shop-doorbell-chime-s3588.html'), attribution: BSB_ATTRIBUTION, pro: true },
 
   // Training
   { id: 'training-clicker-pen', title: 'Training clicker', category: 'training', source: require('../../assets/sounds/training-clicker-pen.mp3'), license: bsb('pen-click-s0613.html'), attribution: BSB_ATTRIBUTION },
   { id: 'training-whistle-plastic', title: 'Recall whistle', category: 'training', source: require('../../assets/sounds/training-whistle-plastic.mp3'), license: bsb('plastic-whistle-s1017.html'), attribution: BSB_ATTRIBUTION },
   { id: 'training-whistle-wooden', title: 'Single-note whistle', category: 'training', source: require('../../assets/sounds/training-whistle-wooden.mp3'), license: bsb('wooden-whistle-one-note-s0196.html'), attribution: BSB_ATTRIBUTION, pro: true },
   { id: 'training-whistles-plastic-set', title: 'Whistle signals', category: 'training', source: require('../../assets/sounds/training-whistles-plastic-set.mp3'), license: bsb('whistle-plastic-3-s1141.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'training-whistle-plastic-2', title: 'Long recall whistle', category: 'training', source: require('../../assets/sounds/training-whistle-plastic-2.mp3'), license: bsb('whistle-plastic-2-s1105.html'), attribution: BSB_ATTRIBUTION, pro: true },
+  { id: 'training-counter-bell', title: 'Counter bell', category: 'training', source: require('../../assets/sounds/training-counter-bell.mp3'), license: bsb('counter-bell-s0479.html'), attribution: BSB_ATTRIBUTION, pro: true },
 ];
 
 // Phrase -> sound per dog size. Same rule: only real, licensed assets (reusing catalog files is fine here).

@@ -101,6 +101,7 @@
     "offline": "Du scheinst offline zu sein. Prüfe deine Verbindung und versuche es erneut.",
     "unauthorized": "Wir konnten keine Sitzung starten. Bitte versuche es erneut.",
     "free_limit_reached": "Du hast die kostenlosen Analysen für heute aufgebraucht. Mit Pro bekommst du mehr.",
+    "pro_required": "Bellen → Mensch ist eine Pro-Funktion. Hol dir Pro, um das Bellen deines Hundes zu übersetzen.",
     "daily_limit_reached": "Du hast das heutige Limit erreicht. Komm morgen wieder.",
     "audio_too_quiet_or_short": "Die Aufnahme war zu kurz oder zu leise. Versuche es näher an deinem Hund.",
     "image_too_large": "Dieses Foto ist zu groß. Versuche ein anderes.",
@@ -110,7 +111,8 @@
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     "unsupported_audio": "Derzeit können nur WAV-Dateien importiert werden. Nimm direkt auf oder konvertiere deine Datei in WAV.",
     "audio_too_long": "Diese Datei ist länger als 30 Sekunden. Kürze sie und versuche es erneut.",
-    "no_credits": "Deine Gratis-Credits sind aufgebraucht. Hol dir Pro für unbegrenzte Übersetzungen und KI."
+    "no_credits": "Deine Gratis-Credits sind aufgebraucht. Hol dir Pro für mehr Credits für Übersetzungen und KI.",
+    "no_credits_pro": "Du hast alle Credits für diesen Zeitraum verbraucht. Sie werden bei der Verlängerung deines Abos aufgefüllt."
   },
   "home": {
     "greetingMorning": "Guten Morgen, {{name}}",
@@ -328,7 +330,7 @@
     "send": "Senden",
     "welcomeTitle": "Frag mich alles über {{name}}",
     "welcomeBody": "Verhalten, Futter, Training oder Gesundheit – ich gebe freundliche, praktische Tipps.",
-    "costHint": "Jede Frage kostet 1 Gratis-Credit",
+    "costHint": "Jede Frage kostet 1 Credit",
     "suggestions": {
       "bark": "Warum bellt {{name}} nachts?",
       "food": "Wie viel sollte {{name}} am Tag fressen?",
@@ -379,7 +381,7 @@
     "pickHint": "Ein klares Foto vom Gesicht deines Hundes funktioniert am besten.",
     "change": "Ändern",
     "creating": "Dein Porträt wird erstellt…",
-    "costHint": "Kostet 1 Gratis-Credit"
+    "costHint": "Kostet 1 Credit"
   },
   "paywall": {
     "title": "Alles, was dein Hund liebt, an einem Ort",
@@ -557,7 +559,7 @@
     "version": "Version {{version}}"
   },
   "app": {
-    "proBanner": "Hol dir Pro für unbegrenzten Spaß mit deinem Hund!"
+    "proBanner": "Hol dir Pro und Credits für jede KI-Funktion!"
   },
   "ai": {
     "scan": {

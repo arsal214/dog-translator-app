@@ -15,8 +15,10 @@
         "NSCameraUsageDescription": "Dog Translator uses the camera to photograph your dog.",
         "NSSpeechRecognitionUsageDescription": "Dog Translator uses speech recognition to turn your spoken phrase into text.",
         "UIBackgroundModes": [
+          "remote-notification",
           "remote-notification"
-        ]
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },

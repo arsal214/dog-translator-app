@@ -23,7 +23,11 @@ export async function complete(system: string, messages: Msg[], maxTokens = 600)
       generationConfig: { maxOutputTokens: maxTokens, thinkingConfig: { thinkingBudget: 0 } },
     }),
   });
-  if (!r.ok) throw new HttpError(502, 'ai_provider_error'); // never forward provider bodies (may echo user content)
+  if (!r.ok) {
+    // Server logs only (Supabase dashboard → Edge Functions → Logs); the client still gets the generic code.
+    console.error('gemini_error', r.status, MODEL, (await r.text()).slice(0, 300));
+    throw new HttpError(502, 'ai_provider_error');
+  } // never forward provider bodies (may echo user content)
   const j = await r.json();
   return j.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text ?? '').join('') ?? '';
 }
